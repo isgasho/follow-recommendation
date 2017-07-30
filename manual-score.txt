@@ -185,6 +185,14 @@
 {"host": "friends.nico", "username": "heavens_sparrow", "score": 2},
 {"host": "mimumedon.com", "username": "Mocke", "score": 2},
 {"host": "otajodon.com", "username": "imhr", "score": 2},
+{"host": "pawoo.net", "username": "boheonlee0404", "score": 0},
+{"host": "pawoo.net", "username": "woonmin1211", "score": 0},
+{"host": "mstdn-workers.com", "username": "t0p_l1ght", "score": 2},
+{"host": "pawoo.net", "username": "dmswlkim99", "score": 0},
+{"host": "mstdn.jp", "username": "thiele", "score": 2},
+{"host": "pawoo.net", "username": "diru56", "score": 1},
+{"host": "mstdn.osaka", "username": "Gorikiti", "score": 2},
+{"host": "vocalodon.net", "username": "Koharu_S", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
