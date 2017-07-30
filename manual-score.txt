@@ -174,7 +174,7 @@
 {"host": "mstdn.jp", "username": "koyamtn_tm", "score": 0},
 {"host": "ekimemo.info", "username": "mori", "score": 1},
 {"host": "horiedon.com", "username": "hinoi_i_", "score": 0},
-{"host": "friends.nico", "username": "sa5", "score": 4},
+{"host": "friends.nico", "username": "sa5", "score": 1},
 {"host": "friends.nico", "username": "scopedog", "score": 2},
 {"host": "pawoo.net", "username": "bekkome", "score": 2},
 {"host": "mstdn.nere9.help", "username": "ejo090", "score": 3},
