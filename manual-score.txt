@@ -193,6 +193,15 @@
 {"host": "pawoo.net", "username": "diru56", "score": 1},
 {"host": "mstdn.osaka", "username": "Gorikiti", "score": 2},
 {"host": "vocalodon.net", "username": "Koharu_S", "score": 2},
+{"host": "mstdn.jp", "username": "pamasu2", "score": 2},
+{"host": "kabudon.jp", "username": "e_kaiji", "score": 0},
+{"host": "mstdn.kemono-friends.info", "username": "tooru", "score": 2},
+{"host": "friends.nico", "username": "Penistus", "score": 2},
+{"host": "friends.nico", "username": "sun_pillar", "score": 2},
+{"host": "otajodon.com", "username": "n1c6c8", "score": 2},
+{"host": "friends.nico", "username": "zk_zk_", "score": 3},
+{"host": "friends.nico", "username": "anz", "score": 2},
+{"host": "friends.nico", "username": "lefthand666", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
