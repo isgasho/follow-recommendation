@@ -202,6 +202,7 @@
 {"host": "friends.nico", "username": "zk_zk_", "score": 3},
 {"host": "friends.nico", "username": "anz", "score": 2},
 {"host": "friends.nico", "username": "lefthand666", "score": 2},
+{"host": "mastodon.jtwp470.net", "username": "jtwp470", "score": 1},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
