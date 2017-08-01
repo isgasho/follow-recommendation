@@ -203,6 +203,9 @@
 {"host": "friends.nico", "username": "anz", "score": 2},
 {"host": "friends.nico", "username": "lefthand666", "score": 2},
 {"host": "mastodon.jtwp470.net", "username": "jtwp470", "score": 1},
+{"host": "vocalodon.net", "username": "yamariko", "score": 2},
+{"host": "friends.nico", "username": "Cabbage", "score": 2},
+{"host": "friends.nico", "username": "fujineko2", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
