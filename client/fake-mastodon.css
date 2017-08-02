@@ -27,4 +27,18 @@ img.preview {
 	object-fit: cover;
 }
 
+table {
+	border-color: white;
+	border-style: solid;
+	border-spacing: 0px;
+}
+
+td {
+	padding: 0.5em;
+}
+
+th {
+	padding: 0.5em;
+}
+
 
