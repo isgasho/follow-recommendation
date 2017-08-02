@@ -545,8 +545,8 @@ deep-learning.site
 learn-english.site
 blackice.online
 kurosawa-ruby.xyz
- # t.con.sh 日本語が主たる言語ではない
- mdx.ggtea.org
+# t.con.sh 日本語が主たる言語ではない
+mdx.ggtea.org
 mastodon.osyakasyama.me
 mastodon.matcha-soft.com
 social.48bin.net
