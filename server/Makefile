@@ -24,11 +24,13 @@ objects = \
 	instance-speed-history-api.o \
 	user-speed.o \
 	instance-speed-cron.o \
-	instance-first-toot-cron.o
+	instance-first-toot-cron.o \
+	instance-lists-api.o
 cgi_binaries = \
 	distsn-user-speed-api.cgi \
 	distsn-user-recommendation-api.cgi \
-	distsn-instance-speed-history-api.cgi
+	distsn-instance-speed-history-api.cgi \
+	distsn-instance-lists-api.cgi
 cron_binaries = \
 	distsn-user-speed \
 	distsn-instance-speed-cron \
@@ -73,6 +75,9 @@ distsn-instance-first-toot-cron: instance-first-toot-cron.o
 
 distsn-user-application-cron: user-application-cron.o
 	$(CXX) user-application-cron.o -lcurl $(CFLAGS) -o $@
+
+distsn-instance-lists-api.cgi: instance-lists-api.o
+	$(CXX) instance-lists-api.o -lcurl $(CFLAGS) -o $@
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
