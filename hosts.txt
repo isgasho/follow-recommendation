@@ -654,4 +654,8 @@ mstdnsrv.moe.hm
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 575don.club
 aigisdon.net
-
+akibadon.com
+amefootdon.com
+amnz.jp
+aruk.as
+bark.zer0xff.com
