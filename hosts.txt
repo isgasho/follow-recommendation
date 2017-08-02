@@ -545,8 +545,8 @@ deep-learning.site
 learn-english.site
 blackice.online
 kurosawa-ruby.xyz
- # t.con.sh 日本語が主たる言語ではない
- mdx.ggtea.org
+# t.con.sh 日本語が主たる言語ではない
+mdx.ggtea.org
 mastodon.osyakasyama.me
 mastodon.matcha-soft.com
 social.48bin.net
@@ -650,4 +650,8 @@ mastonon.net
 home.aqraf.tokyo
 ngndn.jp
 mstdnsrv.moe.hm
+
+# https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
+575don.club
+aigisdon.net
 
