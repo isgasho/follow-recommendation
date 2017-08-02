@@ -651,3 +651,6 @@ home.aqraf.tokyo
 ngndn.jp
 mstdnsrv.moe.hm
 
+# https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
+575don.club
+
