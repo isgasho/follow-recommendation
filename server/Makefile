@@ -19,7 +19,6 @@ cgidir = /usr/lib/cgi-bin
 
 objects = \
 	user-speed-api.o \
-	top1000-html.o \
 	user-recommendation-api.o \
 	instance-speed-history-api.o \
 	user-speed.o \
@@ -57,9 +56,6 @@ distsn-user-speed: user-speed.o
 
 distsn-user-speed-api.cgi: user-speed-api.o
 	$(CXX) user-speed-api.o -lcurl $(CFLAGS) -o $@
-
-distsn-top1000-html.cgi: top1000-html.o
-	$(CXX) top1000-html.o -lcurl $(CFLAGS) -o $@
 
 distsn-user-recommendation-api.cgi: user-recommendation-api.o
 	$(CXX) user-recommendation-api.o -lcurl $(CFLAGS) -o $@
