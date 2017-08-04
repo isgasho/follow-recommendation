@@ -24,6 +24,7 @@ objects = \
 	user-speed.o \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
+	user-application-cron.o \
 	instance-lists-api.o
 cgi_binaries = \
 	distsn-user-speed-api.cgi \
