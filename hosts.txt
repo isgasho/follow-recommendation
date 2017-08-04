@@ -650,6 +650,7 @@ mastonon.net
 home.aqraf.tokyo
 ngndn.jp
 mstdnsrv.moe.hm
+mstdn.xn--h1ahnbk7d.xn--p1ai
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 575don.club
