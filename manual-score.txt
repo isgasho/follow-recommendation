@@ -206,6 +206,7 @@
 {"host": "vocalodon.net", "username": "yamariko", "score": 2},
 {"host": "friends.nico", "username": "Cabbage", "score": 2},
 {"host": "friends.nico", "username": "fujineko2", "score": 2},
+{"host": "friends.nico", "username": "cat", "score": 1},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
