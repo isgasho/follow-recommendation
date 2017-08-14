@@ -681,5 +681,11 @@ aruk.as
 bark.zer0xff.com
 bookn.me
 carma.red
+castodon.jp
+chiawase.tokyo
+cksv.jp
+cmpwn.com
+cocoronavi.net
+delusion.ariela.jp
 
 
