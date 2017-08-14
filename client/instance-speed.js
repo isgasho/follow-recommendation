@@ -40,7 +40,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' +
 		'<br>' +
 		(instance.title && instance.title !== instance.domain? instance.domain + '<br>': '') +
-		(instance.speed * 60 * 24).toFixed (1) + ' トゥート/時 (' + (cn + 1) + ' 位)' +
+		(instance.speed * 60 * 60).toFixed (1) + ' トゥート/時 (' + (cn + 1) + ' 位)' +
 		'</p>';
 	html += instance_html;
 }
