@@ -12,6 +12,35 @@
 using namespace std;
 
 
+class ExceptionWithLineNumber: public exception {
+public:
+	unsigned int line;
+public:
+	ExceptionWithLineNumber (unsigned int a_line) {
+		line = a_line;
+	};
+};
+
+
+class HttpException: public ExceptionWithLineNumber {
+public:
+	HttpException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
+};
+
+
+class HostException: public ExceptionWithLineNumber {
+public:
+	HostException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
+};
+
+
+class TootException: public ExceptionWithLineNumber {
+public:
+	TootException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
+};
+
+
+
 static int writer (char * data, size_t size, size_t nmemb, std::string * writerData)
 {
 	if (writerData == nullptr) {
@@ -22,11 +51,6 @@ static int writer (char * data, size_t size, size_t nmemb, std::string * writerD
 }
 
 
-class HttpException: public exception {
-	/* Nothing */
-};
-
-
 static string http_get (string url)
 {
 	CURL *curl;
@@ -35,7 +59,7 @@ static string http_get (string url)
 
 	curl = curl_easy_init ();
 	if (! curl) {
-		throw (HttpException {});
+		throw (HttpException {__LINE__});
 	}
 	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
 	string reply_1;
@@ -44,20 +68,10 @@ static string http_get (string url)
 	res = curl_easy_perform (curl);
 	curl_easy_cleanup (curl);
 	if (res != CURLE_OK) {
-		throw (HttpException {});
+		throw (HttpException {__LINE__});
 	}
 	return reply_1;
 }
-
-
-class HostException: public exception {
-	/* Nothing */
-};
-
-
-class TootException: public exception {
-	/* Nothing */
-};
 
 
 static time_t str2time (string s)
@@ -71,15 +85,15 @@ static time_t str2time (string s)
 static time_t get_time (const picojson::value &toot)
 {
 	if (! toot.is <picojson::object> ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto properties = toot.get <picojson::object> ();
 	if (properties.find (string {"created_at"}) == properties.end ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto time_object = properties.at (string {"created_at"});
 	if (! time_object.is <string> ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto time_s = time_object.get <string> ();
 	return str2time (time_s);
@@ -89,15 +103,15 @@ static time_t get_time (const picojson::value &toot)
 static string get_id (const picojson::value &toot)
 {
 	if (! toot.is <picojson::object> ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto properties = toot.get <picojson::object> ();
 	if (properties.find (string {"id"}) == properties.end ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto id_object = properties.at (string {"id"});
 	if (! id_object.is <double> ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	double id_double = id_object.get <double> ();
 	stringstream s;
@@ -122,10 +136,10 @@ static void for_host (string host)
 		picojson::value json_value;
 		string error = picojson::parse (json_value, reply);
 		if (! error.empty ()) {
-			throw (HostException {});
+			throw (HostException {__LINE__});
 		}
 		if (! json_value.is <picojson::array> ()) {
-			throw (HostException {});
+			throw (HostException {__LINE__});
 		}
 	
 		vector <picojson::value> toots = json_value.get <picojson::array> ();
@@ -133,7 +147,7 @@ static void for_host (string host)
 	}
 	
 	if (timeline.size () < 1) {
-		throw (HostException {});
+		throw (HostException {__LINE__});
 	}
 
 	unsigned int current_date = get_date (time (nullptr)); 
@@ -144,9 +158,28 @@ static void for_host (string host)
 		try {
 			bottom_id = get_id (timeline.back ());
 		} catch (TootException e) {
-			throw (HostException {});
+			throw (HostException {__LINE__});
 		}
 		
+		for (auto toot: timeline) {
+			try {
+				unsigned int date = get_date (get_time (toot));
+				if (current_date == date) {
+					current_counter ++;
+				} else {
+					if (0 < current_counter) {
+						cout << "\"" << current_date << "\",\"" << current_counter << "\"" << endl;
+					}
+					current_date = date;
+					current_counter = 1;
+				}
+			} catch (TootException e) {
+				/* Do nothing. */
+			}
+		}
+
+		timeline.clear ();
+
 		string query
 			= string {"https://"}
 			+ host
@@ -157,10 +190,10 @@ static void for_host (string host)
 		picojson::value json_value;
 		string error = picojson::parse (json_value, reply);
 		if (! error.empty ()) {
-			throw (HostException {});
+			throw (HostException {__LINE__});
 		}
 		if (! json_value.is <picojson::array> ()) {
-			throw (HostException {});
+			throw (HostException {__LINE__});
 		}
 	
 		vector <picojson::value> toots = json_value.get <picojson::array> ();
@@ -172,22 +205,6 @@ static void for_host (string host)
 		timeline.insert (timeline.end (), toots.begin (), toots.end ());
 	}
 
-	for (auto toot: timeline) {
-		try {
-			unsigned int date = get_date (get_time (toot));
-			if (current_date == date) {
-				current_counter ++;
-			} else {
-				if (0 < current_counter) {
-					cout << "\"" << current_date << "\",\"" << current_counter << "\"" << endl;
-				}
-				current_date = date;
-				current_counter = 1;
-			}
-		} catch (TootException e) {
-			/* Do nothing. */
-		}
-	}
 
 	if (0 < current_counter) {
 		cout << "\"" << current_date << "\",\"" << current_counter << "\"" << endl;
@@ -198,7 +215,11 @@ static void for_host (string host)
 int main (int argc, char **argv)
 {
 	if (2 <= argc) {
-		for_host (string {argv [1]});
+		try {
+			for_host (string {argv [1]});
+		} catch (ExceptionWithLineNumber e) {
+			cerr << "Exception in " << e.line << endl;
+		}
 	} else {
 		cout << "distsn-archaeology-instance-speed host" << endl;
 		return 1;
