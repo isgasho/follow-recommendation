@@ -25,7 +25,8 @@ objects = \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
 	user-application-cron.o \
-	instance-lists-api.o
+	instance-lists-api.o \
+	archaeology-instance-speed.o
 cgi_binaries = \
 	distsn-user-speed-api.cgi \
 	distsn-user-recommendation-api.cgi \
@@ -36,7 +37,9 @@ cron_binaries = \
 	distsn-instance-speed-cron \
 	distsn-instance-first-toot-cron \
 	distsn-user-application-cron
-binaries = $(cgi_binaries) $(cron_binaries)
+cli_binaries = \
+	distsn-archaeology-instance-speed
+binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
 cgi_scripts = \
 	distsn-instance-speed-api.cgi \
 	distsn-instance-speed-history-files-api.cgi \
@@ -75,6 +78,9 @@ distsn-user-application-cron: user-application-cron.o
 
 distsn-instance-lists-api.cgi: instance-lists-api.o
 	$(CXX) instance-lists-api.o -lcurl $(CFLAGS) -o $@
+
+distsn-archaeology-instance-speed: archaeology-instance-speed.o
+	$(CXX) archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
