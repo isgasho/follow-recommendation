@@ -78,7 +78,7 @@ static time_t str2time (string s)
 {
 	struct tm tm;
 	strptime (s.c_str (), "%Y-%m-%dT%H:%M:%S", & tm);
-	return mktime (& tm);
+	return timegm (& tm);
 }
 
 
