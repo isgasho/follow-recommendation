@@ -188,7 +188,10 @@ static void for_host (string host)
 			+ bottom_id;
 		vector <picojson::value> toots;
 
-		for (unsigned int cn = 0; cn < 16; cn ++) {
+		for (unsigned int cn = 0; ; cn ++) {
+			if (16 <= cn) {
+				throw (HostException {__LINE__});
+			}
 			string reply = http_get (query);
 			picojson::value json_value;
 			string error = picojson::parse (json_value, reply);
