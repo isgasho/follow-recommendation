@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <set>
+#include <unistd.h>
 #include "picojson.h"
 
 
@@ -185,18 +186,18 @@ static void for_host (string host)
 			+ host
 			+ string {"/api/v1/timelines/public?local=true&limit=40&max_id="}
 			+ bottom_id;
-		string reply = http_get (query);
+		vector <picojson::value> toots;
 
-		picojson::value json_value;
-		string error = picojson::parse (json_value, reply);
-		if (! error.empty ()) {
-			throw (HostException {__LINE__});
+		for (unsigned int cn = 0; cn < 16; cn ++) {
+			string reply = http_get (query);
+			picojson::value json_value;
+			string error = picojson::parse (json_value, reply);
+			if (error.empty () && json_value.is <picojson::array> ()) {
+				toots = json_value.get <picojson::array> ();
+				break;
+			}
+			sleep (10);
 		}
-		if (! json_value.is <picojson::array> ()) {
-			throw (HostException {__LINE__});
-		}
-	
-		vector <picojson::value> toots = json_value.get <picojson::array> ();
 		
 		if (toots.size () == 0) {
 			break;
