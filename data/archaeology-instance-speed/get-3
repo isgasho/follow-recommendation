@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for host in \
+	mimumedon.com \
+	mstdn-workers.com \
+	gensokyo.cloud \
+	otajodon.com \
+	mstdn.maud.jp \
+	mental.social
+do
+	echo $host
+	../../server/distsn-archaeology-instance-speed $host > $host.csv
+done
+
+
