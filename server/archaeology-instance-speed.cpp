@@ -127,7 +127,7 @@ unsigned int get_date (time_t time)
 }
 
 
-static void for_host (string host)
+static void for_host (string host, unsigned int wait)
 {
 	vector <picojson::value> timeline;
 
@@ -155,6 +155,10 @@ static void for_host (string host)
 	unsigned int current_counter = 0;
 
 	for (; ; ) {
+		if (0 < wait) {
+			sleep (wait);
+		}
+
 		string bottom_id;
 		try {
 			bottom_id = get_id (timeline.back ());
@@ -219,13 +223,17 @@ static void for_host (string host)
 int main (int argc, char **argv)
 {
 	if (2 <= argc) {
+		unsigned int wait = 0;
+		if (3 <= argc) {
+			stringstream {argv [2]} >> wait;
+		}
 		try {
-			for_host (string {argv [1]});
+			for_host (string {argv [1]}, wait);
 		} catch (ExceptionWithLineNumber e) {
 			cerr << "Exception in " << e.line << endl;
 		}
 	} else {
-		cout << "distsn-archaeology-instance-speed host" << endl;
+		cout << "distsn-archaeology-instance-speed host [wait]" << endl;
 		return 1;
 	}
 	return 0;
