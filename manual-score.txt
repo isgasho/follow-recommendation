@@ -140,7 +140,7 @@
 {"host": "mstdn-workers.com", "username": "akky", "score": 3},
 {"host": "bcn-users.degica.com", "username": "monesi_technews", "score": 0},
 {"host": "mastodon.cloud", "username": "njp2", "score": 2},
-{"host": "vocalodon.net", "username": "takumaru_27", "score": 3},
+{"host": "vocalodon.net", "username": "takumaru_27", "score": 2},
 {"host": "friends.nico", "username": "HP0", "score": 2},
 {"host": "friends.nico", "username": "satoimoumai", "score": 2},
 {"host": "friends.nico", "username": "tudiiku", "score": 3},
