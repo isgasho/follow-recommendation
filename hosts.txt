@@ -723,4 +723,6 @@ jitakudon.com
 jojomonvr.com
 kaisendon.asmodeus.red
 
+# ja.mstdn.wiki 由来
+lordinateur.tech
 
