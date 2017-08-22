@@ -676,6 +676,7 @@ mstdn.ibaraki.jp
 kadokawadon.jp
 ykzts.technology
 libera.blue
+kiraako.work
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 575don.club
