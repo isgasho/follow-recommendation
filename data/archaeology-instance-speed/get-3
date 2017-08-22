@@ -1,23 +1,12 @@
 #!/bin/bash
 
 for host in \
-	mstdn.jp \
 	mimumedon.com \
-	mastodon.cloud \
-	flower.afn.social \
-	mstdn.osaka \
-	vocalodon.net \
 	mstdn-workers.com \
 	gensokyo.cloud \
-	mastodon.nara.jp \
 	otajodon.com \
-	horiedon.com \
 	mstdn.maud.jp \
-	mental.social \
-	babuu.club \
-	3.nu \
-	bookwor.ms \
-	mstdn.nere9.help
+	mental.social
 do
 	echo $host
 	../../server/distsn-archaeology-instance-speed $host > $host.csv
