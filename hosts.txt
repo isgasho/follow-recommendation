@@ -679,6 +679,7 @@ ykzts.technology
 libera.blue
 kiraako.work
 anisodon.jp
+killmi.st
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 575don.club
