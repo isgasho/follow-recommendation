@@ -520,6 +520,7 @@ shadowverdon.m.to
 jcpta.m.to
 pom.m.to
 ypmastodon.m.to
+knzkoniisan.m.to
 
 # mastodon-instance.com 新着順
 # 新しい方が上です。
