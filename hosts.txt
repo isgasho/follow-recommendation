@@ -681,8 +681,10 @@ libera.blue
 kiraako.work
 anisodon.jp
 killmi.st
+knzkoniisan.club
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
+
 575don.club
 aigisdon.net
 akibadon.com
