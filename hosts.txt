@@ -682,6 +682,7 @@ kiraako.work
 anisodon.jp
 killmi.st
 knzkoniisan.club
+mastodon.wakin.site
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
