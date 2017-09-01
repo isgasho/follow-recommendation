@@ -686,6 +686,7 @@ knzkoniisan.club
 mastodon.wakin.site
 keiba.social
 mastodon.zunda.ninja
+ichiji.social
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
