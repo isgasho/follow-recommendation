@@ -735,6 +735,27 @@ japaon.cf
 jitakudon.com
 jojomonvr.com
 kaisendon.asmodeus.red
+kirapower.ichigo-hoshimiya.com
+kurakake.net
+kyoto-citygrid.org
+labotadon.net
+leaf.style
+lfsr.net
+lomo.mstdn.tokyo
+m.moriya.faith
+m.pira.jp
+m.u7fa9.org
+m.uncate.org
+m.upsilo.net
+m6n.kigurumi.fun
+mammut.zasha.style
+masatodon.click
+masatodon.jp
+mast.tokyo
+mastd.me
+mastdon.amazedkoumei.com
+masto.ninja
+
 
 # ja.mstdn.wiki 由来
 lordinateur.tech
