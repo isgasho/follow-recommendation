@@ -234,6 +234,7 @@
 {"host": "ichiji.social", "username": "risiy", "score": 2},
 {"host": "ichiji.social", "username": "myrrhc", "score": 2},
 {"host": "mstdn.jp", "username": "ekra_pso2", "score": 2},
+{"host": "m.uncate.org", "username": "monesi_news", "score": 0},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
