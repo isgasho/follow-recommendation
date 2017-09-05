@@ -689,6 +689,7 @@ mastodon.zunda.ninja
 ichiji.social
 teo.taiha.net
 mstdn.i-red.info
+knzk.me
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
