@@ -691,6 +691,7 @@ teo.taiha.net
 mstdn.i-red.info
 knzk.me
 kyureki.jp
+waraiotoko.net
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
