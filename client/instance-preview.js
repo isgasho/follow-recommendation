@@ -1,3 +1,7 @@
+
+var g_distsn_domain = '';
+
+
 window.addEventListener ('load', function () {
 	var domain = window.location.search.replace (/^\?/, '');
 	if (! domain) {
@@ -6,8 +10,9 @@ window.addEventListener ('load', function () {
 			window.location.search = '?' + response;
 		}
 	};
+	g_distsn_domain = domain;
 	get_instance (domain);
-	get_timeline (domain);
+	get_timeline (domain, 1);
 }, false);
 
 
@@ -38,12 +43,29 @@ function show_instance (response) {
 };
 
 
-function get_timeline (domain) {
+function get_timeline (domain, depth) {
+	get_timeline_impl (domain, depth, [], 0);
+};
+
+
+function get_timeline_impl (domain, depth, toots, a_bottom_id) {
+	if (depth <= 0) {
+		show (toots);
+		return;
+	}
 	var url ='https://' + domain + '/api/v1/timelines/public?local=true&limit=40';
+	if (0 < a_bottom_id) {
+		url += '&max_id=' + a_bottom_id;
+	}
 	var request = new XMLHttpRequest ();
 	request.onreadystatechange = function () {
 		if (request.status == 200 && request.readyState == 4) {
-			show (request.response);
+			if (0 < request.response.length) {
+				var bottom_id = request.response [request.response.length - 1].id;
+				get_timeline_impl (domain, depth - 1, toots.concat (request.response), bottom_id);
+			} else {
+				show (toots);
+			}
 		}
 	};
 	request.responseType = 'json';
@@ -147,4 +169,20 @@ function escapeHtml (text) {
 		text = text.replace (/\>/g, '&gt;');
 		return text;
 };
+
+
+window.show400 = function () {
+	document.getElementById ('a-400').removeAttribute ('href');
+	window.open ('https://enty.jp/distsn', 'distsn-donation');
+	get_timeline (g_distsn_domain, 10);
+};
+
+
+window.show1000 = function () {
+	document.getElementById ('a-400').removeAttribute ('href');
+	document.getElementById ('a-1000').removeAttribute ('href');
+	window.open ('https://enty.jp/distsn', 'distsn-donation');
+	get_timeline (g_distsn_domain, 25);
+};
+
 
