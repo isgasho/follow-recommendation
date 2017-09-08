@@ -44,6 +44,7 @@ function show_instance (response) {
 
 
 function get_timeline (domain, depth) {
+	document.getElementById ('loading-message').removeAttribute ('style');
 	get_timeline_impl (domain, depth, [], 0);
 };
 
@@ -51,6 +52,7 @@ function get_timeline (domain, depth) {
 function get_timeline_impl (domain, depth, toots, a_bottom_id) {
 	if (depth <= 0) {
 		show (toots);
+		document.getElementById ('loading-message').setAttribute ('style', 'display:none;');
 		return;
 	}
 	var url ='https://' + domain + '/api/v1/timelines/public?local=true&limit=40';
@@ -65,6 +67,7 @@ function get_timeline_impl (domain, depth, toots, a_bottom_id) {
 				get_timeline_impl (domain, depth - 1, toots.concat (request.response), bottom_id);
 			} else {
 				show (toots);
+				document.getElementById ('loading-message').setAttribute ('style', 'display:none;');
 			}
 		}
 	};
