@@ -12,6 +12,8 @@
 {"host": "friends.nico", "username": "tudiiku", "score": 3},
 {"host": "mstdn.nere9.help", "username": "ejo090", "score": 3},
 {"host": "pawoo.net", "username": "mentei897", "score": 3},
+{"host": "friends.nico", "username": "imncls", "score": 3},
+{"host": "pawoo.net", "username": "imncls", "score": 3},
 
 {"host": "fx-don.net", "username": "yukimama", "score": 0},
 {"host": "julika.jp", "username": "yukimama", "score": 0},
