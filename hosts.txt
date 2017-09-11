@@ -760,7 +760,30 @@ mast.tokyo
 mastd.me
 mastdon.amazedkoumei.com
 masto.ninja
-
+mastodon.29lab.jp
+mastodon.3bk.jp
+mastodon.850mb.net
+mastodon.aquarla.net
+mastodon.art
+mastodon.burnworks.com
+mastodon.civleaguejp.net
+mastodon.crazynewworld.net
+mastodon.diglateam3.com
+mastodon.e217.net
+mastodon.fu-jp.net
+mastodon.fun
+mastodon.gifclip.info
+mastodon.gza.jp
+mastodon.hakoai.com
+mastodon.iot.tokyo
+mastodon.ka0.co
+mastodon.m0t0k1ch1.com
+mastodon.megkuma.com
+mastodon.minicube.net
+mastodon.not-enough.space
+mastodon.on-o.com
+mastodon.p2pquake.net
+mastodon.potproject.net
 
 # ja.mstdn.wiki 由来
 lordinateur.tech
