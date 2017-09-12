@@ -1,7 +1,7 @@
 [
-{"host": "friends.nico", "username": "masarakki", "score": 4},
 {"host": "botdon.net", "username": "mastonews", "score": 4},
 
+{"host": "friends.nico", "username": "masarakki", "score": 3},
 {"host": "julika.jp", "username": "atie", "score": 3},
 {"host": "friends.nico", "username": "nullkal", "score": 3},
 {"host": "mstdn.jp", "username": "nullkal", "score": 3},
@@ -14,6 +14,8 @@
 {"host": "pawoo.net", "username": "mentei897", "score": 3},
 {"host": "friends.nico", "username": "imncls", "score": 3},
 {"host": "pawoo.net", "username": "imncls", "score": 3},
+{"host": "knzk.me", "username": "Knzk", "score": 3},
+{"host": "knzk.me", "username": "imncls", "score": 3},
 
 {"host": "fx-don.net", "username": "yukimama", "score": 0},
 {"host": "julika.jp", "username": "yukimama", "score": 0},
