@@ -695,6 +695,7 @@ mstdn.i-red.info
 knzk.me
 kyureki.jp
 waraiotoko.net
+don.akabe.co
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
