@@ -696,6 +696,7 @@ knzk.me
 kyureki.jp
 waraiotoko.net
 don.akabe.co
+kokokokko.com
 
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
