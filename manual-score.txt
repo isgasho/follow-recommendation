@@ -275,6 +275,15 @@
 {"host": "friends.nico", "username": "N5", "score": 2},
 {"host": "knzk.me", "username": "SR", "score": 1},
 {"host": "mstdn-workers.com", "username": "kmn", "score": 2},
+{"host": "hongeipii.m.to", "username": "nishin", "score": 1},
+{"host": "imastodon.net", "username": "ryohga125", "score": 2},
+{"host": "mstdn.jp", "username": "marine_are", "score": 2},
+{"host": "mstdn.jp", "username": "iwgp", "score": 2},
+{"host": "pawoo.net", "username": "yuuasagao", "score": 2},
+{"host": "friends.nico", "username": "CindyTV", "score": 2},
+{"host": "ichiji.social", "username": "ToRaMeK", "score": 2},
+{"host": "friends.nico", "username": "misaka9090", "score": 2},
+{"host": "pawoo.net", "username": "september_n", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
