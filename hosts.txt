@@ -655,49 +655,6 @@ tegedon.net
 oknwdn.com
 yomidon.okinawa
 
-# その他
-
-md.ggtea.org
-mdx.ggtea.org
-mastodon.matcha-soft.com
-home.aqraf.tokyo
-mastodon.home.js4.in
-botdon.net
-mastodon.cloud
-flower.afn.social
-omanko.porn
-janogdon.net
-siidon.lab-kadokawa.com
-comm.cx
-party.ochakai.moe
-mstdn.ytgrsua4.net
-mstdn.toaruhetare.net
-under-bank.blue
-mastonon.net
-home.aqraf.tokyo
-ngndn.jp
-mstdnsrv.moe.hm
-mstdn.xn--h1ahnbk7d.xn--p1ai
-mstdn.ibaraki.jp
-kadokawadon.jp
-ykzts.technology
-libera.blue
-kiraako.work
-anisodon.jp
-killmi.st
-knzkoniisan.club
-mastodon.wakin.site
-keiba.social
-mastodon.zunda.ninja
-ichiji.social
-teo.taiha.net
-mstdn.i-red.info
-knzk.me
-kyureki.jp
-waraiotoko.net
-don.akabe.co
-kokokokko.com
-
 # https://github.com/TacosTea/versionbattle/blob/master/instances.list 由来
 
 575don.club
@@ -791,3 +748,46 @@ mastodon.potproject.net
 # ja.mstdn.wiki 由来
 lordinateur.tech
 
+# その他
+
+md.ggtea.org
+mdx.ggtea.org
+mastodon.matcha-soft.com
+home.aqraf.tokyo
+mastodon.home.js4.in
+botdon.net
+mastodon.cloud
+flower.afn.social
+omanko.porn
+janogdon.net
+siidon.lab-kadokawa.com
+comm.cx
+party.ochakai.moe
+mstdn.ytgrsua4.net
+mstdn.toaruhetare.net
+under-bank.blue
+mastonon.net
+home.aqraf.tokyo
+ngndn.jp
+mstdnsrv.moe.hm
+mstdn.xn--h1ahnbk7d.xn--p1ai
+mstdn.ibaraki.jp
+kadokawadon.jp
+ykzts.technology
+libera.blue
+kiraako.work
+anisodon.jp
+killmi.st
+knzkoniisan.club
+mastodon.wakin.site
+keiba.social
+mastodon.zunda.ninja
+ichiji.social
+teo.taiha.net
+mstdn.i-red.info
+knzk.me
+kyureki.jp
+waraiotoko.net
+don.akabe.co
+kokokokko.com
+support.m.to
