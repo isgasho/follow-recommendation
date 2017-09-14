@@ -284,6 +284,14 @@
 {"host": "ichiji.social", "username": "ToRaMeK", "score": 2},
 {"host": "friends.nico", "username": "misaka9090", "score": 2},
 {"host": "pawoo.net", "username": "september_n", "score": 2},
+{"host": "hongeipii.m.to", "username": "tebukuro", "score": 1},
+{"host": "hongeipii.m.to", "username": "mimorinka", "score": 1},
+{"host": "hongeipii.m.to", "username": "lang_bogomolov", "score": 1},
+{"host": "hongeipii.m.to", "username": "nanasinokanojo", "score": 1},
+{"host": "hongeipii.m.to", "username": "kijhftio", "score": 1},
+{"host": "hongeipii.m.to", "username": "hongeipii", "score": 1},
+{"host": "hongeipii.m.to", "username": "pompompudding", "score": 1},
+{"host": "hongeipii.m.to", "username": "chiR", "score": 1},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
