@@ -268,6 +268,13 @@
 {"host": "knzk.me", "username": "matu", "score": 2},
 {"host": "friends.nico", "username": "lumkulu", "score": 2},
 {"host": "knzk.me", "username": "Raven193", "score": 2},
+{"host": "knzk.me", "username": "X", "score": 2},
+{"host": "hongeipii.m.to", "username": "marine_are", "score": 1},
+{"host": "friends.nico", "username": "othinthinland", "score": 2},
+{"host": "friends.nico", "username": "higashinoumi", "score": 2},
+{"host": "friends.nico", "username": "N5", "score": 2},
+{"host": "knzk.me", "username": "SR", "score": 1},
+{"host": "mstdn-workers.com", "username": "kmn", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
