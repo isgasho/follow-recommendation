@@ -292,6 +292,7 @@
 {"host": "hongeipii.m.to", "username": "hongeipii", "score": 1},
 {"host": "hongeipii.m.to", "username": "pompompudding", "score": 1},
 {"host": "hongeipii.m.to", "username": "chiR", "score": 1},
+{"host": "pawoo.net", "username": "hongeipiii", "score": 1},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
