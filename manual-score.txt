@@ -293,6 +293,10 @@
 {"host": "hongeipii.m.to", "username": "pompompudding", "score": 1},
 {"host": "hongeipii.m.to", "username": "chiR", "score": 1},
 {"host": "pawoo.net", "username": "hongeipiii", "score": 1},
+{"host": "friends.nico", "username": "JC", "score": 0},
+{"host": "mstdn.kemono-friends.info", "username": "applepoIish", "score": 2},
+{"host": "friends.nico", "username": "as_walkure", "score": 2},
+{"host": "knzk.me", "username": "chome", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
