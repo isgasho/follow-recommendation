@@ -1,6 +1,5 @@
 [
 {"host": "botdon.net", "username": "mastonews", "score": 4},
-{"host": "knzk.me", "username": "1", "score": 4},
 
 {"host": "friends.nico", "username": "masarakki", "score": 3},
 {"host": "julika.jp", "username": "atie", "score": 3},
@@ -24,6 +23,7 @@
 {"host": "mstdn.jp", "username": "yukimama", "score": 0},
 {"host": "friends.nico", "username": "yukimama", "score": 0},
 
+{"host": "knzk.me", "username": "1", "score": 2},
 {"host": "mstdn.jp", "username": "liberation_furdan", "score": 2},
 {"host": "friends.nico", "username": "chiyomaru_chiyono", "score": 2},
 {"host": "mstdn-workers.com", "username": "ichimori", "score": 2},
