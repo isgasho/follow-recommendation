@@ -297,6 +297,14 @@
 {"host": "mstdn.kemono-friends.info", "username": "applepoIish", "score": 2},
 {"host": "friends.nico", "username": "as_walkure", "score": 2},
 {"host": "knzk.me", "username": "chome", "score": 2},
+{"host": "friends.nico", "username": "nightP", "score": 2},
+{"host": "ichiji.social", "username": "0_918961_0", "score": 2},
+{"host": "mstdn.jp", "username": "lang_bogomolov", "score": 2},
+{"host": "friends.nico", "username": "pony", "score": 1},
+{"host": "friends.nico", "username": "Nijntje", "score": 2},
+{"host": "mstdn.jp", "username": "mizunon0211", "score": 2},
+{"host": "pawoo.net", "username": "ten_oowap", "score": 2},
+{"host": "mastodon.cloud", "username": "neotag", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
