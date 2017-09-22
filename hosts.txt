@@ -831,6 +831,26 @@ mstdn.taiyaki.online
 mstdn.tinko.club
 mstdn.togawa.cs.waseda.ac.jp
 mstdn.wildtree.jp
+mstdn.yantene.net
+mstdn.yoshimov.com
+mstdn.zuyadon.tk
+mstdn2017.club
+mstdngirls.net
+mstdoujin.net
+nandon.cc
+obitsudon.midyuki.net
+ostatus.blessedgeeks.jp
+ostatus.isidai.com
+ostatus.taiyolab.com
+ostatus.yajamon.xyz
+plasticmodels.tokyo
+risingsun.red
+rugdon.fun
+s.neguse.net
+sakoku.jp
+sanam.xyz
+sandbox.skoji.jp
+social.bluecore.net
 
 # ja.mstdn.wiki 由来
 lordinateur.tech
