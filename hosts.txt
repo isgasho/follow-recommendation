@@ -851,6 +851,13 @@ sakoku.jp
 sanam.xyz
 sandbox.skoji.jp
 social.bluecore.net
+social.hyuki.net
+social.infranix.eu
+social.kimamass.com
+social.konosuke.jp
+social.matsuuratomoya.com
+social.qunagi.net
+solo-outdon.club
 
 # ja.mstdn.wiki 由来
 lordinateur.tech
