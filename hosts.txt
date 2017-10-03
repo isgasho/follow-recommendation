@@ -910,3 +910,4 @@ dramadon.net
 md.distsn.org
 pokemon.mastportal.info
 ma.mstdn.jp
+mastodon.crazynewworld.net
