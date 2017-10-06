@@ -545,8 +545,6 @@ kkczjpn.m.to
 nt50tec.m.to
 humuu.m.to
 basictomonokai.m.to
-moji.m.to
-ikisugi.m.to
 
 # mastodon-instance.com 新着順
 # 新しい方が上です。
@@ -912,3 +910,6 @@ md.distsn.org
 pokemon.mastportal.info
 ma.mstdn.jp
 mastodon.crazynewworld.net
+moji.m.to
+ikisugi.m.to
+
