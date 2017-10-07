@@ -912,4 +912,5 @@ ma.mstdn.jp
 mastodon.crazynewworld.net
 moji.m.to
 ikisugi.m.to
+apple-user.club
 
