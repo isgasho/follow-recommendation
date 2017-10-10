@@ -325,6 +325,15 @@
 {"host": "pawoo.net", "username": "Pote_greentea", "score": 2},
 {"host": "vocalodon.net", "username": "sakuyamochi", "score": 2},
 {"host": "friends.nico", "username": "TAS", "score": 2},
+{"host": "friends.nico", "username": "akira69", "score": 2},
+{"host": "ichiji.social", "username": "rius_1311", "score": 2},
+{"host": "friends.nico", "username": "STeCo", "score": 2},
+{"host": "friends.nico", "username": "ito12", "score": 2},
+{"host": "pawoo.net", "username": "taba_ki", "score": 2},
+{"host": "pawoo.net", "username": "m7404934306", "score": 0},
+{"host": "mstdn.jp", "username": "nanasinokanojo", "score": 2},
+{"host": "friends.nico", "username": "likelake", "score": 2},
+{"host": "friends.nico", "username": "oboros", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
