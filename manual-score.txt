@@ -334,6 +334,17 @@
 {"host": "mstdn.jp", "username": "nanasinokanojo", "score": 2},
 {"host": "friends.nico", "username": "likelake", "score": 2},
 {"host": "friends.nico", "username": "oboros", "score": 2},
+{"host": "mimumedon.com", "username": "haginokana", "score": 2},
+{"host": "friends.nico", "username": "Myosotis", "score": 2},
+{"host": "friends.nico", "username": "lelele", "score": 2},
+{"host": "mstdn.jp", "username": "Jah_east_Meditation", "score": 2},
+{"host": "pawoo.net", "username": "anoano", "score": 2},
+{"host": "friends.nico", "username": "1131HAL", "score": 2},
+{"host": "mastodon.cloud", "username": "akasa", "score": 2},
+{"host": "friends.nico", "username": "amutehu", "score": 2},
+{"host": "friends.nico", "username": "vixca", "score": 2},
+{"host": "mastodon.cloud", "username": "HOGEIPII", "score": 2},
+{"host": "mimumedon.com", "username": "airpocket", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
