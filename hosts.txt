@@ -865,7 +865,14 @@ toot.kashishokunin.com
 toot.ordinarius-fectum.net
 toot.yukimochi.jp
 ue4-mstdn.tokyo
-
+veah.cocoa.moe
+vmrpc.net
+wizfox.jp
+www.mofgao.space
+www.nekotodon.com
+xn--wmq.jp
+yamastodon.jp
+yudetarou.club
 
 # ja.mstdn.wiki 由来
 lordinateur.tech
