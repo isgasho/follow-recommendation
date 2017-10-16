@@ -858,6 +858,14 @@ social.konosuke.jp
 social.matsuuratomoya.com
 social.qunagi.net
 solo-outdon.club
+st.3ends.info
+taruntarun.net
+tokyo.mastodon-servers.net
+toot.kashishokunin.com
+toot.ordinarius-fectum.net
+toot.yukimochi.jp
+ue4-mstdn.tokyo
+
 
 # ja.mstdn.wiki 由来
 lordinateur.tech
