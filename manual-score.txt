@@ -17,7 +17,7 @@
 {"host": "knzk.me", "username": "Knzk", "score": 3},
 {"host": "knzk.me", "username": "imncls", "score": 3},
 {"host": "md.distsn.org", "username": "guest", "score": 1},
-{"host": "2.distsn.org", "username": "guest", "score": 3},
+{"host": "2.distsn.org", "username": "guest", "score": 1},
 
 {"host": "fx-don.net", "username": "yukimama", "score": 0},
 {"host": "julika.jp", "username": "yukimama", "score": 0},
