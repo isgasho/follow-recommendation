@@ -7,6 +7,7 @@
 #include <sstream>
 #include <set>
 #include "picojson.h"
+#include "distsn.h"
 
 
 using namespace std;
@@ -20,11 +21,6 @@ static int writer (char * data, size_t size, size_t nmemb, std::string * writerD
 	writerData->append (data, size * nmemb);
 	return size * nmemb;
 }
-
-
-class HttpException: public exception {
-	/* Nothing */
-};
 
 
 static string http_get (string url)

@@ -8,38 +8,10 @@
 #include <set>
 #include <unistd.h>
 #include "picojson.h"
+#include "distsn.h"
 
 
 using namespace std;
-
-
-class ExceptionWithLineNumber: public exception {
-public:
-	unsigned int line;
-public:
-	ExceptionWithLineNumber (unsigned int a_line) {
-		line = a_line;
-	};
-};
-
-
-class HttpException: public ExceptionWithLineNumber {
-public:
-	HttpException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
-};
-
-
-class HostException: public ExceptionWithLineNumber {
-public:
-	HostException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
-};
-
-
-class TootException: public ExceptionWithLineNumber {
-public:
-	TootException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
-};
-
 
 
 static int writer (char * data, size_t size, size_t nmemb, std::string * writerData)
@@ -98,26 +70,6 @@ static time_t get_time (const picojson::value &toot)
 	}
 	auto time_s = time_object.get <string> ();
 	return str2time (time_s);
-}
-
-
-static string get_id (const picojson::value &toot)
-{
-	if (! toot.is <picojson::object> ()) {
-		throw (TootException {__LINE__});
-	}
-	auto properties = toot.get <picojson::object> ();
-	if (properties.find (string {"id"}) == properties.end ()) {
-		throw (TootException {__LINE__});
-	}
-	auto id_object = properties.at (string {"id"});
-	if (! id_object.is <double> ()) {
-		throw (TootException {__LINE__});
-	}
-	double id_double = id_object.get <double> ();
-	stringstream s;
-	s << static_cast <unsigned int> (id_double);
-	return s.str ();
 }
 
 

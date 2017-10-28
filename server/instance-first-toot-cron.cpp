@@ -7,6 +7,7 @@
 #include <sstream>
 #include <set>
 #include "picojson.h"
+#include "distsn.h"
 
 
 using namespace std;
@@ -20,11 +21,6 @@ static int writer (char * data, size_t size, size_t nmemb, std::string * writerD
 	writerData->append (data, size * nmemb);
 	return size * nmemb;
 }
-
-
-class HttpException: public exception {
-	/* Nothing */
-};
 
 
 static string http_get (string url)
@@ -50,16 +46,6 @@ static string http_get (string url)
 }
 
 
-class HostException: public exception {
-	/* Nothing */
-};
-
-
-class TootException: public exception {
-	/* Nothing */
-};
-
-
 static time_t str2time (string s)
 {
 	struct tm tm;
@@ -83,26 +69,6 @@ static time_t get_time (const picojson::value &toot)
 	}
 	auto time_s = time_object.get <string> ();
 	return str2time (time_s);
-}
-
-
-static string get_id (const picojson::value &toot)
-{
-	if (! toot.is <picojson::object> ()) {
-		throw (TootException {});
-	}
-	auto properties = toot.get <picojson::object> ();
-	if (properties.find (string {"id"}) == properties.end ()) {
-		throw (TootException {});
-	}
-	auto id_object = properties.at (string {"id"});
-	if (! id_object.is <double> ()) {
-		throw (TootException {});
-	}
-	double id_double = id_object.get <double> ();
-	stringstream s;
-	s << static_cast <unsigned int> (id_double);
-	return s.str ();
 }
 
 

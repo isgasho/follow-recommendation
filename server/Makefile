@@ -26,7 +26,8 @@ objects = \
 	instance-first-toot-cron.o \
 	user-application-cron.o \
 	instance-lists-api.o \
-	archaeology-instance-speed.o
+	archaeology-instance-speed.o \
+	distsn.o
 cgi_binaries = \
 	distsn-user-speed-api.cgi \
 	distsn-user-recommendation-api.cgi \
@@ -55,32 +56,32 @@ cgis = $(cgi_binaries) $(cgi_scripts)
 
 all: $(binaries)
 
-distsn-user-speed: user-speed.o
-	$(CXX) user-speed.o -lcurl $(CFLAGS) -o $@
+distsn-user-speed: distsn.o user-speed.o
+	$(CXX) distsn.o user-speed.o -lcurl $(CFLAGS) -o $@
 
-distsn-user-speed-api.cgi: user-speed-api.o
-	$(CXX) user-speed-api.o -lcurl $(CFLAGS) -o $@
+distsn-user-speed-api.cgi: distsn.o user-speed-api.o
+	$(CXX) distsn.o user-speed-api.o -lcurl $(CFLAGS) -o $@
 
-distsn-user-recommendation-api.cgi: user-recommendation-api.o
-	$(CXX) user-recommendation-api.o -lcurl $(CFLAGS) -o $@
+distsn-user-recommendation-api.cgi: distsn.o user-recommendation-api.o
+	$(CXX) distsn.o user-recommendation-api.o -lcurl $(CFLAGS) -o $@
 
-distsn-instance-speed-cron: instance-speed-cron.o
-	$(CXX) instance-speed-cron.o -lcurl $(CFLAGS) -o $@
+distsn-instance-speed-cron: distsn.o instance-speed-cron.o
+	$(CXX) distsn.o instance-speed-cron.o -lcurl $(CFLAGS) -o $@
 
-distsn-instance-speed-history-api.cgi: instance-speed-history-api.o
-	$(CXX) instance-speed-history-api.o $(CFLAGS) -o $@
+distsn-instance-speed-history-api.cgi: distsn.o instance-speed-history-api.o
+	$(CXX) distsn.o instance-speed-history-api.o $(CFLAGS) -o $@
 
-distsn-instance-first-toot-cron: instance-first-toot-cron.o
-	$(CXX) instance-first-toot-cron.o -lcurl $(CFLAGS) -o $@
+distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
+	$(CXX) distsn.o instance-first-toot-cron.o -lcurl $(CFLAGS) -o $@
 
-distsn-user-application-cron: user-application-cron.o
-	$(CXX) user-application-cron.o -lcurl $(CFLAGS) -o $@
+distsn-user-application-cron: distsn.o user-application-cron.o
+	$(CXX) distsn.o user-application-cron.o -lcurl $(CFLAGS) -o $@
 
-distsn-instance-lists-api.cgi: instance-lists-api.o
-	$(CXX) instance-lists-api.o -lcurl $(CFLAGS) -o $@
+distsn-instance-lists-api.cgi: distsn.o instance-lists-api.o
+	$(CXX) distsn.o instance-lists-api.o -lcurl $(CFLAGS) -o $@
 
-distsn-archaeology-instance-speed: archaeology-instance-speed.o
-	$(CXX) archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
+distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
+	$(CXX) distsn.o archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
