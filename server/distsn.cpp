@@ -15,13 +15,18 @@ string get_id (const picojson::value &toot)
 		throw (TootException {});
 	}
 	auto id_object = properties.at (string {"id"});
-	if (! id_object.is <double> ()) {
+	string id_string;
+	if (id_object.is <double> ()) {
+		double id_double = id_object.get <double> ();
+		stringstream s;
+		s << static_cast <unsigned int> (id_double);
+		id_string = s.str ();
+	} else if (id_object.is <string> ()) {
+		id_string = id_object.get <string> ();
+	} else {
 		throw (TootException {});
 	}
-	double id_double = id_object.get <double> ();
-	stringstream s;
-	s << static_cast <unsigned int> (id_double);
-	return s.str ();
+	return id_string;
 }
 
 
