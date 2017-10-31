@@ -346,6 +346,18 @@
 {"host": "friends.nico", "username": "vixca", "score": 2},
 {"host": "mastodon.cloud", "username": "HOGEIPII", "score": 2},
 {"host": "mimumedon.com", "username": "airpocket", "score": 2},
+{"host": "mstdn.jp", "username": "XOF", "score": 0},
+{"host": "friends.nico", "username": "bass_clef_", "score": 2},
+{"host": "mstdn.kemono-friends.info", "username": "BlueRayi", "score": 2},
+{"host": "mstdn.jp", "username": "lostplanet", "score": 2},
+{"host": "pawoo.net", "username": "supa_tentuku", "score": 2},
+{"host": "mstdn.jp", "username": "SS_Marshal_Reifa", "score": 2},
+{"host": "friends.nico", "username": "mahhomansso", "score": 2},
+{"host": "friends.nico", "username": "mei23", "score": 2},
+{"host": "knzk.me", "username": "nandenta", "score": 2},
+{"host": "friends.nico", "username": "Narchi", "score": 2},
+{"host": "friends.nico", "username": "yasuda", "score": 2},
+{"host": "mstdn.jp", "username": "hos2", "score": 2},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
