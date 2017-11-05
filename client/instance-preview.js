@@ -147,7 +147,11 @@ function show_toot (toot) {
 		html += escapeHtml (toot.application.name);
 	}
 	html += '</small>';
-	html += toot.content;
+	if (toot.content.startsWith ('<p>')) {
+		html += toot.content;
+	} else {
+		html += '<p>' + toot.content + '</p>';
+	}
 	var attachments = toot.media_attachments;
 	if (attachments && 0 < attachments.length) {
 		var cn;
