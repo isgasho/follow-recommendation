@@ -877,6 +877,9 @@ yudetarou.club
 # ja.mstdn.wiki 由来
 lordinateur.tech
 
+# Pleroma
+pleroma.knzk.me
+
 # その他
 
 md.ggtea.org
