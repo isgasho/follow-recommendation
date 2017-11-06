@@ -33,7 +33,11 @@ function get_instance (domain) {
 function show_instance (response) {
 	var html = '';
 	html += '<h1>';
-	html += '<a href="https://' + response.uri + '" target="_blank">';
+	if (response.uri.startsWith ('https://')) {
+		html += '<a href="' + response.uri + '" target="_blank">';
+	} else {
+		html += '<a href="https://' + response.uri + '" target="_blank">';
+	}
 	html += escapeHtml (response.title);
 	html += '</a>';
 	html += '</h1>';
