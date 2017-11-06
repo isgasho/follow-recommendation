@@ -91,6 +91,9 @@ vector <picojson::value> get_timeline (string host)
 		}
 	
 		vector <picojson::value> toots = json_value.get <picojson::array> ();
+		if (toots.empty ()) {
+			break;
+		}
 		timeline.insert (timeline.end (), toots.begin (), toots.end ());
 	}
 
