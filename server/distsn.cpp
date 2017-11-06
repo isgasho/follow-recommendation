@@ -64,7 +64,7 @@ vector <picojson::value> get_timeline (string host)
 		} catch (TootException e) {
 			throw (HostException {});
 		}
-		if (60 * 60 <= top_time - bottom_time) {
+		if (60 * 60 <= top_time - bottom_time && 40 <= timeline.size ()) {
 			break;
 		}
 
