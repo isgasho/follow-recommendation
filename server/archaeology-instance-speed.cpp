@@ -14,65 +14,6 @@
 using namespace std;
 
 
-static int writer (char * data, size_t size, size_t nmemb, std::string * writerData)
-{
-	if (writerData == nullptr) {
-		return 0;
-	}
-	writerData->append (data, size * nmemb);
-	return size * nmemb;
-}
-
-
-static string http_get (string url)
-{
-	CURL *curl;
-	CURLcode res;
-	curl_global_init (CURL_GLOBAL_ALL);
-
-	curl = curl_easy_init ();
-	if (! curl) {
-		throw (HttpException {__LINE__});
-	}
-	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
-	string reply_1;
-	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
-	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
-	res = curl_easy_perform (curl);
-	curl_easy_cleanup (curl);
-	if (res != CURLE_OK) {
-		throw (HttpException {__LINE__});
-	}
-	return reply_1;
-}
-
-
-static time_t str2time (string s)
-{
-	struct tm tm;
-	strptime (s.c_str (), "%Y-%m-%dT%H:%M:%S", & tm);
-	return timegm (& tm);
-}
-
-
-static time_t get_time (const picojson::value &toot)
-{
-	if (! toot.is <picojson::object> ()) {
-		throw (TootException {__LINE__});
-	}
-	auto properties = toot.get <picojson::object> ();
-	if (properties.find (string {"created_at"}) == properties.end ()) {
-		throw (TootException {__LINE__});
-	}
-	auto time_object = properties.at (string {"created_at"});
-	if (! time_object.is <string> ()) {
-		throw (TootException {__LINE__});
-	}
-	auto time_s = time_object.get <string> ();
-	return str2time (time_s);
-}
-
-
 unsigned int get_date (time_t time)
 {
 	return (time + (9 * 60 * 60)) / (24 * 60 * 60);

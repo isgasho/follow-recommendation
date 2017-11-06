@@ -69,7 +69,7 @@ distsn-instance-speed-cron: distsn.o instance-speed-cron.o
 	$(CXX) distsn.o instance-speed-cron.o -lcurl $(CFLAGS) -o $@
 
 distsn-instance-speed-history-api.cgi: distsn.o instance-speed-history-api.o
-	$(CXX) distsn.o instance-speed-history-api.o $(CFLAGS) -o $@
+	$(CXX) distsn.o instance-speed-history-api.o -lcurl $(CFLAGS) -o $@
 
 distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
 	$(CXX) distsn.o instance-first-toot-cron.o -lcurl $(CFLAGS) -o $@

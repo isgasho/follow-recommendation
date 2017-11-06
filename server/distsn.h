@@ -45,6 +45,10 @@ class UserException: public std::exception {
 
 
 std::string get_id (const picojson::value &toot);
+std::vector <picojson::value> get_timeline (std::string host);
+std::string http_get (std::string url);
+time_t get_time (const picojson::value &toot);
+time_t str2time (std::string s);
 
 
 #endif /* #ifndef DISTSN_H */
