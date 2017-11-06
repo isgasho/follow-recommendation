@@ -879,6 +879,7 @@ lordinateur.tech
 
 # Pleroma
 pleroma.knzk.me
+ketsuben.red
 
 # その他
 
