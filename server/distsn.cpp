@@ -55,7 +55,11 @@ vector <picojson::value> get_timeline (string host)
 		throw (HostException {});
 	}
 	
-	for (; ; ) {
+	for (unsigned int cn = 0; ; cn ++) {
+		if (1000 <= cn) {
+			throw (HostException {__LINE__});
+		}
+		
 		time_t top_time;
 		time_t bottom_time;
 		try {
