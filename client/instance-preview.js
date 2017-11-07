@@ -10,9 +10,11 @@ window.addEventListener ('load', function () {
 			window.location.search = '?' + response;
 		}
 	};
-	g_distsn_domain = domain;
-	get_instance (domain);
-	get_timeline (domain, 1);
+	if (domain) {
+		g_distsn_domain = domain;
+		get_instance (domain);
+		get_timeline (domain, 1);
+	}
 }, false);
 
 
@@ -20,8 +22,19 @@ function get_instance (domain) {
 	var url ='https://' + domain + '/api/v1/instance';
 	var request = new XMLHttpRequest ();
 	request.onreadystatechange = function () {
-		if (request.status == 200 && request.readyState == 4) {
-			show_instance (request.response);
+		if (request.readyState == 4) {
+			if (request.status == 200) {
+				show_instance (request.response);
+			} else {
+				document.getElementById ('placeholder-error').innerHTML =
+					'<strong>' +
+					'<a href="' + 'https://' + domain +'">' +
+					escapeHtml (domain) +
+					'</a>' +
+					' ' +
+					'の情報を取得できませんでした。' +
+					'</strong>';
+			}
 		}
 	};
 	request.responseType = 'json';
