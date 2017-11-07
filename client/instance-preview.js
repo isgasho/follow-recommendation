@@ -32,7 +32,7 @@ function get_instance (domain) {
 					escapeHtml (domain) +
 					'</a>' +
 					'</h1>' +
-					'<p>インスタンスの情報を取得できませんでした。</p>';
+					'<p><strong>インスタンスの情報を取得できませんでした。</strong></p>';
 			}
 		}
 	};
