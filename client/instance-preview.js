@@ -26,14 +26,13 @@ function get_instance (domain) {
 			if (request.status == 200) {
 				show_instance (request.response);
 			} else {
-				document.getElementById ('placeholder-error').innerHTML =
-					'<strong>' +
+				document.getElementById ('placeholder-instance').innerHTML =
+					'<h1>' +
 					'<a href="' + 'https://' + domain +'">' +
 					escapeHtml (domain) +
 					'</a>' +
-					' ' +
-					'の情報を取得できませんでした。' +
-					'</strong>';
+					'</h1>' +
+					'<p>インスタンスの情報を取得できませんでした。</p>';
 			}
 		}
 	};
