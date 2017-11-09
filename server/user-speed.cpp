@@ -110,7 +110,7 @@ static void for_host (string host)
 		fclose (storage_file_in);
 	}
 
-	const double forgetting_rate = 1.0 / 48.0;
+	const double forgetting_rate = 1.0 / 8.0;
 
 	for (auto &user_memo: memo) {
 		user_memo.second *= (1.0 - forgetting_rate);
