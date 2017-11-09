@@ -35,7 +35,7 @@ for (cn = 0; cn < users.length; cn ++) {
 	var user_html =
 		'<p>' +
 		'<a href="' +
-		'https://' + user.host + '/@' + user.username +
+		'https://' + user.host + '/users/' + user.username +
 		'" target="distsn-external-user-profile">' +
 		user.username + '@<wbr>' + user.host +
 		'</a>' +
