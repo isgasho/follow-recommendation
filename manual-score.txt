@@ -1,6 +1,7 @@
 [
 {"host": "botdon.net", "username": "mastonews", "score": 4},
 
+{"host": "knzk.me", "username": "Knzk", "score": 5000000000000000},
 {"host": "friends.nico", "username": "masarakki", "score": 3},
 {"host": "julika.jp", "username": "atie", "score": 3},
 {"host": "friends.nico", "username": "nullkal", "score": 3},
@@ -14,7 +15,6 @@
 {"host": "pawoo.net", "username": "mentei897", "score": 3},
 {"host": "friends.nico", "username": "imncls", "score": 3},
 {"host": "pawoo.net", "username": "imncls", "score": 3},
-{"host": "knzk.me", "username": "Knzk", "score": 3},
 {"host": "knzk.me", "username": "imncls", "score": 3},
 {"host": "md.distsn.org", "username": "guest", "score": 1},
 {"host": "2.distsn.org", "username": "guest", "score": 1},
