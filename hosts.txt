@@ -880,6 +880,7 @@ lordinateur.tech
 # Pleroma
 pleroma.knzk.me
 ketsuben.red
+plrm.ht164.jp
 
 # その他
 
