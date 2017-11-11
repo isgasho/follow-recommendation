@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <set>
+#include <limits>
 #include "picojson.h"
 #include "distsn.h"
 
@@ -89,14 +90,15 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
-static vector <picojson::value> get_timeline_impl (string host)
+static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max_id)
 {
-	vector <picojson::value> timeline;
-
+	stringstream max_id_s;
+	max_id_s << max_id;
 	string query
 		= string {"https://"}
 		+ host
-		+ string {"/api/v1/timelines/public?local=true&max_id=20"};
+		+ string {"/api/v1/timelines/public?local=true&max_id="}
+		+ max_id_s.str ();
 	string reply = http_get (query);
 
 	picojson::value json_value;
@@ -110,6 +112,39 @@ static vector <picojson::value> get_timeline_impl (string host)
 
 	vector <picojson::value> toots = json_value.get <picojson::array> ();
 	return toots;
+}
+
+
+static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bound, time_t &bottom_time, string &bottom_url)
+{
+	if (! (lower_bound < upper_bound)) {
+		throw HostException {__LINE__};
+	}
+	if (upper_bound - lower_bound < 2) {
+		throw HostException {__LINE__};
+	}
+	uint64_t middle = ((upper_bound - lower_bound) / 2) + lower_bound;
+	auto toots = get_toots_with_max_id (host, middle);
+	if (toots.size () == 0) {
+		get_first_toot (host, middle, upper_bound, bottom_time, bottom_url);
+	} else if (20 <= toots.size ()) {
+		get_first_toot (host, lower_bound, middle, bottom_time, bottom_url);
+		return;
+	} else {
+		auto bottom_toot = toots.back ();
+		try {
+			bottom_time = get_time (bottom_toot);
+			bottom_url = get_url (bottom_toot);
+		} catch (TootException e) {
+			throw (HostException {});
+		}
+	}
+}
+
+
+static void get_first_toot (string host, time_t &bottom_time, string &bottom_url)
+{
+	get_first_toot (host, 0, numeric_limits <uint64_t> ().max (), bottom_time, bottom_url);
 }
 
 
@@ -139,21 +174,9 @@ static string get_host_title (string domain)
 
 static Host for_host (string domain)
 {
-	/* Get timeline. */
-	vector <picojson::value> toots = get_timeline_impl (domain);
-	if (toots.size () < 1) {
-		throw (HostException {});
-	}
-
-	const picojson::value &bottom_toot = toots.back ();
 	time_t bottom_time;
 	string bottom_url;
-	try {
-		bottom_time = get_time (bottom_toot);
-		bottom_url = get_url (bottom_toot);
-	} catch (TootException e) {
-		throw (HostException {});
-	}
+	get_first_toot (domain, bottom_time, bottom_url);
 
 	string title;
 	try {
@@ -203,9 +226,11 @@ int main (int argc, char **argv)
 	vector <Host> hosts;
 
 	for (auto domain: domains) {
+		// cerr << domain << endl;
 		try {
 			Host host = for_host (string {domain});
 			hosts.push_back (host);
+			// cerr << host.first_toot_url << endl;
 		} catch (HttpException e) {
 			/* Nothing. */
 		} catch (HostException e) {
