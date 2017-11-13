@@ -15,7 +15,8 @@ MKDIR = mkdir -p
 RMDIR = rmdir
 
 www_files = \
-	index.html follow-recommendation.js \
+	index.html \
+	follow-recommendation.html follow-recommendation.js \
 	user-speed.html user-speed.js \
 	instance-speed.html instance-speed.js \
 	instance-speed-history.html instance-speed-history.js \
