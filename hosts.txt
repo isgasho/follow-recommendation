@@ -946,3 +946,4 @@ felesitas.cloud
 nyoki.club
 taketodon.com
 maltdn.com
+theboss.tech
