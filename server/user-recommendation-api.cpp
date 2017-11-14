@@ -6,6 +6,7 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <sstream>
 #include "picojson.h"
 #include "distsn.h"
 
@@ -249,6 +250,12 @@ static string escape_json (string in)
 
 int main (int argc, char **argv)
 {
+	unsigned int size = 1000;
+	if (1 < argc) {
+		stringstream size_s {argv [1]};
+		size_s >> size;
+	}
+
 	string hosts_s = http_get (string {"https://raw.githubusercontent.com/distsn/follow-recommendation/master/hosts.txt"});
 	set <string> hosts = get_hosts (hosts_s);
 	
@@ -325,7 +332,7 @@ int main (int argc, char **argv)
 
 	cout << "[";
 	
-	for (unsigned int cn = 0; cn < users.size () && cn < 1000; cn ++) {
+	for (unsigned int cn = 0; cn < users.size () && cn < size; cn ++) {
 		auto user = users.at (cn);
 		if (cn != 0) {
 			cout << ",";
