@@ -881,6 +881,7 @@ lordinateur.tech
 pleroma.knzk.me
 ketsuben.red
 plrm.ht164.jp
+pleroma.vocalodon.net
 
 # その他
 
