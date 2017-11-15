@@ -882,6 +882,7 @@ pleroma.knzk.me
 ketsuben.red
 plrm.ht164.jp
 pleroma.vocalodon.net
+plero.ma
 
 # その他
 
