@@ -90,6 +90,13 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
+class QueryException: public ExceptionWithLineNumber {
+public:
+	QueryException () { };
+	QueryException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
+};
+
+
 static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max_id)
 {
 	stringstream max_id_s;
@@ -104,10 +111,10 @@ static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
 	if (! error.empty ()) {
-		throw (HostException {});
+		throw (QueryException {__LINE__});
 	}
 	if (! json_value.is <picojson::array> ()) {
-		throw (HostException {});
+		throw (QueryException {__LINE__});
 	}
 
 	vector <picojson::value> toots = json_value.get <picojson::array> ();
@@ -124,20 +131,24 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 		throw HostException {__LINE__};
 	}
 	uint64_t middle = ((upper_bound - lower_bound) / 2) + lower_bound;
-	auto toots = get_toots_with_max_id (host, middle);
-	if (toots.size () == 0) {
-		get_first_toot (host, middle, upper_bound, bottom_time, bottom_url);
-	} else if (20 <= toots.size ()) {
-		get_first_toot (host, lower_bound, middle, bottom_time, bottom_url);
-		return;
-	} else {
-		auto bottom_toot = toots.back ();
-		try {
-			bottom_time = get_time (bottom_toot);
-			bottom_url = get_url (bottom_toot);
-		} catch (TootException e) {
-			throw (HostException {});
+	vector <picojson::value> toots;
+	try {
+		toots = get_toots_with_max_id (host, middle);
+		if (toots.size () == 0) {
+			get_first_toot (host, middle, upper_bound, bottom_time, bottom_url);
+		} else if (20 <= toots.size ()) {
+			get_first_toot (host, lower_bound, middle, bottom_time, bottom_url);
+		} else {
+			auto bottom_toot = toots.back ();
+			try {
+				bottom_time = get_time (bottom_toot);
+				bottom_url = get_url (bottom_toot);
+			} catch (TootException e) {
+				throw (HostException {});
+			}
 		}
+	} catch (QueryException e) {
+		get_first_toot (host, lower_bound, middle, bottom_time, bottom_url);
 	}
 }
 
@@ -155,18 +166,18 @@ static string get_host_title (string domain)
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
 	if (! error.empty ()) {
-		throw (HostException {});
+		throw (HostException {__LINE__});
 	}
 	if (! json_value.is <picojson::object> ()) {
-		throw (HostException {});
+		throw (HostException {__LINE__});
 	}
 	auto properties = json_value.get <picojson::object> ();
 	if (properties.find (string {"title"}) == properties.end ()) {
-		throw (HostException {});
+		throw (HostException {__LINE__});
 	}
 	auto title_object = properties.at (string {"title"});
 	if (! title_object.is <string> ()) {
-		throw (HostException {});
+		throw (HostException {__LINE__});
 	}
 	return title_object.get <string> ();
 }
@@ -181,8 +192,8 @@ static Host for_host (string domain)
 	string title;
 	try {
 		title = get_host_title (domain);
-	} catch (HostException e) {
-		/* Do nothing. */
+	} catch (ExceptionWithLineNumber e) {
+		cerr << "Error" << domain << " " << e.line << endl;
 	}
 
 	return Host {domain, bottom_time, bottom_url, title};
@@ -226,15 +237,15 @@ int main (int argc, char **argv)
 	vector <Host> hosts;
 
 	for (auto domain: domains) {
-		// cerr << domain << endl;
+		cerr << domain << endl;
 		try {
 			Host host = for_host (string {domain});
 			hosts.push_back (host);
-			// cerr << host.first_toot_url << endl;
+			cerr << host.first_toot_url << endl;
 		} catch (HttpException e) {
-			/* Nothing. */
+			cerr << e.line << endl;
 		} catch (HostException e) {
-			/* Nothing. */
+			cerr << e.line << endl;
 		}
 	}
 
