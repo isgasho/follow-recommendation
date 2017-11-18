@@ -356,7 +356,7 @@
 {"host": "friends.nico", "username": "Narchi", "score": 2},
 {"host": "friends.nico", "username": "yasuda", "score": 2},
 {"host": "mstdn.jp", "username": "hos2", "score": 2},
-{"host": "m.uncate.org", "username": "monesi", "score": 0}
+{"host": "m.uncate.org", "username": "monesi", "score": 0},
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
