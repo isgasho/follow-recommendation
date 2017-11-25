@@ -84,6 +84,7 @@ public:
 	bool manual_score_available;
 	unsigned int recommendation_order;
 	string application;
+	string avatar;
 public:
 	User (string a_host, string a_username, double a_speed, string a_application) {
 		host = a_host;
@@ -207,6 +208,40 @@ static map <string, double> get_manual_score (string score_s)
 }
 
 
+static map <string, string> get_avatars ()
+{
+	try {
+		string reply = http_get (string {"http://vinayaka.distsn.org/cgi-bin/vinayaka-user-profiles-api.cgi"});
+		map <string, string> avatars;
+
+		picojson::value json_value;
+		string error = picojson::parse (json_value, reply);
+		if (! error.empty ()) {
+			cerr << error << endl;
+			return map <string, string> {}; /* Silent error. */
+		}
+		if (! json_value.is <picojson::array> ()) {
+			return map <string, string> {}; /* Silent error. */
+		}
+
+		auto users = json_value.get <picojson::array> ();
+	
+		for (auto user: users) {
+			auto user_object = user.get <picojson::object> ();
+			string host = user_object.at (string {"host"}).get <string> ();
+			string user_name = user_object.at (string {"user"}).get <string> ();
+			string avatar = user_object.at (string {"avatar"}).get <string> ();
+			string key = user_name + string {"@"} + host;
+			avatars.insert (pair <string, string> {key, avatar});
+		}
+		return avatars;
+	} catch (HttpException e) {
+		/* Silent error. */
+	}
+	return map <string, string> {};
+}
+
+
 class byScore {
 public:
 	bool operator () (const User &left, const User &right) const {
@@ -316,6 +351,14 @@ int main (int argc, char **argv)
 		}
 	}
 
+	auto avatars = get_avatars ();
+	for (auto &user: users) {
+		string key = user.username + string {"@"} + user.host;
+		if (avatars.find (key) != avatars.end ()) {
+			user.avatar = avatars.at (key);
+		}
+	}
+
 	sort (users.begin (), users.end (), bySpeed {});
 	
 	for (unsigned int cn = 0; cn < users.size (); cn ++) {
@@ -346,7 +389,8 @@ int main (int argc, char **argv)
 			<< "\"manual_score\":" << user.manual_score << ","
 			<< "\"manual_score_available\":" << (user.manual_score_available? "true": "false") << ","
 			<< "\"recommendation_order\":" << user.recommendation_order << ","
-			<< "\"application\":\"" << escape_json (user.application) << "\""
+			<< "\"application\":\"" << escape_json (user.application) << "\","
+			<< "\"avatar\":\"" << escape_json (user.avatar) << "\""
 			<< "}";
 	}
 

@@ -37,6 +37,12 @@ for (cn = 0; cn < users.length; cn ++) {
 		'<a href="' +
 		'https://' + user.host + '/users/' + user.username +
 		'" target="distsn-external-user-profile">' +
+		'<img src="' + user.avatar + '">' +
+		'</a>' +
+		'<br>' +
+		'<a href="' +
+		'https://' + user.host + '/users/' + user.username +
+		'" target="distsn-external-user-profile">' +
 		user.username + '@<wbr>' + user.host +
 		'</a>' +
 		'<br>' +
