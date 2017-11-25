@@ -24,7 +24,8 @@ www_files = \
 	instance-new.html instance-new.js \
 	instance-lists.html instance-lists.js \
 	fake-mastodon.css \
-	kasaikuminkan.jpg google214b9ca3f27d115d.html
+	kasaikuminkan.jpg google214b9ca3f27d115d.html \
+	missing.svg
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)

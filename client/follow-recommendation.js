@@ -32,14 +32,19 @@ var cn;
 for (cn = 0; cn < users.length; cn ++) {
 	var user;
 	user = users [cn];
+	var avatar;
+	if (user.avatar && 0 < user.avatar.length) {
+		avatar = user.avatar;
+	} else {
+		avatar = 'missing.svg';
+	}
 	var user_html =
 		'<p>' +
 		'<a href="' +
 		'https://' + user.host + '/users/' + user.username +
 		'" target="distsn-external-user-profile">' +
-		'<img src="' + user.avatar + '">' +
-		'</a>' +
-		'<br>' +
+		'<img class="avatar" src="' + avatar + '">' +
+		'</a> ' +
 		'<a href="' +
 		'https://' + user.host + '/users/' + user.username +
 		'" target="distsn-external-user-profile">' +
