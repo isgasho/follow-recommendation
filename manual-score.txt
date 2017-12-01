@@ -1,7 +1,7 @@
 [
 {"host": "botdon.net", "username": "mastonews", "score": 2},
 
-{"host": "knzk.me", "username": "Knzk", "score": 5000000000000000},
+{"host": "knzk.me", "username": "Knzk", "score": 2},
 {"host": "friends.nico", "username": "masarakki", "score": 2},
 {"host": "julika.jp", "username": "atie", "score": 2},
 {"host": "friends.nico", "username": "nullkal", "score": 2},
