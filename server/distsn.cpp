@@ -164,3 +164,53 @@ time_t str2time (string s)
 }
 
 
+string get_host_title (string domain)
+{
+	string reply = http_get (string {"https://"} + domain + string {"/api/v1/instance"});
+
+	picojson::value json_value;
+	string error = picojson::parse (json_value, reply);
+	if (! error.empty ()) {
+		throw (HostException {__LINE__});
+	}
+	if (! json_value.is <picojson::object> ()) {
+		throw (HostException {__LINE__});
+	}
+	auto properties = json_value.get <picojson::object> ();
+	if (properties.find (string {"title"}) == properties.end ()) {
+		throw (HostException {__LINE__});
+	}
+	auto title_object = properties.at (string {"title"});
+	if (! title_object.is <string> ()) {
+		throw (HostException {__LINE__});
+	}
+	return title_object.get <string> ();
+}
+
+
+string get_host_thumbnail (string domain)
+{
+	string reply = http_get (string {"https://"} + domain + string {"/api/v1/instance"});
+
+	picojson::value json_value;
+	string error = picojson::parse (json_value, reply);
+	if (! error.empty ()) {
+		throw (HostException {__LINE__});
+	}
+	if (! json_value.is <picojson::object> ()) {
+		throw (HostException {__LINE__});
+	}
+	auto properties = json_value.get <picojson::object> ();
+	if (properties.find (string {"thumbnail"}) == properties.end ()) {
+		throw (HostException {__LINE__});
+	}
+	auto thumbnail_object = properties.at (string {"thumbnail"});
+	if (! thumbnail_object.is <string> ()) {
+		throw (HostException {__LINE__});
+	}
+	return thumbnail_object.get <string> ();
+}
+
+
+
+

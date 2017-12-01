@@ -32,8 +32,18 @@ var cn;
 for (cn = 0; cn < instances.length; cn ++) {
 	var instance;
 	instance = instances [cn];
+	var thumbnail;
+	if (instance.thumbnail && 0 < instance.thumbnail.length) {
+		thumbnail = instance.thumbnail;
+	} else {
+		thumbnail = 'missing.svg';
+	}
 	var instance_html =
 		'<p>' +
+		'<a href="' +
+		'instance-preview.html?' + instance.domain + '" target="distsn-instance-preview">' +
+		'<img class="avatar" src="' + thumbnail + '">' +
+		'</a>' +
 		'<a href="' +
 		'instance-preview.html?' + instance.domain + '" target="distsn-instance-preview">' +
 		(instance.title? escapeHtml (instance.title): instance.domain) +

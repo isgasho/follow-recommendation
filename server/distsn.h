@@ -49,6 +49,8 @@ std::vector <picojson::value> get_timeline (std::string host);
 std::string http_get (std::string url);
 time_t get_time (const picojson::value &toot);
 time_t str2time (std::string s);
+std::string get_host_title (std::string domain);
+std::string get_host_thumbnail (std::string domain);
 
 
 #endif /* #ifndef DISTSN_H */

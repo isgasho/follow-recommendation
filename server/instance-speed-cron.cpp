@@ -18,11 +18,13 @@ public:
 	string domain;
 	double speed;
 	string title;
+	string thumbnail;
 public:
-	Host (string a_domain, double a_speed, string a_title) {
+	Host (string a_domain, double a_speed, string a_title, string a_thumbnail) {
 		domain = a_domain;
 		speed = a_speed;
 		title = a_title;
+		thumbnail = a_thumbnail;
 	};
 };
 
@@ -61,34 +63,15 @@ static void write_storage (FILE *out, vector <Host> hosts)
 			fprintf (out, ",");
 		}
 		Host host = hosts.at (cn);
-		fprintf (out, "{\"domain\":\"%s\",\"speed\":%e,\"title\":\"%s\"}",
-			host.domain.c_str (), host.speed, escape_json (host.title).c_str ());
+		fprintf
+			(out,
+			"{\"domain\":\"%s\",\"speed\":%e,\"title\":\"%s\",\"thumbnail\":\"%s\"}",
+			host.domain.c_str (),
+			host.speed,
+			escape_json (host.title).c_str (),
+			escape_json (host.thumbnail).c_str ());
 	}
 	fprintf (out, "]");
-}
-
-
-static string get_host_title (string domain)
-{
-	string reply = http_get (string {"https://"} + domain + string {"/api/v1/instance"});
-
-	picojson::value json_value;
-	string error = picojson::parse (json_value, reply);
-	if (! error.empty ()) {
-		throw (HostException {});
-	}
-	if (! json_value.is <picojson::object> ()) {
-		throw (HostException {});
-	}
-	auto properties = json_value.get <picojson::object> ();
-	if (properties.find (string {"title"}) == properties.end ()) {
-		throw (HostException {});
-	}
-	auto title_object = properties.at (string {"title"});
-	if (! title_object.is <string> ()) {
-		throw (HostException {});
-	}
-	return title_object.get <string> ();
 }
 
 
@@ -139,7 +122,14 @@ static Host for_host (string domain)
 		/* Do nothing. */
 	}
 
-	return Host {domain, speed, title};
+	string thumbnail;
+	try {
+		title = get_host_thumbnail (domain);
+	} catch (HostException e) {
+		/* Do nothing. */
+	}
+
+	return Host {domain, speed, title, thumbnail};
 }
 
 

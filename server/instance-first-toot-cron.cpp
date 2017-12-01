@@ -37,12 +37,14 @@ public:
 	time_t first_toot_time;
 	string first_toot_url;
 	string title;
+	string thumbnail;
 public:
-	Host (string a_domain, time_t a_time, string a_url, string a_title) {
+	Host (string a_domain, time_t a_time, string a_url, string a_title, string a_thumbnail) {
 		domain = a_domain;
 		first_toot_time = a_time;
 		first_toot_url = a_url;
 		title = a_title;
+		thumbnail = a_thumbnail;
 	};
 };
 
@@ -83,8 +85,14 @@ static void write_storage (FILE *out, vector <Host> hosts)
 		Host host = hosts.at (cn);
 		ostringstream time_s;
 		time_s << host.first_toot_time;
-		fprintf (out, "{\"domain\":\"%s\",\"first_toot_time\":\"%s\",\"first_toot_url\":\"%s\",\"title\":\"%s\"}",
-			host.domain.c_str (), time_s.str ().c_str (), host.first_toot_url.c_str (), escape_json (host.title).c_str ());
+		fprintf
+			(out,
+			"{\"domain\":\"%s\",\"first_toot_time\":\"%s\",\"first_toot_url\":\"%s\",\"title\":\"%s\",\"thumbnail\":\"%s\"}",
+			host.domain.c_str (),
+			time_s.str ().c_str (),
+			host.first_toot_url.c_str (),
+			escape_json (host.title).c_str (),
+			escape_json (host.thumbnail).c_str ());
 	}
 	fprintf (out, "]");
 }
@@ -159,30 +167,6 @@ static void get_first_toot (string host, time_t &bottom_time, string &bottom_url
 }
 
 
-static string get_host_title (string domain)
-{
-	string reply = http_get (string {"https://"} + domain + string {"/api/v1/instance"});
-
-	picojson::value json_value;
-	string error = picojson::parse (json_value, reply);
-	if (! error.empty ()) {
-		throw (HostException {__LINE__});
-	}
-	if (! json_value.is <picojson::object> ()) {
-		throw (HostException {__LINE__});
-	}
-	auto properties = json_value.get <picojson::object> ();
-	if (properties.find (string {"title"}) == properties.end ()) {
-		throw (HostException {__LINE__});
-	}
-	auto title_object = properties.at (string {"title"});
-	if (! title_object.is <string> ()) {
-		throw (HostException {__LINE__});
-	}
-	return title_object.get <string> ();
-}
-
-
 static Host for_host (string domain)
 {
 	time_t bottom_time;
@@ -196,7 +180,14 @@ static Host for_host (string domain)
 		cerr << "Error" << domain << " " << e.line << endl;
 	}
 
-	return Host {domain, bottom_time, bottom_url, title};
+	string thumbnail;
+	try {
+		title = get_host_thumbnail (domain);
+	} catch (ExceptionWithLineNumber e) {
+		cerr << "Error" << domain << " " << e.line << endl;
+	}
+
+	return Host {domain, bottom_time, bottom_url, title, thumbnail};
 }
 
 
