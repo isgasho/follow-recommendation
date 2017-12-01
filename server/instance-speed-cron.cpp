@@ -124,7 +124,7 @@ static Host for_host (string domain)
 
 	string thumbnail;
 	try {
-		title = get_host_thumbnail (domain);
+		thumbnail = get_host_thumbnail (domain);
 	} catch (HostException e) {
 		/* Do nothing. */
 	}
