@@ -54,3 +54,28 @@ p {
 	clear: both;
 }
 
+a.fake-button {
+	display: inline-block;
+	width: calc(256px - 32px);
+	height: calc(96px - 32px);
+	margin-right: 16px;
+	margin-bottom: 16px;
+	text-decoration: none;
+	border-radius: 8px;
+	padding: 16px;
+	font-size: 125%;
+}
+
+
+a:link.fake-button {
+	color: white;
+	background-color: #2b90d9;
+}
+
+
+a:visited.fake-button {
+	color: white;
+	background-color: #2b90d9;
+}
+
+
