@@ -2,7 +2,7 @@
 var g_distsn_domain = '';
 
 
-function move_to_random_instance () {
+function get_random_instance (continuation) {
 	var request = new XMLHttpRequest;
 	request.open ('GET', '/cgi-bin/distsn-instance-speed-api.cgi');
 	request.onload = function () {
@@ -19,7 +19,7 @@ function move_to_random_instance () {
 				}
 				var random_number = Math.floor (Math.random () * good_instances.length);
 				var domain_name = good_instances[random_number].domain;
-				window.location.search = '?' + domain_name;
+				continuation (domain_name);
 			}
 		}
 	}
@@ -34,14 +34,22 @@ var domain = window.location.search.replace (/^\?/, '');
 		get_instance (domain);
 		get_timeline (domain, 1);
 	} else {
-		move_to_random_instance ();
+		get_random_instance (function (domain_name) {
+			history.replaceState (null, '', window.location.href + '?' + domain_name);
+			g_distsn_domain = domain_name;
+			get_instance (domain_name);
+			get_timeline (domain_name, 1);
+		});
 	}
 }, false); /* window.addEventListener ('load', function () { */
 
 
 window.addEventListener ('load', function () {
-document.getElementById ('random-button').addEventListener
-	('click', move_to_random_instance, false);
+document.getElementById ('random-button').addEventListener ('click', function () {
+	get_random_instance (function (domain_name) {
+		window.location.search = '?' + domain_name;
+	});
+}, false);
 }, false); /* window.addEventListener ('load', function () { */
 
 
