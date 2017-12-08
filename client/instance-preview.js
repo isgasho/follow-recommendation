@@ -13,7 +13,7 @@ function get_random_instance (continuation) {
 				var good_instances = [];
 				for (var cn = 0; cn < instances.length; cn ++) {
 					var instance = instances[cn];
-					if (1.0 <= instance.speed * 60 * 60 * 24) {
+					if (0.1 <= instance.speed * 60 * 60) {
 						good_instances.push (instance);
 					}
 				}
