@@ -79,3 +79,29 @@ a:visited.fake-button {
 }
 
 
+input[type=button] {
+	color: white;
+	background-color: #2b90d9;
+	border-style: none;
+	border-radius: 8px;
+}
+
+input[type=button]:hover {
+	cursor: pointer;
+}
+
+
+input[type=button].small {
+	width: 48px;
+}
+
+
+input[type=button] {
+	font-size: 1em;
+	width: 128px;
+	height: 48px;
+	margin-right: 8px;
+	margin-bottom: 8px;
+}
+
+

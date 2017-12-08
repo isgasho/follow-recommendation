@@ -2,20 +2,47 @@
 var g_distsn_domain = '';
 
 
-window.addEventListener ('load', function () {
-	var domain = window.location.search.replace (/^\?/, '');
-	if (! domain) {
-		var response = prompt ('ドメイン名を入力してください。(例: mstdn.jp)');
-		if (response) {
-			window.location.search = '?' + response;
+function move_to_random_instance () {
+	var request = new XMLHttpRequest;
+	request.open ('GET', '/cgi-bin/distsn-instance-speed-api.cgi');
+	request.onload = function () {
+		if (request.readyState === request.DONE) {
+			if (request.status === 200) {
+				var response_text = request.responseText;
+				var instances = JSON.parse (response_text);
+				var good_instances = [];
+				for (var cn = 0; cn < instances.length; cn ++) {
+					var instance = instances[cn];
+					if (1.0 <= instance.speed * 60 * 60 * 24) {
+						good_instances.push (instance);
+					}
+				}
+				var random_number = Math.floor (Math.random () * good_instances.length);
+				var domain_name = good_instances[random_number].domain;
+				window.location.search = '?' + domain_name;
+			}
 		}
-	};
+	}
+	request.send ();
+}
+
+
+window.addEventListener ('load', function () {
+var domain = window.location.search.replace (/^\?/, '');
 	if (domain) {
 		g_distsn_domain = domain;
 		get_instance (domain);
 		get_timeline (domain, 1);
+	} else {
+		move_to_random_instance ();
 	}
-}, false);
+}, false); /* window.addEventListener ('load', function () { */
+
+
+window.addEventListener ('load', function () {
+document.getElementById ('random-button').addEventListener
+	('click', move_to_random_instance, false);
+}, false); /* window.addEventListener ('load', function () { */
 
 
 function get_instance (domain) {
