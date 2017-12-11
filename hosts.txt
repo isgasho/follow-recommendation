@@ -963,3 +963,4 @@ tebukuro.m.to
 mstdn.ephemeral-arcadia.jp
 social.mikutter.hachune.net
 kiritan.work
+pptdn.jp
