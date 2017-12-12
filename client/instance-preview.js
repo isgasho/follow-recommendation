@@ -244,3 +244,13 @@ window.show1000 = function () {
 };
 
 
+window.addEventListener ('load', function () {
+document.getElementById ('move-button').addEventListener ('click', function () {
+	var responce = prompt ('ドメイン名を入力してください。(例: mstdn.jp)');
+	if (responce) {
+		window.location.search = '?' + responce;
+	}
+}, false);
+}, false);
+
+
