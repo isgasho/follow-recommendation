@@ -21,6 +21,12 @@
 {"host": "mstdn.jp", "username": "yukimama", "score": 0},
 {"host": "friends.nico", "username": "yukimama", "score": 0},
 
+{"host": "mstdn.jp", "username": "h5jp", "score": 1},
+{"host": "tokamstdn.jp", "username": "h5jp", "score": 1},
+{"host": "mstdn.io", "username": "h5jp", "score": 1},
+{"host": "mastodon.cloud", "username": "h5jp", "score": 1},
+{"host": "mstdn.fm", "username": "h5jp", "score": 1},
+
 {"host": "friends.nico", "username": "tudiiku", "score": 2},
 {"host": "mstdn.jp", "username": "__himitsu", "score": 2},
 {"host": "knzk.me", "username": "1", "score": 2},
@@ -361,7 +367,6 @@
 {"host": "pawoo.net", "username": "matometa_kun", "score": 0},
 {"host": "pawoo.net", "username": "kimiki31", "score": 0},
 {"host": "mstdn.jp", "username": "allfreesoft", "score": 0},
-
 
 {"host": "example.com", "username": "example", "score": 2}
 ]
