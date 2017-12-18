@@ -969,4 +969,5 @@ mstdn.xn--q9jyb4c
 android-user.club
 osomatsu.mastportal.info
 setl.ist
+mstdn.hostdon.jp
 
