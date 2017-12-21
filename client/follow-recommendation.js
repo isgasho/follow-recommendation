@@ -51,10 +51,7 @@ for (cn = 0; cn < users.length; cn ++) {
 		user.username + '@<wbr>' + user.host +
 		'</a>' +
 		'<br>' +
-		(user.speed * 60 * 60 * 24).toFixed (1) + ' トゥート/日 (' + (user.speed_order + 1) + ' 位)' +
-		'<br>' +
-		'手動得点 ' + (user.manual_score_available? user.manual_score.toFixed (1): '?') + '&emsp;' +
-		'総合順位 ' + (user.recommendation_order + 1) + ' 位' +
+		(user.speed * 60 * 60 * 24).toFixed (1) + ' トゥート/日 (' + (user.recommendation_order + 1) + ' 位)' +
 		(user.application? '<br>' + escapeHtml (user.application): '') +
 		'</p>';
 	html += user_html;
