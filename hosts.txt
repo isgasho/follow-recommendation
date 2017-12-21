@@ -970,4 +970,5 @@ android-user.club
 osomatsu.mastportal.info
 setl.ist
 mstdn.hostdon.jp
+rainyman.jp
 
