@@ -971,4 +971,5 @@ osomatsu.mastportal.info
 setl.ist
 mstdn.hostdon.jp
 rainyman.jp
+gensokyo.town
 
