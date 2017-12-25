@@ -884,6 +884,10 @@ plrm.ht164.jp
 pleroma.vocalodon.net
 plero.ma
 
+# 某財閥
+
+
+
 # その他
 
 md.ggtea.org
