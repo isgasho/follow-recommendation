@@ -25,7 +25,8 @@ www_files = \
 	instance-lists.html instance-lists.js \
 	fake-mastodon.css \
 	kasaikuminkan.jpg google214b9ca3f27d115d.html \
-	missing.svg
+	missing.svg \
+	user-speed-raw.html
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)
