@@ -3,7 +3,7 @@
 
 window.addEventListener ('load', function () {
 	var request = new XMLHttpRequest;
-	request.open ('GET', '/cgi-bin/distsn-user-recommendation-api.cgi');
+	request.open ('GET', '/cgi-bin/distsn-user-speed-api.cgi?200');
 	request.onload = function () {
 		if (request.readyState === request.DONE) {
 			if (request.status === 200) {

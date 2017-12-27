@@ -19,7 +19,6 @@ cgidir = /usr/lib/cgi-bin
 
 objects = \
 	user-speed-api.o \
-	user-recommendation-api.o \
 	instance-speed-history-api.o \
 	user-speed.o \
 	instance-speed-cron.o \
@@ -30,7 +29,6 @@ objects = \
 	distsn.o
 cgi_binaries = \
 	distsn-user-speed-api.cgi \
-	distsn-user-recommendation-api.cgi \
 	distsn-instance-speed-history-api.cgi \
 	distsn-instance-lists-api.cgi
 cron_binaries = \
@@ -61,9 +59,6 @@ distsn-user-speed: distsn.o user-speed.o
 
 distsn-user-speed-api.cgi: distsn.o user-speed-api.o
 	$(CXX) distsn.o user-speed-api.o -lcurl $(CFLAGS) -o $@
-
-distsn-user-recommendation-api.cgi: distsn.o user-recommendation-api.o
-	$(CXX) distsn.o user-recommendation-api.o -lcurl $(CFLAGS) -o $@
 
 distsn-instance-speed-cron: distsn.o instance-speed-cron.o
 	$(CXX) distsn.o instance-speed-cron.o -lcurl $(CFLAGS) -o $@

@@ -6,6 +6,8 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <sstream>
+#include <limits>
 #include "picojson.h"
 #include "distsn.h"
 
@@ -79,19 +81,14 @@ public:
 	string username;
 	double speed;
 	unsigned int speed_order;
-	double manual_score;
-	bool manual_score_available;
-	unsigned int recommendation_order;
 	string application;
+	string avatar;
 public:
 	User (string a_host, string a_username, double a_speed, string a_application) {
 		host = a_host;
 		username = a_username;
 		speed = a_speed;
 		application  = a_application;
-	};
-	bool operator < (const User &right) const {
-		return right.speed < speed;
 	};
 };
 
@@ -125,108 +122,38 @@ static set <string> get_hosts (string hosts_s)
 }
 
 
-static string get_host (const picojson::value &user)
+static map <string, string> get_avatars ()
 {
-	if (! user.is <picojson::object> ()) {
-		throw (UserException {});
-	}
-	auto properties = user.get <picojson::object> ();
-	if (properties.find (string {"host"}) == properties.end ()) {
-		throw (UserException {});
-	}
-	auto object = properties.at (string {"host"});
-	if (! object.is <string> ()) {
-		throw (UserException {});
-	}
-	return object.get <string> ();
-}
+	try {
+		string reply = http_get (string {"http://vinayaka.distsn.org/cgi-bin/vinayaka-user-profiles-api.cgi"});
+		map <string, string> avatars;
 
+		picojson::value json_value;
+		string error = picojson::parse (json_value, reply);
+		if (! error.empty ()) {
+			cerr << error << endl;
+			return map <string, string> {}; /* Silent error. */
+		}
+		if (! json_value.is <picojson::array> ()) {
+			return map <string, string> {}; /* Silent error. */
+		}
 
-static string get_username (const picojson::value &user)
-{
-	if (! user.is <picojson::object> ()) {
-		throw (UserException {});
-	}
-	auto properties = user.get <picojson::object> ();
-	if (properties.find (string {"username"}) == properties.end ()) {
-		throw (UserException {});
-	}
-	auto object = properties.at (string {"username"});
-	if (! object.is <string> ()) {
-		throw (UserException {});
-	}
-	return object.get <string> ();
-}
-
-
-static double get_manual_score (const picojson::value &user)
-{
-	if (! user.is <picojson::object> ()) {
-		throw (UserException {});
-	}
-	auto properties = user.get <picojson::object> ();
-	if (properties.find (string {"score"}) == properties.end ()) {
-		throw (UserException {});
-	}
-	auto object = properties.at (string {"score"});
-	if (! object.is <double> ()) {
-		throw (UserException {});
-	}
-	return object.get <double> ();
-}
-
-
-static map <string, double> get_manual_score (string score_s)
-{
-	map <string, double> score;
-
-	picojson::value json_value;
-	string error = picojson::parse (json_value, score_s);
-	if (! error.empty ()) {
-		cerr << error << endl;
-		return map <string, double> {}; /* Silent error. */
-	}
-	if (! json_value.is <picojson::array> ()) {
-		return map <string, double> {}; /* Silent error. */
-	}
-
-	vector <picojson::value> users = json_value.get <picojson::array> ();
+		auto users = json_value.get <picojson::array> ();
 	
-	for (auto user: users) {
-		try {
-			string host = get_host (user);
-			string user_name = get_username (user);
-			double manual_score = get_manual_score (user);
-			score.insert (pair <string, double> {user_name + string {"@"} + host, manual_score});
-		} catch (UserException e) {
-			/* Do nothing. */
+		for (auto user: users) {
+			auto user_object = user.get <picojson::object> ();
+			string host = user_object.at (string {"host"}).get <string> ();
+			string user_name = user_object.at (string {"user"}).get <string> ();
+			string avatar = user_object.at (string {"avatar"}).get <string> ();
+			string key = user_name + string {"@"} + host;
+			avatars.insert (pair <string, string> {key, avatar});
 		}
+		return avatars;
+	} catch (HttpException e) {
+		/* Silent error. */
 	}
-	return score;
+	return map <string, string> {};
 }
-
-
-class byScore {
-public:
-	bool operator () (const User &left, const User &right) const {
-		if (left.manual_score < 2.0) {
-			if (right.manual_score < 2.0) {
-				return
-					right.manual_score < left.manual_score? true:
-					right.manual_score == left.manual_score? false:
-					right.speed < left.speed;
-			} else {
-				return false;
-			}
-		} else {
-			if (right.manual_score < 2.0) {
-				return true;
-			} else {
-				return right.speed * pow (10, right.manual_score) < left.speed * pow (10, left.manual_score);
-			}
-		}
-	};
-};
 
 
 static string escape_json (string in)
@@ -249,6 +176,12 @@ static string escape_json (string in)
 
 int main (int argc, char **argv)
 {
+	unsigned int size = numeric_limits <unsigned int>::max ();
+	if (1 < argc) {
+		stringstream size_s {argv [1]};
+		size_s >> size;
+	}
+
 	string hosts_s = http_get (string {"https://raw.githubusercontent.com/distsn/follow-recommendation/master/hosts.txt"});
 	set <string> hosts = get_hosts (hosts_s);
 	
@@ -288,31 +221,19 @@ int main (int argc, char **argv)
 	{
 		vector <User> active_users;
 		for (auto i: users) {
-			if (1.0 <= i.speed * 60 * 60 * 24 * 7) {
+			if (0.1 <= i.speed * 60 * 60 * 24) {
 				active_users.push_back (i);
 			}
 		}
 		users = active_users;
 	}
 
-	string score_s = http_get (string {"https://raw.githubusercontent.com/distsn/follow-recommendation/master/manual-score.txt"});
-	map <string, double> score = get_manual_score (score_s);
-
+	auto avatars = get_avatars ();
 	for (auto &user: users) {
 		string key = user.username + string {"@"} + user.host;
-		if (score.find (key) == score.end ()) {
-			user.manual_score = 2.0;
-			user.manual_score_available = false;
-		} else {
-			user.manual_score = score.at (key);
-			user.manual_score_available = true;
+		if (avatars.find (key) != avatars.end ()) {
+			user.avatar = avatars.at (key);
 		}
-	}
-
-	sort (users.begin (), users.end (), byScore {});
-
-	for (unsigned int cn = 0; cn < users.size (); cn ++) {
-		users.at (cn).recommendation_order = cn;
 	}
 
 	sort (users.begin (), users.end (), bySpeed {});
@@ -325,7 +246,7 @@ int main (int argc, char **argv)
 
 	cout << "[";
 	
-	for (unsigned int cn = 0; cn < users.size () && cn < 10000; cn ++) {
+	for (unsigned int cn = 0; cn < users.size () && cn < size; cn ++) {
 		auto user = users.at (cn);
 		if (cn != 0) {
 			cout << ",";
@@ -336,10 +257,8 @@ int main (int argc, char **argv)
 			<< "\"username\":\"" << escape_json (user.username) << "\","
 			<< "\"speed\":" << scientific << user.speed << ","
 			<< "\"speed_order\":" << user.speed_order << ","
-			<< "\"manual_score\":" << user.manual_score << ","
-			<< "\"manual_score_available\":" << (user.manual_score_available? "true": "false") << ","
-			<< "\"recommendation_order\":" << user.recommendation_order << ","
-			<< "\"application\":\"" << escape_json (user.application) << "\""
+			<< "\"application\":\"" << escape_json (user.application) << "\","
+			<< "\"avatar\":\"" << escape_json (user.avatar) << "\""
 			<< "}";
 	}
 
