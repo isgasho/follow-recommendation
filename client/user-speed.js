@@ -43,8 +43,6 @@ for (cn = 0; cn < users.length; cn ++) {
 		'</a>' +
 		'&emsp;' +
 		(user.speed * 60 * 60 * 24).toFixed (1) + ' トゥート/日 (' + (user.speed_order + 1) + ' 位)' + '&emsp;' +
-		'手動得点 ' + score_s + '&emsp;' +
-		'総合順位 ' + (user.recommendation_order + 1) + ' 位' + '&emsp;' +
 		(user.application? escapeHtml (user.application): '') +
 		(boilerplate? '<br>' + '<small>' + getTemplate (user.host, user.username, score_s) + '</small>': '') +
 		'</p>';
