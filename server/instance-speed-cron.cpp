@@ -138,13 +138,16 @@ int main (int argc, char **argv)
 	set <string> domains = get_international_hosts ();
 	vector <Host> hosts;
 	for (auto domain: domains) {
+		cerr << domain << endl;
 		try {
 			Host host = for_host (string {domain});
 			hosts.push_back (host);
 		} catch (HttpException e) {
 			/* Nothing. */
+			cerr << "HttpException " << e.line << endl;
 		} catch (HostException e) {
 			/* Nothing. */
+			cerr << "HostException " << e.line << endl;
 		}
 	}
 
