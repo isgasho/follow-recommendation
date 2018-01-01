@@ -82,7 +82,7 @@ static Host for_host (string domain)
 	time (& start_time);
 
 	/* Get timeline. */
-	vector <picojson::value> toots = get_timeline (domain);
+	vector <picojson::value> toots = get_timeline (domain, 60 * 60 * 8);
 	if (toots.size () < 40) {
 		throw (HostException {});
 	}

@@ -33,6 +33,12 @@ string get_id (const picojson::value &toot)
 
 vector <picojson::value> get_timeline (string host)
 {
+	return get_timeline (host, 60 * 60 * 3);
+}
+
+
+vector <picojson::value> get_timeline (string host, unsigned int time_depth)
+{
 	vector <picojson::value> timeline;
 
 	{
@@ -68,7 +74,7 @@ vector <picojson::value> get_timeline (string host)
 		} catch (TootException e) {
 			throw (HostException {});
 		}
-		if (60 * 60 * 3 <= top_time - bottom_time && 40 <= timeline.size ()) {
+		if (static_cast <int> (time_depth) <= top_time - bottom_time && 40 <= timeline.size ()) {
 			break;
 		}
 
