@@ -191,31 +191,9 @@ static Host for_host (string domain)
 }
 
 
-static bool valid_host_name (string host)
-{
-	return 0 < host.size () && host.at (0) != '#';
-}
-
-
 static set <string> get_domains ()
 {
-	string domains_s = http_get (string {"https://raw.githubusercontent.com/distsn/follow-recommendation/master/hosts.txt"});
-	set <string> domains;
-	string domain;
-	for (char c: domains_s) {
-		if (c == '\n') {
-			if (valid_host_name (domain)) {
-				domains.insert (domain);
-			}
-			domain.clear ();
-		} else {
-			domain.push_back (c);
-		}
-	}
-	if (valid_host_name (domain)) {
-		domains.insert (domain);
-	}
-	return domains;
+	return get_international_hosts ();
 }
 
 
