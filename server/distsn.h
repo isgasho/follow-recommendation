@@ -2,6 +2,9 @@
 #define DISTSN_H
 
 
+#include <set>
+#include <vector>
+#include <string>
 #include "picojson.h"
 
 
@@ -47,10 +50,12 @@ class UserException: public std::exception {
 std::string get_id (const picojson::value &toot);
 std::vector <picojson::value> get_timeline (std::string host);
 std::string http_get (std::string url);
+std::string http_get (std::string url, std::vector <std::string> headers);
 time_t get_time (const picojson::value &toot);
 time_t str2time (std::string s);
 std::string get_host_title (std::string domain);
 std::string get_host_thumbnail (std::string domain);
+std::set <std::string> get_international_hosts ();
 
 
 #endif /* #ifndef DISTSN_H */
