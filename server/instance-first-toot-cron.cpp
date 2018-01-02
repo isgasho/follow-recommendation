@@ -114,7 +114,7 @@ static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max
 		+ host
 		+ string {"/api/v1/timelines/public?local=true&max_id="}
 		+ max_id_s.str ();
-	string reply = http_get (query);
+	string reply = http_get_quick (query);
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
