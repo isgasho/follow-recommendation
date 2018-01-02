@@ -21,12 +21,10 @@ objects = \
 	instance-speed-history-api.o \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
-	instance-lists-api.o \
 	archaeology-instance-speed.o \
 	distsn.o
 cgi_binaries = \
-	distsn-instance-speed-history-api.cgi \
-	distsn-instance-lists-api.cgi
+	distsn-instance-speed-history-api.cgi
 cron_binaries = \
 	distsn-instance-speed-cron \
 	distsn-instance-first-toot-cron
@@ -56,9 +54,6 @@ distsn-instance-speed-history-api.cgi: distsn.o instance-speed-history-api.o
 
 distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
 	$(CXX) distsn.o instance-first-toot-cron.o -lcurl $(CFLAGS) -o $@
-
-distsn-instance-lists-api.cgi: distsn.o instance-lists-api.o
-	$(CXX) distsn.o instance-lists-api.o -lcurl $(CFLAGS) -o $@
 
 distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
 	$(CXX) distsn.o archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
