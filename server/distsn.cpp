@@ -129,7 +129,7 @@ string http_get (string url)
 
 	curl = curl_easy_init ();
 	if (! curl) {
-		throw (HttpException {});
+		throw (HttpException {__LINE__});
 	}
 	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
 	string reply_1;
@@ -138,7 +138,32 @@ string http_get (string url)
 	res = curl_easy_perform (curl);
 	curl_easy_cleanup (curl);
 	if (res != CURLE_OK) {
-		throw (HttpException {});
+		throw (HttpException {__LINE__});
+	}
+	return reply_1;
+}
+
+
+string http_get_quick (string url)
+{
+	CURL *curl;
+	CURLcode res;
+	curl_global_init (CURL_GLOBAL_ALL);
+
+	curl = curl_easy_init ();
+	if (! curl) {
+		throw (HttpException {__LINE__});
+	}
+	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
+	string reply_1;
+	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
+	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
+	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 60);
+	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 60);
+	res = curl_easy_perform (curl);
+	curl_easy_cleanup (curl);
+	if (res != CURLE_OK) {
+		throw (HttpException {__LINE__});
 	}
 	return reply_1;
 }
@@ -152,7 +177,7 @@ string http_get (string url, vector <string> headers)
 
 	curl = curl_easy_init ();
 	if (! curl) {
-		throw (HttpException {});
+		throw (HttpException {__LINE__});
 	}
 	
 	struct curl_slist * list = nullptr;
@@ -168,7 +193,7 @@ string http_get (string url, vector <string> headers)
 	res = curl_easy_perform (curl);
 	curl_easy_cleanup (curl);
 	if (res != CURLE_OK) {
-		throw (HttpException {});
+		throw (HttpException {__LINE__});
 	}
 	return reply_1;
 }
