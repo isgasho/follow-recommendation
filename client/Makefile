@@ -19,7 +19,6 @@ www_files = \
 	follow-recommendation.html \
 	user-speed.html \
 	instance-speed.html instance-speed.js \
-	instance-speed-history.html instance-speed-history.js \
 	instance-preview.html instance-preview.js \
 	instance-new.html instance-new.js \
 	fake-mastodon.css \

@@ -18,13 +18,11 @@ CHMOD = chmod
 cgidir = /usr/lib/cgi-bin
 
 objects = \
-	instance-speed-history-api.o \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
 	archaeology-instance-speed.o \
 	distsn.o
-cgi_binaries = \
-	distsn-instance-speed-history-api.cgi
+cgi_binaries =
 cron_binaries = \
 	distsn-instance-speed-cron \
 	distsn-instance-first-toot-cron
@@ -33,7 +31,6 @@ cli_binaries = \
 binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
 cgi_scripts = \
 	distsn-instance-speed-api.cgi \
-	distsn-instance-speed-history-files-api.cgi \
 	distsn-instance-first-toot-api.cgi \
 	distsn-top1000-html.cgi
 	
@@ -48,9 +45,6 @@ all: $(binaries)
 
 distsn-instance-speed-cron: distsn.o instance-speed-cron.o
 	$(CXX) distsn.o instance-speed-cron.o -lcurl $(CFLAGS) -o $@
-
-distsn-instance-speed-history-api.cgi: distsn.o instance-speed-history-api.o
-	$(CXX) distsn.o instance-speed-history-api.o -lcurl $(CFLAGS) -o $@
 
 distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
 	$(CXX) distsn.o instance-first-toot-cron.o -lcurl $(CFLAGS) -o $@
