@@ -91,10 +91,10 @@ static Host for_host (string domain)
 		throw (HostException {__LINE__});
 	}
 	auto reply_array = reply_value.get <picojson::array> ();
-	if (reply_array.size () < 1) {
+	if (reply_array.size () < 2) {
 		throw (HostException {__LINE__});
 	}
-	auto last_week_value = reply_array.at (0);
+	auto last_week_value = reply_array.at (1);
 	if (! last_week_value.is <picojson::object> ()) {
 		throw (HostException {__LINE__});
 	}
