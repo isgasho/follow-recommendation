@@ -7,6 +7,7 @@
 #include <sstream>
 #include <set>
 #include <limits>
+#include <ctime>
 #include "picojson.h"
 #include "distsn.h"
 
@@ -17,15 +18,15 @@ using namespace std;
 static string get_url (const picojson::value &toot)
 {
 	if (! toot.is <picojson::object> ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto properties = toot.get <picojson::object> ();
 	if (properties.find (string {"url"}) == properties.end ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	auto url_object = properties.at (string {"url"});
 	if (! url_object.is <string> ()) {
-		throw (TootException {});
+		throw (TootException {__LINE__});
 	}
 	return url_object.get <string> ();
 }
@@ -130,6 +131,28 @@ static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max
 }
 
 
+static vector <picojson::value> get_toots (string host)
+{
+	string query
+		= string {"https://"}
+		+ host
+		+ string {"/api/v1/timelines/public?local=true"};
+	string reply = http_get_quick (query);
+
+	picojson::value json_value;
+	string error = picojson::parse (json_value, reply);
+	if (! error.empty ()) {
+		throw (QueryException {__LINE__});
+	}
+	if (! json_value.is <picojson::array> ()) {
+		throw (QueryException {__LINE__});
+	}
+
+	vector <picojson::value> toots = json_value.get <picojson::array> ();
+	return toots;
+}
+
+
 static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bound, time_t &bottom_time, string &bottom_url)
 {
 	if (! (lower_bound < upper_bound)) {
@@ -152,7 +175,7 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 				bottom_time = get_time (bottom_toot);
 				bottom_url = get_url (bottom_toot);
 			} catch (TootException e) {
-				throw (HostException {});
+				throw (HostException {__LINE__});
 			}
 		}
 	} catch (QueryException e) {
@@ -163,7 +186,14 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 
 static void get_first_toot (string host, time_t &bottom_time, string &bottom_url)
 {
-	get_first_toot (host, 0, numeric_limits <uint64_t> ().max (), bottom_time, bottom_url);
+	auto toots = get_toots (host);
+	if (toots.size () < 1) {
+		throw (HostException {__LINE__});
+	}
+	string id_string = get_id (toots.front ());
+	uint64_t id_uint;
+	stringstream {id_string} >> id_uint;
+	get_first_toot (host, 0, id_uint, bottom_time, bottom_url);
 }
 
 
@@ -177,14 +207,14 @@ static Host for_host (string domain)
 	try {
 		title = get_host_title (domain);
 	} catch (ExceptionWithLineNumber e) {
-		cerr << "Error" << domain << " " << e.line << endl;
+		cerr << "Error " << domain << " " << e.line << endl;
 	}
 
 	string thumbnail;
 	try {
 		thumbnail = get_host_thumbnail (domain);
 	} catch (ExceptionWithLineNumber e) {
-		cerr << "Error" << domain << " " << e.line << endl;
+		cerr << "Error " << domain << " " << e.line << endl;
 	}
 
 	return Host {domain, bottom_time, bottom_url, title, thumbnail};
@@ -207,6 +237,7 @@ int main (int argc, char **argv)
 
 	for (auto domain: domains) {
 		cerr << domain << endl;
+		time_t begin_time = time (nullptr);
 		try {
 			Host host = for_host (string {domain});
 			hosts.push_back (host);
@@ -216,6 +247,8 @@ int main (int argc, char **argv)
 		} catch (HostException e) {
 			cerr << e.line << endl;
 		}
+		time_t end_time = time (nullptr);
+		cerr << "time: " << end_time - begin_time << endl;
 	}
 
 	sort (hosts.begin (), hosts.end (), byFresh {});

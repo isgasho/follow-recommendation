@@ -159,7 +159,7 @@ string http_get_quick (string url)
 	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
 	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
 	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 60);
-	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 60);
+	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 120);
 	res = curl_easy_perform (curl);
 	curl_easy_cleanup (curl);
 	if (res != CURLE_OK) {
