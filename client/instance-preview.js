@@ -184,13 +184,13 @@ function show_local_timeline (response) {
 function show_toot (toot) {
 	var html = '';
 	html += '<div class="toot">';
-	html += '<a href="' + toot.account.url + '" target="_blank">';
+	html += '<a href="' + toot.account.url + '" target="distsn-preview">';
 	html += '<img src="' + toot.account.avatar + '" width="40" height="40">';
 	html += escapeHtml (toot.account.display_name);
 	html += '</a>';
 	html += '&emsp;';
 	html += '<small>';
-	html += '<a href="' + toot.url + '" target="_blank">';
+	html += '<a href="' + toot.url + '" target="distsn-preview">';
 	html += (new Date (toot.created_at));
 	html += '</a>';
 	if (toot.application && toot.application.name) {
@@ -209,7 +209,7 @@ function show_toot (toot) {
 		for (cn = 0; cn < attachments.length; cn ++) {
 			var attachment = attachments [cn];
 			if (attachment.type === 'image') {
-				html += '<a href="' + (attachment.remote_url? attachment.remote_url: attachment.url) + '" target="_blank">';
+				html += '<a href="' + (attachment.remote_url? attachment.remote_url: attachment.url) + '" target="distsn-preview">';
 				html += '<img class="preview" src="' + attachment.preview_url + '">';
 				html += '</a>';
 				html += ' ';
