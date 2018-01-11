@@ -242,9 +242,7 @@ int main (int argc, char **argv)
 			Host host = for_host (string {domain});
 			hosts.push_back (host);
 			cerr << host.first_toot_url << endl;
-		} catch (HttpException e) {
-			cerr << e.line << endl;
-		} catch (HostException e) {
+		} catch (ExceptionWithLineNumber e) {
 			cerr << e.line << endl;
 		}
 		time_t end_time = time (nullptr);
