@@ -2,6 +2,7 @@
 filename='/var/lib/distsn/instance-first-toot/instance-first-toot.json'
 if [ -f $filename ]
 then
+	echo 'Access-Control-Allow-Origin: *'
 	echo 'Content-type: application/json'
 	echo ''
 	cat $filename
