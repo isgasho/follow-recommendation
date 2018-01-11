@@ -50,7 +50,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' +
 		'<br>' +
 		(instance.title && instance.title !== instance.domain? instance.domain + '<br>': '') +
-		'<a href="' + instance.first_toot_url + '" target="distsn-toot">' +
+		'<a href="' + instance.first_toot_url + '" target="distsn-preview">' +
 		(new Date (1000 * instance.first_toot_time)) +
 		'</a>' +
 		'</p>';
