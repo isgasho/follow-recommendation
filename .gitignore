@@ -41,6 +41,7 @@ distsn-instance-first-toot-cron
 distsn-user-application-cron
 distsn-instance-lists-api.cgi
 distsn-archaeology-instance-speed
+distsn-pleroma-instances-cron
 
 # Misc
 core*

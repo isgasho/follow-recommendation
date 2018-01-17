@@ -25,14 +25,16 @@ objects = \
 cgi_binaries =
 cron_binaries = \
 	distsn-instance-speed-cron \
-	distsn-instance-first-toot-cron
+	distsn-instance-first-toot-cron \
+	distsn-pleroma-instances-cron
 cli_binaries = \
 	distsn-archaeology-instance-speed
 binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
 cgi_scripts = \
 	distsn-instance-speed-api.cgi \
 	distsn-instance-first-toot-api.cgi \
-	distsn-top1000-html.cgi
+	distsn-top1000-html.cgi \
+	distsn-pleroma-instances-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
 
@@ -52,6 +54,9 @@ distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
 distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
 	$(CXX) distsn.o archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
 
+distsn-pleroma-instances-cron: distsn.o pleroma-instances-cron.o
+	$(CXX) distsn.o pleroma-instances-cron.o -lcurl $(CFLAGS) -o $@
+
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
 
@@ -67,6 +72,7 @@ initialize:
 refresh:
 	-$(RM) /var/lib/distsn/instance-speed/*
 	-$(RM) /var/lib/distsn/instance-speed-cron/*
+	-$(RM) /var/lib/distsn/*
 
 clean:
 	-$(RM) $(objects) $(binaries)
