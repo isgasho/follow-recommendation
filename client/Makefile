@@ -24,7 +24,9 @@ www_files = \
 	fake-mastodon.css \
 	kasaikuminkan.jpg google214b9ca3f27d115d.html \
 	missing.svg \
-	user-speed-raw.html
+	user-speed-raw.html \
+	pleroma-instances.html \
+	pleroma-instances.js
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)
