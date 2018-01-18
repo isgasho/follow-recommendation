@@ -41,11 +41,11 @@ for (cn = 0; cn < instances.length; cn ++) {
 	var instance_html =
 		'<p>' +
 		'<a href="' +
-		'instance-preview.html?' + encodeURI (instance.domain) + '" target="distsn-instance-preview">' +
+		'instance-preview.html?' + encodeURIComponent (instance.domain) + '" target="distsn-instance-preview">' +
 		'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
 		'</a>' +
 		'<a class="headline" href="' +
-		'instance-preview.html?' + encodeURI (instance.domain) + '" target="distsn-instance-preview">' +
+		'instance-preview.html?' + encodeURIComponent (instance.domain) + '" target="distsn-instance-preview">' +
 		escapeHtml (instance.title? instance.title: instance.domain) +
 		'</a>' +
 		'<br>' +

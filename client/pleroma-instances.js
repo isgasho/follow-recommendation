@@ -41,11 +41,11 @@ for (cn = 0; cn < instances.length; cn ++) {
 	var instance_html =
 		'<p>' +
 		'<a href="' +
-		'https://' + encodeURI (instance.domain) + '" target="_blank">' +
+		'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
 		'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
 		'</a>' +
 		'<a href="' +
-		'https://' + encodeURI (instance.domain) + '" target="_blank">' +
+		'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
 		escapeHtml (instance.domain) +
 		'</a>' + '<br>' +
 		escapeHtml (instance.title) +
