@@ -46,9 +46,9 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' +
 		'<a href="' +
 		'https://' + instance.domain + '" target="_blank">' +
-		(instance.title? escapeHtml (instance.title): instance.domain) +
-		'</a>' +
-		(instance.title && instance.title !== instance.domain? '<br>' + instance.domain: '') +
+		escapeHtml (instance.domain) +
+		'</a>' + '<br>' +
+		escapeHtml (instance.title) +
 		'</p>';
 	html += instance_html;
 }
