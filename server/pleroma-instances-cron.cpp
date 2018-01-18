@@ -72,10 +72,19 @@ static void write_storage (FILE *out, vector <Host> hosts)
 
 static Host for_host (string domain)
 {
+	string reply_string;
+
 	try {
-		string reply_string = http_get_quick (string {"https://"} + domain + string {"/api/pleroma/emoji"});
+		reply_string = http_get_quick (string {"https://"} + domain + string {"/api/pleroma/emoji"});
 	} catch (HttpException e) {
 		cerr << domain << " has no /api/pleroma/emoji" << endl;
+		throw (HostException {__LINE__});
+	}
+
+	picojson::value reply_value;
+	string error = picojson::parse (reply_value, reply_string);
+	if (! error.empty ()) {
+		cerr << error << endl;
 		throw (HostException {__LINE__});
 	}
 
