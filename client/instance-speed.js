@@ -41,15 +41,15 @@ for (cn = 0; cn < instances.length; cn ++) {
 	var instance_html =
 		'<p>' +
 		'<a href="' +
-		'instance-preview.html?' + instance.domain + '" target="distsn-instance-preview">' +
-		'<img class="avatar" src="' + thumbnail + '">' +
+		'instance-preview.html?' + encodeURI (instance.domain) + '" target="distsn-instance-preview">' +
+		'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
 		'</a>' +
 		'<a href="' +
-		'instance-preview.html?' + instance.domain + '" target="distsn-instance-preview">' +
-		(instance.title? escapeHtml (instance.title): instance.domain) +
+		'instance-preview.html?' + encodeURI (instance.domain) + '" target="distsn-instance-preview">' +
+		escapeHtml (instance.title? instance.title: instance.domain) +
 		'</a>' +
 		'<br>' +
-		(instance.title && instance.title !== instance.domain? instance.domain + '<br>': '') +
+		(instance.title && instance.title !== instance.domain? encodeURI (instance.domain) + '<br>': '') +
 		instance.toots_per_week + ' トゥート/週 (' + (cn + 1) + ' 位)' +
 		'</p>';
 	html += instance_html;
