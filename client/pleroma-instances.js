@@ -48,6 +48,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'instance-preview.html?' + instance.domain + '" target="distsn-instance-preview">' +
 		(instance.title? escapeHtml (instance.title): instance.domain) +
 		'</a>' +
+		(instance.title && instance.title !== instance.domain? '<br>' + instance.domain: '') +
 		'</p>';
 	html += instance_html;
 }
