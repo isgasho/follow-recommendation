@@ -36,7 +36,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 	if (instance.thumbnail && 0 < instance.thumbnail.length) {
 		thumbnail = instance.thumbnail;
 	} else {
-		thumbnail = 'missing.svg';
+		thumbnail = 'missing.png';
 	}
 	var instance_html =
 		'<p>' +
