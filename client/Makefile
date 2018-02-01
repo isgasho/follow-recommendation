@@ -24,6 +24,7 @@ www_files = \
 	fake-mastodon.css \
 	kasaikuminkan.jpg google214b9ca3f27d115d.html \
 	missing.svg \
+	missing.png \
 	user-speed-raw.html \
 	pleroma-instances.html \
 	pleroma-instances.js
