@@ -50,7 +50,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' +
 		'<br>' +
 		(instance.title && instance.title !== instance.domain? escapeHtml (instance.domain) + '<br>': '') +
-		instance.toots_per_week + ' TPW (' + (cn + 1) + ' 位)' +
+		instance.toots_per_week + ' TPW (' + (cn + 1) + ')' +
 		'</p>';
 	html += instance_html;
 }
