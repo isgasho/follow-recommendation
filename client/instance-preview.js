@@ -67,7 +67,7 @@ function get_instance (domain) {
 					escapeHtml (domain) +
 					'</a>' +
 					'</h1>' +
-					'<p><strong>インスタンスの情報を取得できませんでした。</strong></p>';
+					'<p><strong>Sorry.</strong></p>';
 			}
 		}
 	};
@@ -159,7 +159,7 @@ function show_applications (response) {
 			'<p>' +
 			escapeHtml (table [row].application) +
 			'<br>' +
-			table [row].occupancy + ' ' +'トゥート' + ' ' +
+			table [row].occupancy + ' ' + 'toots' + ' ' +
 			'(' + ((table [row].occupancy / total) * 100).toFixed (1) + ' %)' +
 			'</p>';
 	};
@@ -231,7 +231,6 @@ function escapeHtml (text) {
 
 window.show400 = function () {
 	document.getElementById ('a-400').removeAttribute ('href');
-	window.open ('https://enty.jp/distsn', 'distsn-donation');
 	get_timeline (g_distsn_domain, 10);
 };
 
@@ -239,14 +238,13 @@ window.show400 = function () {
 window.show1000 = function () {
 	document.getElementById ('a-400').removeAttribute ('href');
 	document.getElementById ('a-1000').removeAttribute ('href');
-	window.open ('https://enty.jp/distsn', 'distsn-donation');
 	get_timeline (g_distsn_domain, 25);
 };
 
 
 window.addEventListener ('load', function () {
 document.getElementById ('move-button').addEventListener ('click', function () {
-	var responce = prompt ('ドメイン名を入力してください。(例: mstdn.jp)');
+	var responce = prompt ('Input host name. (e.g. mstdn.jp)');
 	if (responce) {
 		window.location.search = '?' + responce;
 	}
