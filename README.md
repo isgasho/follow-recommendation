@@ -21,6 +21,10 @@ http://distsn.org
 
 Write following code in crontab:
 
+    10 */6  * * * /home/ubuntu/git/follow-recommendation/server/distsn-instance-speed-cron
+    20 4    * * * /home/ubuntu/git/follow-recommendation/server/distsn-instance-first-toot-cron
+    30 */3  * * * /home/ubuntu/git/follow-recommendation/server/distsn-pleroma-instances-cron
+
 ## Update
 
     make clean
