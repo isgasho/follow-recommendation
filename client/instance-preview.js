@@ -128,9 +128,23 @@ function get_timeline_impl (domain, depth, toots, a_bottom_id) {
 }
 
 
+function getOriginalPosts (posts)
+{
+	var originalPosts = []
+	for (var cn = 0; cn < posts.length; cn ++) {
+		var post = posts [cn]
+		if (! post.reblog) {
+			originalPosts.push (post)
+		}
+	}
+	return originalPosts
+}
+
+
 function show (response) {
-	show_applications (response);
-	show_local_timeline (response);
+	var originalPosts = getOriginalPosts (response)
+	show_applications (originalPosts);
+	show_local_timeline (originalPosts);
 };
 
 
