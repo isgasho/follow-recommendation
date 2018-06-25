@@ -18,19 +18,35 @@ public:
 	string domain;
 	string title;
 	string thumbnail;
+	bool media_proxy;
+	bool who_to_follow;
+	bool chat;
+	bool registration;
+	bool scope_options;
+	unsigned int text_limit;
 public:
-	Host (string a_domain, string a_title, string a_thumbnail) {
-		domain = a_domain;
-		title = a_title;
-		thumbnail = a_thumbnail;
-	};
+	Host (string a_domain, string a_title, string a_thumbnail):
+		domain (a_domain),
+		title (a_title),
+		thumbnail (a_thumbnail),
+		media_proxy (false),
+		who_to_follow (false),
+		chat (false),
+		registration (false),
+		scope_options (false),
+		text_limit (0)
+	{ };
+	Host ():
+		media_proxy (false),
+		who_to_follow (false),
+		chat (false),
+		registration (false),
+		scope_options (false),
+		text_limit (0)
+	{ };
+public:
+	string format () const;
 };
-
-
-bool by_domain (const Host &left, const Host &right)
-{
-	return left.domain < right.domain;
-}
 
 
 static string escape_json (string in)
@@ -51,22 +67,133 @@ static string escape_json (string in)
 }
 
 
+string Host::format () const
+{
+	string out;
+	out += "{";
+	out += "\"domain\":\"" + escape_json (domain) + "\",";
+	out += "\"title\":\"" + escape_json (title) + "\",";
+	out += "\"thumbnail\":\"" + escape_json (thumbnail) + "\",";
+	out += "\"media_proxy\":" + (media_proxy? string {"true"}: string {"false"}) + ",";
+	out += "\"who_to_follow\":" + (who_to_follow? string {"true"}: string {"false"}) + ",";
+	out += "\"chat\":" + (chat? string {"true"}: string {"false"}) + ",";
+	out += "\"registration\":" + (registration? string {"true"}: string {"false"}) + ",";
+	out += "\"scope_options\":" + (scope_options? string {"true"}: string {"false"}) + ",";
+	stringstream text_limit_stream;
+	text_limit_stream << text_limit;
+	out += "\"text_limit\":" + text_limit_stream.str ();
+	out += "}";
+	return out;
+}
+
+
+bool by_domain (const Host &left, const Host &right)
+{
+	return left.domain < right.domain;
+}
+
+
 static void write_storage (FILE *out, vector <Host> hosts)
 {
 	fprintf (out, "[");
 	for (unsigned int cn = 0; cn < hosts.size (); cn ++) {
 		if (0 < cn) {
-			fprintf (out, ",");
+			fprintf (out, ",\n");
 		}
 		Host host = hosts.at (cn);
-		fprintf
-			(out,
-			"{\"domain\":\"%s\",\"title\":\"%s\",\"thumbnail\":\"%s\"}",
-			host.domain.c_str (),
-			escape_json (host.title).c_str (),
-			escape_json (host.thumbnail).c_str ());
+		fprintf (out, host.format ().c_str ());
 	}
 	fprintf (out, "]");
+}
+
+
+static void get_host_pleroma_config (string host, bool &a_who_to_follow, bool &a_chat, bool &a_scope_options)
+{
+	string reply = http_get_quick (string {"https://"} + host + string {"/static/config.json"});
+
+	picojson::value json_value;
+	string error = picojson::parse (json_value, reply);
+	if (! error.empty ()) {
+		throw (HostException {__LINE__});
+	}
+	if (! json_value.is <picojson::object> ()) {
+		throw (HostException {__LINE__});
+	}
+	auto json_object = json_value.get <picojson::object> ();
+	if (json_object.find (string {"showWhoToFollowPanel"}) != json_object.end ()) {
+		auto who_to_follow_value = json_object.at (string {"showWhoToFollowPanel"});
+		if (who_to_follow_value.is <bool> ()) {
+			a_who_to_follow = who_to_follow_value.get <bool> ();
+		}
+	}
+	if (json_object.find (string {"chatDisabled"}) != json_object.end ()) {
+		auto chat_disabled_value = json_object.at (string {"chatDisabled"});
+		if (chat_disabled_value.is <bool> ()) {
+			a_chat = (! chat_disabled_value.get <bool> ());
+		}
+	}
+	if (json_object.find (string {"scopeOptionsEnabled"}) != json_object.end ()) {
+		auto scope_options_value = json_object.at (string {"scopeOptionsEnabled"});
+		if (scope_options_value.is <bool> ()) {
+			a_scope_options = scope_options_value.get <bool> ();
+		}
+	}
+}
+
+
+static void get_host_nodeinfo (string host, bool &a_registration)
+{
+	string reply = http_get_quick (string {"https://"} + host + string {"/nodeinfo/2.0.json"});
+
+	picojson::value json_value;
+	string error = picojson::parse (json_value, reply);
+	if (! error.empty ()) {
+		throw (HostException {__LINE__});
+	}
+	if (! json_value.is <picojson::object> ()) {
+		throw (HostException {__LINE__});
+	}
+	auto json_object = json_value.get <picojson::object> ();
+	if (json_object.find (string {"openRegistrations"}) != json_object.end ()) {
+		auto open_registrations_value = json_object.at (string {"openRegistrations"});
+		if (open_registrations_value.is <bool> ()) {
+			a_registration = open_registrations_value.get <bool> ();
+		}
+	}
+}
+
+
+static void get_host_statusnet_config (string host, unsigned int &a_text_limit)
+{
+	string reply = http_get_quick (string {"https://"} + host + string {"/api/statusnet/config"});
+
+	picojson::value json_value;
+	string error = picojson::parse (json_value, reply);
+	if (! error.empty ()) {
+		throw (HostException {__LINE__});
+	}
+	if (! json_value.is <picojson::object> ()) {
+		throw (HostException {__LINE__});
+	}
+	auto json_object = json_value.get <picojson::object> ();
+	if (json_object.find (string {"site"}) == json_object.end ()) {
+		throw (HostException {__LINE__});
+	}
+	auto site_value = json_object.at (string {"site"});
+	if (! site_value.is <picojson::object> ()) {
+		throw (HostException {__LINE__});
+	}
+	auto site_object = site_value.get <picojson::object> ();
+	if (site_object.find (string {"textlimit"}) != site_object.end ()) {
+		auto textlimit_value = site_object.at (string {"textlimit"});
+		if (textlimit_value.is <string> ()) {
+			string textlimit_string = textlimit_value.get <string> ();
+			unsigned int textlimit_int = 0;
+			stringstream textlimit_stream {textlimit_string};
+			textlimit_stream >> textlimit_int;
+			a_text_limit = textlimit_int;
+		}
+	}
 }
 
 
@@ -102,7 +229,37 @@ static Host for_host (string domain)
 		/* Do nothing. */
 	}
 
-	return Host {domain, title, thumbnail};
+	Host host {domain, title, thumbnail};
+	
+	try {
+		bool who_to_follow = false;
+		bool chat = false;
+		bool scope_options = false;
+		get_host_pleroma_config (domain, who_to_follow, chat, scope_options);
+		host.who_to_follow = who_to_follow;
+		host.chat = chat;
+		host.scope_options = scope_options;
+	} catch (ExceptionWithLineNumber e) {
+		cerr << e.line << endl;
+	}
+
+	try {
+		bool registration = false;
+		get_host_nodeinfo (domain, registration);
+		host.registration = registration;
+	} catch (ExceptionWithLineNumber e) {
+		cerr << e.line << endl;
+	}
+
+	try {
+		unsigned int text_limit = 0;
+		get_host_statusnet_config (domain, text_limit);
+		host.text_limit = text_limit;
+	} catch (ExceptionWithLineNumber e) {
+		cerr << e.line << endl;
+	}
+	
+	return host;
 }
 
 
