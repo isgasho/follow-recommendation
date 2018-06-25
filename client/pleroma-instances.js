@@ -38,7 +38,9 @@ for (cn = 0; cn < instances.length; cn ++) {
 	} else {
 		thumbnail = 'missing.png';
 	}
-	var instance_html =
+	var instance_html
+	instance_html = ''
+	instance_html +=
 		'<p>' +
 		'<a href="' +
 		'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
@@ -47,10 +49,18 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'<a href="' +
 		'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
 		escapeHtml (instance.domain) +
-		'</a>' + '<br>' +
+		'</a>' + '<br>'
+	instance_html +=
+		(instance.registration? '📛 ': '') +
+		(instance.who_to_follow? '👥 ': '') +
+		(instance.chat? '💬 ': '') +
+		(instance.scope_options? '🔏 ': '') +
+		'🖊️=' + instance.text_limit +
+		'<br>'
+	instance_html +=
 		escapeHtml (instance.title) +
 		'</p>';
-	html += instance_html;
+	html += instance_html
 }
 placeholder.innerHTML = html;
 } /* function show_users (users) { */
