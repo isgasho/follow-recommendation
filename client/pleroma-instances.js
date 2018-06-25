@@ -51,10 +51,10 @@ for (cn = 0; cn < instances.length; cn ++) {
 		escapeHtml (instance.domain) +
 		'</a>' + '<br>'
 	instance_html +=
-		(instance.registration? '📛 ': '') +
-		(instance.who_to_follow? '👥 ': '') +
-		(instance.chat? '💬 ': '') +
-		(instance.scope_options? '🔏 ': '') +
+		(instance.registration? '📛': '🚫') + ' ' +
+		(instance.who_to_follow? '👥': '🚫') + ' ' +
+		(instance.chat? '💬': '🚫') + ' ' +
+		(instance.scope_options? '🔏': '🚫') + ' ' +
 		'🖊️=' + instance.text_limit +
 		'<br>'
 	instance_html +=
