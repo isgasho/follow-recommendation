@@ -32,36 +32,38 @@ var cn;
 for (cn = 0; cn < instances.length; cn ++) {
 	var instance;
 	instance = instances [cn];
-	var thumbnail;
-	if (instance.thumbnail && 0 < instance.thumbnail.length) {
-		thumbnail = instance.thumbnail;
-	} else {
-		thumbnail = 'missing.png';
+	if (instance.registration) {
+		var thumbnail;
+		if (instance.thumbnail && 0 < instance.thumbnail.length) {
+			thumbnail = instance.thumbnail;
+		} else {
+			thumbnail = 'missing.png';
+		}
+		var instance_html
+		instance_html = ''
+		instance_html +=
+			'<p>' +
+			'<a href="' +
+			'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
+			'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
+			'</a>' +
+			'<a href="' +
+			'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
+			escapeHtml (instance.domain) +
+			'</a>' + '<br>'
+		instance_html +=
+			(instance.registration? '📛': '🚫') + ' ' +
+			(instance.media_proxy? '🕵️': '🚫') + ' ' +
+			(instance.who_to_follow? '👥': '🚫') + ' ' +
+			(instance.chat? '💬': '🚫') + ' ' +
+			(instance.scope_options? '🔏': '🚫') + ' ' +
+			'🖊️=' + instance.text_limit +
+			'<br>'
+		instance_html +=
+			escapeHtml (instance.title) +
+			'</p>';
+		html += instance_html
 	}
-	var instance_html
-	instance_html = ''
-	instance_html +=
-		'<p>' +
-		'<a href="' +
-		'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
-		'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
-		'</a>' +
-		'<a href="' +
-		'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
-		escapeHtml (instance.domain) +
-		'</a>' + '<br>'
-	instance_html +=
-		(instance.registration? '📛': '🚫') + ' ' +
-		(instance.media_proxy? '🕵️': '🚫') + ' ' +
-		(instance.who_to_follow? '👥': '🚫') + ' ' +
-		(instance.chat? '💬': '🚫') + ' ' +
-		(instance.scope_options? '🔏': '🚫') + ' ' +
-		'🖊️=' + instance.text_limit +
-		'<br>'
-	instance_html +=
-		escapeHtml (instance.title) +
-		'</p>';
-	html += instance_html
 }
 placeholder.innerHTML = html;
 } /* function show_users (users) { */
