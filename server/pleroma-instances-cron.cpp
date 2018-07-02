@@ -141,7 +141,7 @@ static void get_host_pleroma_config (string host, bool &a_who_to_follow, bool &a
 }
 
 
-static void get_host_nodeinfo (string host, bool &a_registration)
+static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_proxy)
 {
 	string reply = http_get_quick (string {"https://"} + host + string {"/nodeinfo/2.0.json"});
 
@@ -158,6 +158,19 @@ static void get_host_nodeinfo (string host, bool &a_registration)
 		auto open_registrations_value = json_object.at (string {"openRegistrations"});
 		if (open_registrations_value.is <bool> ()) {
 			a_registration = open_registrations_value.get <bool> ();
+		}
+	}
+	if (json_object.find (string {"metadata"}) != json_object.end ()) {
+		auto metadata_value = json_object.at (string {"metadata"});
+		if (metadata_value.is <picojson::object> ()) {
+			auto metadata_object = metadata_value.get <picojson::object> ();
+			if (metadata_object.find (string {"mediaProxy"}) != metadata_object.end ()) {
+				auto media_proxy_value = metadata_object.at (string {"mediaProxy"});
+				if (media_proxy_value.is <bool> ()) {
+					bool media_proxy_bool = media_proxy_value.get <bool> ();
+					a_media_proxy = media_proxy_bool;
+				}
+			}
 		}
 	}
 }
@@ -245,8 +258,10 @@ static Host for_host (string domain)
 
 	try {
 		bool registration = false;
-		get_host_nodeinfo (domain, registration);
+		bool media_proxy = false;
+		get_host_nodeinfo (domain, registration, media_proxy);
 		host.registration = registration;
+		host.media_proxy = media_proxy;
 	} catch (ExceptionWithLineNumber e) {
 		cerr << e.line << endl;
 	}

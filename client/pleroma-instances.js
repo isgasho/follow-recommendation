@@ -52,6 +52,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' + '<br>'
 	instance_html +=
 		(instance.registration? '📛': '🚫') + ' ' +
+		(instance.media_proxy? '🕵️': '🚫') + ' ' +
 		(instance.who_to_follow? '👥': '🚫') + ' ' +
 		(instance.chat? '💬': '🚫') + ' ' +
 		(instance.scope_options? '🔏': '🚫') + ' ' +
