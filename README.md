@@ -21,9 +21,9 @@ http://distsn.org
 
 Write following code in crontab:
 
-    10 */6  * * * /home/ubuntu/git/follow-recommendation/server/distsn-instance-speed-cron
-    20 4    * * * /home/ubuntu/git/follow-recommendation/server/distsn-instance-first-toot-cron
-    30 */3  * * * /home/ubuntu/git/follow-recommendation/server/distsn-pleroma-instances-cron
+    10 */6  * * * /usr/local/bin/distsn-instance-speed-cron
+    20 4    * * * /usr/local/bin/distsn-instance-first-toot-cron
+    30 */3  * * * /usr/local/bin/distsn-pleroma-instances-cron
 
 Write following code in crontab for the root:
 
