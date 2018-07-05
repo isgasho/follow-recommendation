@@ -25,6 +25,10 @@ Write following code in crontab:
     20 4    * * * /home/ubuntu/git/follow-recommendation/server/distsn-instance-first-toot-cron
     30 */3  * * * /home/ubuntu/git/follow-recommendation/server/distsn-pleroma-instances-cron
 
+Write following code in crontab for the root:
+
+    40 1 * * 2 /usr/local/bin/distsn-https-renew-cron
+
 ## Update
 
     make clean
