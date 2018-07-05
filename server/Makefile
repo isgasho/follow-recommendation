@@ -16,6 +16,7 @@ RMDIR = rmdir
 CHMOD = chmod
 
 cgidir = /usr/lib/cgi-bin
+bindir = /usr/local/bin
 
 objects = \
 	instance-speed-cron.o \
@@ -27,6 +28,8 @@ cron_binaries = \
 	distsn-instance-speed-cron \
 	distsn-instance-first-toot-cron \
 	distsn-pleroma-instances-cron
+cron_scripts = \
+	distsn-https-renew-cron
 cli_binaries = \
 	distsn-archaeology-instance-speed
 binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
@@ -37,6 +40,7 @@ cgi_scripts = \
 	distsn-pleroma-instances-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
+crons = $(cron_binaries) $(cron_scripts)
 
 .SUFFIXES: .cpp .o
 
@@ -59,9 +63,11 @@ distsn-pleroma-instances-cron: distsn.o pleroma-instances-cron.o
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
+	$(INSTALL_PROGRAM) $(crons) --target-directory=$(bindir)
 
 uninstall:
 	-$(RM) $(addprefix $(cgidir)/,$(cgis))
+	-$(RM) $(addprefix $(bindir)/,$(crons))
 
 initialize:
 	$(MKDIR) -p /var/lib/distsn/instance-speed
