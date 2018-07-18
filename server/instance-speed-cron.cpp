@@ -136,6 +136,7 @@ int main (int argc, char **argv)
 {
 	set <string> domains;
 	domains = get_international_hosts ();
+	domains.insert (string {"switter.at"});
 
 	vector <Host> hosts;
 	for (auto domain: domains) {
