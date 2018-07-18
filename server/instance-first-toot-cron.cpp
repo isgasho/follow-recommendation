@@ -227,6 +227,23 @@ static set <string> get_domains ()
 }
 
 
+static bool is_pleroma (string domain)
+{
+	string reply_string;
+	try {
+		reply_string = http_get_quick (string {"https://"} + domain + string {"/api/pleroma/emoji"});
+	} catch (HttpException e) {
+		return false;
+	}
+	picojson::value reply_value;
+	string error = picojson::parse (reply_value, reply_string);
+	if (! error.empty ()) {
+		return false;
+	}
+	return true;
+}
+
+
 int main (int argc, char **argv)
 {
 	set <string> domains = get_domains ();
@@ -239,9 +256,13 @@ int main (int argc, char **argv)
 		cerr << domain << endl;
 		time_t begin_time = time (nullptr);
 		try {
-			Host host = for_host (string {domain});
-			hosts.push_back (host);
-			cerr << host.first_toot_url << endl;
+			if (is_pleroma (domain)) {
+				cerr << domain << " is Pleroma." << endl;
+			} else {
+				Host host = for_host (string {domain});
+				hosts.push_back (host);
+				cerr << host.first_toot_url << endl;
+			}
 		} catch (ExceptionWithLineNumber e) {
 			cerr << e.line << endl;
 		}
