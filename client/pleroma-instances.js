@@ -55,7 +55,6 @@ for (cn = 0; cn < instances.length; cn ++) {
 			(instance.registration? '📛': '🚫') + ' ' +
 			(instance.media_proxy? '🕵️': '🚫') + ' ' +
 			(instance.who_to_follow? '👥': '🚫') + ' ' +
-			(instance.chat? '💬': '🚫') + ' ' +
 			(instance.scope_options? '🔏': '🚫') + ' ' +
 			'🖊️=' + instance.text_limit +
 			'<br>'
