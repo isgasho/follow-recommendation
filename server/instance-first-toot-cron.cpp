@@ -197,8 +197,9 @@ static void get_first_toot (string host, time_t &bottom_time, string &bottom_url
 }
 
 
-static Host for_host (string domain, Http &http)
+static Host for_host (string domain)
 {
+	Http http;
 	time_t bottom_time;
 	string bottom_url;
 	get_first_toot (domain, bottom_time, bottom_url, http);
@@ -227,8 +228,9 @@ static set <string> get_domains ()
 }
 
 
-static bool is_pleroma (string domain, Http &http)
+static bool is_pleroma (string domain)
 {
+	Http http;
 	string reply_string;
 	try {
 		reply_string = http.perform (string {"https://"} + domain + string {"/api/pleroma/emoji"});
@@ -246,8 +248,6 @@ static bool is_pleroma (string domain, Http &http)
 
 int main (int argc, char **argv)
 {
-	Http http;
-
 	set <string> domains = get_domains ();
 
 	const string storage_filename = string {"/var/lib/distsn/instance-first-toot/instance-first-toot.json"};
@@ -258,10 +258,10 @@ int main (int argc, char **argv)
 		cerr << domain << endl;
 		time_t begin_time = time (nullptr);
 		try {
-			if (is_pleroma (domain, http)) {
+			if (is_pleroma (domain)) {
 				cerr << domain << " is Pleroma." << endl;
 			} else {
-				Host host = for_host (string {domain}, http);
+				Host host = for_host (string {domain});
 				hosts.push_back (host);
 				cerr << host.first_toot_url << endl;
 			}
