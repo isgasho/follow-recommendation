@@ -107,9 +107,9 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
-static void get_host_pleroma_config (string host, bool &a_who_to_follow, bool &a_chat, bool &a_scope_options)
+static void get_host_pleroma_config (string host, bool &a_who_to_follow, bool &a_chat, bool &a_scope_options, Http &http)
 {
-	string reply = http_get_quick (string {"https://"} + host + string {"/static/config.json"});
+	string reply = http.perform (string {"https://"} + host + string {"/static/config.json"});
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -141,9 +141,9 @@ static void get_host_pleroma_config (string host, bool &a_who_to_follow, bool &a
 }
 
 
-static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_proxy)
+static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_proxy, Http &http)
 {
-	string reply = http_get_quick (string {"https://"} + host + string {"/nodeinfo/2.0.json"});
+	string reply = http.perform (string {"https://"} + host + string {"/nodeinfo/2.0.json"});
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -176,9 +176,9 @@ static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_
 }
 
 
-static void get_host_statusnet_config (string host, unsigned int &a_text_limit)
+static void get_host_statusnet_config (string host, unsigned int &a_text_limit, Http &http)
 {
-	string reply = http_get_quick (string {"https://"} + host + string {"/api/statusnet/config"});
+	string reply = http.perform (string {"https://"} + host + string {"/api/statusnet/config"});
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -212,10 +212,11 @@ static void get_host_statusnet_config (string host, unsigned int &a_text_limit)
 
 static Host for_host (string domain)
 {
+	Http http;
 	string reply_string;
 
 	try {
-		reply_string = http_get_quick (string {"https://"} + domain + string {"/api/pleroma/emoji"});
+		reply_string = http.perform (string {"https://"} + domain + string {"/api/pleroma/emoji"});
 	} catch (HttpException e) {
 		cerr << domain << " has no /api/pleroma/emoji" << endl;
 		throw (HostException {__LINE__});
@@ -230,14 +231,14 @@ static Host for_host (string domain)
 
 	string title;
 	try {
-		title = get_host_title (domain);
+		title = get_host_title (domain, http);
 	} catch (HostException e) {
 		/* Do nothing. */
 	}
 
 	string thumbnail;
 	try {
-		thumbnail = get_host_thumbnail (domain);
+		thumbnail = get_host_thumbnail (domain, http);
 	} catch (HostException e) {
 		/* Do nothing. */
 	}
@@ -248,7 +249,7 @@ static Host for_host (string domain)
 		bool who_to_follow = false;
 		bool chat = false;
 		bool scope_options = false;
-		get_host_pleroma_config (domain, who_to_follow, chat, scope_options);
+		get_host_pleroma_config (domain, who_to_follow, chat, scope_options, http);
 		host.who_to_follow = who_to_follow;
 		host.chat = chat;
 		host.scope_options = scope_options;
@@ -259,7 +260,7 @@ static Host for_host (string domain)
 	try {
 		bool registration = false;
 		bool media_proxy = false;
-		get_host_nodeinfo (domain, registration, media_proxy);
+		get_host_nodeinfo (domain, registration, media_proxy, http);
 		host.registration = registration;
 		host.media_proxy = media_proxy;
 	} catch (ExceptionWithLineNumber e) {
@@ -268,7 +269,7 @@ static Host for_host (string domain)
 
 	try {
 		unsigned int text_limit = 0;
-		get_host_statusnet_config (domain, text_limit);
+		get_host_statusnet_config (domain, text_limit, http);
 		host.text_limit = text_limit;
 	} catch (ExceptionWithLineNumber e) {
 		cerr << e.line << endl;

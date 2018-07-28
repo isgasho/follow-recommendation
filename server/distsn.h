@@ -47,16 +47,34 @@ class UserException: public std::exception {
 };
 
 
+class HttpGlobal {
+public:
+	HttpGlobal ();
+};
+
+
+class Http {
+public:
+	static HttpGlobal global;
+	CURL *curl;
+public:
+	Http ();
+	std::string perform (std::string url, std::vector <std::string> header);
+	std::string perform (std::string url);
+	std::string endure (std::string url);
+	~Http ();
+};
+
+
 std::string get_id (const picojson::value &toot);
 std::vector <picojson::value> get_timeline (std::string host);
 std::vector <picojson::value> get_timeline (std::string host, unsigned int time_depth);
-std::string http_get (std::string url);
-std::string http_get_quick (std::string url);
-std::string http_get (std::string url, std::vector <std::string> headers);
 time_t get_time (const picojson::value &toot);
 time_t str2time (std::string s);
 std::string get_host_title (std::string domain);
+std::string get_host_title (std::string domain, Http &http);
 std::string get_host_thumbnail (std::string domain);
+std::string get_host_thumbnail (std::string domain, Http &http);
 std::set <std::string> get_international_hosts ();
 
 

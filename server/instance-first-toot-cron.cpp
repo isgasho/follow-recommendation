@@ -106,7 +106,7 @@ public:
 };
 
 
-static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max_id)
+static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max_id, Http &http)
 {
 	stringstream max_id_s;
 	max_id_s << max_id;
@@ -115,7 +115,7 @@ static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max
 		+ host
 		+ string {"/api/v1/timelines/public?local=true&max_id="}
 		+ max_id_s.str ();
-	string reply = http_get_quick (query);
+	string reply = http.perform (query);
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -131,13 +131,13 @@ static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max
 }
 
 
-static vector <picojson::value> get_toots (string host)
+static vector <picojson::value> get_toots (string host, Http &http)
 {
 	string query
 		= string {"https://"}
 		+ host
 		+ string {"/api/v1/timelines/public?local=true"};
-	string reply = http_get_quick (query);
+	string reply = http.perform (query);
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -153,7 +153,7 @@ static vector <picojson::value> get_toots (string host)
 }
 
 
-static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bound, time_t &bottom_time, string &bottom_url)
+static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bound, time_t &bottom_time, string &bottom_url, Http &http)
 {
 	if (! (lower_bound < upper_bound)) {
 		throw HostException {__LINE__};
@@ -164,11 +164,11 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 	uint64_t middle = ((upper_bound - lower_bound) / 2) + lower_bound;
 	vector <picojson::value> toots;
 	try {
-		toots = get_toots_with_max_id (host, middle);
+		toots = get_toots_with_max_id (host, middle, http);
 		if (toots.size () == 0) {
-			get_first_toot (host, middle, upper_bound, bottom_time, bottom_url);
+			get_first_toot (host, middle, upper_bound, bottom_time, bottom_url, http);
 		} else if (20 <= toots.size ()) {
-			get_first_toot (host, lower_bound, middle, bottom_time, bottom_url);
+			get_first_toot (host, lower_bound, middle, bottom_time, bottom_url, http);
 		} else {
 			auto bottom_toot = toots.back ();
 			try {
@@ -179,40 +179,40 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 			}
 		}
 	} catch (QueryException e) {
-		get_first_toot (host, lower_bound, middle, bottom_time, bottom_url);
+		get_first_toot (host, lower_bound, middle, bottom_time, bottom_url, http);
 	}
 }
 
 
-static void get_first_toot (string host, time_t &bottom_time, string &bottom_url)
+static void get_first_toot (string host, time_t &bottom_time, string &bottom_url, Http &http)
 {
-	auto toots = get_toots (host);
+	auto toots = get_toots (host, http);
 	if (toots.size () < 1) {
 		throw (HostException {__LINE__});
 	}
 	string id_string = get_id (toots.front ());
 	uint64_t id_uint;
 	stringstream {id_string} >> id_uint;
-	get_first_toot (host, 0, id_uint, bottom_time, bottom_url);
+	get_first_toot (host, 0, id_uint, bottom_time, bottom_url, http);
 }
 
 
-static Host for_host (string domain)
+static Host for_host (string domain, Http &http)
 {
 	time_t bottom_time;
 	string bottom_url;
-	get_first_toot (domain, bottom_time, bottom_url);
+	get_first_toot (domain, bottom_time, bottom_url, http);
 
 	string title;
 	try {
-		title = get_host_title (domain);
+		title = get_host_title (domain, http);
 	} catch (ExceptionWithLineNumber e) {
 		cerr << "Error " << domain << " " << e.line << endl;
 	}
 
 	string thumbnail;
 	try {
-		thumbnail = get_host_thumbnail (domain);
+		thumbnail = get_host_thumbnail (domain, http);
 	} catch (ExceptionWithLineNumber e) {
 		cerr << "Error " << domain << " " << e.line << endl;
 	}
@@ -227,11 +227,11 @@ static set <string> get_domains ()
 }
 
 
-static bool is_pleroma (string domain)
+static bool is_pleroma (string domain, Http &http)
 {
 	string reply_string;
 	try {
-		reply_string = http_get_quick (string {"https://"} + domain + string {"/api/pleroma/emoji"});
+		reply_string = http.perform (string {"https://"} + domain + string {"/api/pleroma/emoji"});
 	} catch (HttpException e) {
 		return false;
 	}
@@ -246,6 +246,8 @@ static bool is_pleroma (string domain)
 
 int main (int argc, char **argv)
 {
+	Http http;
+
 	set <string> domains = get_domains ();
 
 	const string storage_filename = string {"/var/lib/distsn/instance-first-toot/instance-first-toot.json"};
@@ -256,10 +258,10 @@ int main (int argc, char **argv)
 		cerr << domain << endl;
 		time_t begin_time = time (nullptr);
 		try {
-			if (is_pleroma (domain)) {
+			if (is_pleroma (domain, http)) {
 				cerr << domain << " is Pleroma." << endl;
 			} else {
-				Host host = for_host (string {domain});
+				Host host = for_host (string {domain}, http);
 				hosts.push_back (host);
 				cerr << host.first_toot_url << endl;
 			}

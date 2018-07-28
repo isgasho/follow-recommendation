@@ -40,9 +40,10 @@ vector <picojson::value> get_timeline (string host)
 vector <picojson::value> get_timeline (string host, unsigned int time_depth)
 {
 	vector <picojson::value> timeline;
+	Http http;
 
 	{
-		string reply = http_get (string {"https://"} + host + string {"/api/v1/timelines/public?local=true&limit=40"});
+		string reply = http.perform (string {"https://"} + host + string {"/api/v1/timelines/public?local=true&limit=40"});
 
 		picojson::value json_value;
 		string error = picojson::parse (json_value, reply);
@@ -89,7 +90,7 @@ vector <picojson::value> get_timeline (string host, unsigned int time_depth)
 			+ host
 			+ string {"/api/v1/timelines/public?local=true&limit=40&max_id="}
 			+ bottom_id;
-		string reply = http_get (query);
+		string reply = http.perform (query);
 
 		picojson::value json_value;
 		string error = picojson::parse (json_value, reply);
@@ -121,105 +122,6 @@ static int writer (char * data, size_t size, size_t nmemb, std::string * writerD
 }
 
 
-string http_get (string url)
-{
-	CURL *curl;
-	CURLcode res;
-	curl_global_init (CURL_GLOBAL_ALL);
-
-	curl = curl_easy_init ();
-	if (! curl) {
-		throw (HttpException {__LINE__});
-	}
-	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
-	string reply_1;
-	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
-	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
-	res = curl_easy_perform (curl);
-	if (res == CURLE_OK) {
-		long response_code;
-		curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, & response_code);
-		curl_easy_cleanup (curl);
-		if (response_code != 200) {
-			throw (HttpException {__LINE__});
-		}
-	} else {
-		curl_easy_cleanup (curl);
-		throw (HttpException {__LINE__});
-	}
-	return reply_1;
-}
-
-
-string http_get_quick (string url)
-{
-	CURL *curl;
-	CURLcode res;
-	curl_global_init (CURL_GLOBAL_ALL);
-
-	curl = curl_easy_init ();
-	if (! curl) {
-		throw (HttpException {__LINE__});
-	}
-	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
-	string reply_1;
-	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
-	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
-	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 60);
-	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 120);
-	res = curl_easy_perform (curl);
-	if (res == CURLE_OK) {
-		long response_code;
-		curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, & response_code);
-		curl_easy_cleanup (curl);
-		if (response_code != 200) {
-			throw (HttpException {__LINE__});
-		}
-	} else {
-		curl_easy_cleanup (curl);
-		throw (HttpException {__LINE__});
-	}
-	return reply_1;
-}
-
-
-string http_get (string url, vector <string> headers)
-{
-	CURL *curl;
-	CURLcode res;
-	curl_global_init (CURL_GLOBAL_ALL);
-
-	curl = curl_easy_init ();
-	if (! curl) {
-		throw (HttpException {__LINE__});
-	}
-	
-	struct curl_slist * list = nullptr;
-	for (auto &header: headers) {
-		list = curl_slist_append (list, header.c_str ());
-	}
-	
-	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
-	curl_easy_setopt (curl, CURLOPT_HTTPHEADER, list);
-	string reply_1;
-	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
-	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
-	res = curl_easy_perform (curl);
-	if (res == CURLE_OK) {
-		long response_code;
-		curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, & response_code);
-		curl_easy_cleanup (curl);
-		if (response_code != 200) {
-			throw (HttpException {__LINE__});
-		}
-	} else {
-		curl_easy_cleanup (curl);
-		throw (HttpException {__LINE__});
-	}
-	return reply_1;
-}
-
-
 time_t get_time (const picojson::value &toot)
 {
 	if (! toot.is <picojson::object> ()) {
@@ -248,7 +150,14 @@ time_t str2time (string s)
 
 string get_host_title (string domain)
 {
-	string reply = http_get (string {"https://"} + domain + string {"/api/v1/instance"});
+	Http http;
+	return get_host_title (domain, http);
+}
+
+
+string get_host_title (string domain, Http &http)
+{
+	string reply = http.perform (string {"https://"} + domain + string {"/api/v1/instance"});
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -272,7 +181,14 @@ string get_host_title (string domain)
 
 string get_host_thumbnail (string domain)
 {
-	string reply = http_get (string {"https://"} + domain + string {"/api/v1/instance"});
+	Http http;
+	return get_host_thumbnail (domain, http);
+}
+
+
+string get_host_thumbnail (string domain, Http &http)
+{
+	string reply = http.perform (string {"https://"} + domain + string {"/api/v1/instance"});
 
 	picojson::value json_value;
 	string error = picojson::parse (json_value, reply);
@@ -296,8 +212,9 @@ string get_host_thumbnail (string domain)
 
 set <string> get_international_hosts ()
 {
+	Http http;
 	const string url {"http://distsn.org/cgi-bin/instances-api.cgi"};
-	string reply = http_get (url);
+	string reply = http.endure (url);
 
 	picojson::value reply_value;
 	string error = picojson::parse (reply_value, reply);
@@ -321,6 +238,88 @@ set <string> get_international_hosts ()
 	}
 	
 	return hosts;
+}
+
+
+HttpGlobal::HttpGlobal ()
+{
+	curl_global_init (CURL_GLOBAL_ALL);
+}
+
+
+Http::Http ()
+{
+	curl = curl_easy_init ();
+	if (! curl) {
+		throw (HttpException {__LINE__});
+	}
+}
+
+
+string Http::perform (string url)
+{
+	return perform (url, vector <string> {});
+}
+
+
+string Http::perform (string url, vector <string> headers)
+{
+	CURLcode res;
+
+	struct curl_slist * list = nullptr;
+	for (auto &header: headers) {
+		list = curl_slist_append (list, header.c_str ());
+	}
+
+	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
+	curl_easy_setopt (curl, CURLOPT_HTTPHEADER, list);
+	string reply_1;
+	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
+	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
+	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 60);
+	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 60);
+	res = curl_easy_perform (curl);
+	long response_code;
+	if (res == CURLE_OK) {
+		curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, & response_code);
+		if (response_code != 200) {
+			cerr << "HTTP response: " << response_code << endl;
+			throw (HttpException {__LINE__});
+		}
+	} else {
+		throw (HttpException {__LINE__});
+	}
+	return reply_1;
+}
+
+
+string Http::endure (string url)
+{
+	CURLcode res;
+
+	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
+	string reply_1;
+	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
+	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
+	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 120);
+	res = curl_easy_perform (curl);
+	long response_code;
+	if (res == CURLE_OK) {
+		curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, & response_code);
+		if (response_code != 200) {
+			cerr << "HTTP response: " << response_code << endl;
+			throw (HttpException {__LINE__});
+		}
+	} else {
+		throw (HttpException {__LINE__});
+	}
+	return reply_1;
+}
+
+
+Http::~Http ()
+{
+	curl_easy_cleanup (curl);
 }
 
 

@@ -22,10 +22,11 @@ unsigned int get_date (time_t time)
 
 static void for_host (string host, unsigned int wait)
 {
+	Http http;
 	vector <picojson::value> timeline;
 
 	{
-		string reply = http_get (string {"https://"} + host + string {"/api/v1/timelines/public?local=true&limit=40"});
+		string reply = http.perform (string {"https://"} + host + string {"/api/v1/timelines/public?local=true&limit=40"});
 
 		picojson::value json_value;
 		string error = picojson::parse (json_value, reply);
@@ -89,7 +90,7 @@ static void for_host (string host, unsigned int wait)
 			if (16 <= cn) {
 				throw (HostException {__LINE__});
 			}
-			string reply = http_get (query);
+			string reply = http.perform (query);
 			picojson::value json_value;
 			string error = picojson::parse (json_value, reply);
 			if (error.empty () && json_value.is <picojson::array> ()) {

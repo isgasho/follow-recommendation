@@ -79,8 +79,10 @@ static void write_storage (FILE *out, vector <Host> hosts)
 
 static Host for_host (string domain)
 {
+	Http http;
+
 	/* Get weekly number of toots. */
-	string reply_string = http_get_quick (string {"https://"} + domain + string {"/api/v1/instance/activity"});
+	string reply_string = http.perform (string {"https://"} + domain + string {"/api/v1/instance/activity"});
 
 	picojson::value reply_value;
 	string error = picojson::parse (reply_value, reply_string);
