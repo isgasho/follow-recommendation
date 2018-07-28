@@ -278,6 +278,8 @@ string Http::perform (string url, vector <string> headers)
 	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
 	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 60);
 	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 60);
+	curl_easy_setopt (curl,  CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt (curl,  CURLOPT_MAXREDIRS, 4L);
 	res = curl_easy_perform (curl);
 	long response_code;
 	if (res == CURLE_OK) {
@@ -304,6 +306,8 @@ string Http::endure (string url)
 	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
 	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 600);
 	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 600);
+	curl_easy_setopt (curl,  CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt (curl,  CURLOPT_MAXREDIRS, 4L);
 	res = curl_easy_perform (curl);
 	long response_code;
 	if (res == CURLE_OK) {
