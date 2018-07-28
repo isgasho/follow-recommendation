@@ -298,10 +298,12 @@ string Http::endure (string url)
 	CURLcode res;
 
 	curl_easy_setopt (curl, CURLOPT_URL, url.c_str ());
+	curl_easy_setopt (curl, CURLOPT_HTTPHEADER, nullptr);
 	string reply_1;
 	curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, writer);
 	curl_easy_setopt (curl, CURLOPT_WRITEDATA, & reply_1);
-	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 120);
+	curl_easy_setopt (curl,  CURLOPT_CONNECTTIMEOUT, 600);
+	curl_easy_setopt (curl,  CURLOPT_TIMEOUT, 600);
 	res = curl_easy_perform (curl);
 	long response_code;
 	if (res == CURLE_OK) {
