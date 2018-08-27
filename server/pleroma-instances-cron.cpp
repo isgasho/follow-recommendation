@@ -107,41 +107,7 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
-static void get_host_pleroma_config (string host, bool &a_who_to_follow, bool &a_chat, bool &a_scope_options, Http &http)
-{
-	string reply = http.perform (string {"https://"} + host + string {"/static/config.json"});
-
-	picojson::value json_value;
-	string error = picojson::parse (json_value, reply);
-	if (! error.empty ()) {
-		throw (HostException {__LINE__});
-	}
-	if (! json_value.is <picojson::object> ()) {
-		throw (HostException {__LINE__});
-	}
-	auto json_object = json_value.get <picojson::object> ();
-	if (json_object.find (string {"showWhoToFollowPanel"}) != json_object.end ()) {
-		auto who_to_follow_value = json_object.at (string {"showWhoToFollowPanel"});
-		if (who_to_follow_value.is <bool> ()) {
-			a_who_to_follow = who_to_follow_value.get <bool> ();
-		}
-	}
-	if (json_object.find (string {"chatDisabled"}) != json_object.end ()) {
-		auto chat_disabled_value = json_object.at (string {"chatDisabled"});
-		if (chat_disabled_value.is <bool> ()) {
-			a_chat = (! chat_disabled_value.get <bool> ());
-		}
-	}
-	if (json_object.find (string {"scopeOptionsEnabled"}) != json_object.end ()) {
-		auto scope_options_value = json_object.at (string {"scopeOptionsEnabled"});
-		if (scope_options_value.is <bool> ()) {
-			a_scope_options = scope_options_value.get <bool> ();
-		}
-	}
-}
-
-
-static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_proxy, Http &http)
+static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_proxy, bool &a_suggestions, Http &http)
 {
 	string reply = http.perform (string {"https://"} + host + string {"/nodeinfo/2.0.json"});
 
@@ -171,12 +137,25 @@ static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_
 					a_media_proxy = media_proxy_bool;
 				}
 			}
+			if (metadata_object.find (string {"suggestions"}) != metadata_object.end ()) {
+				auto suggestions_value = metadata_object.at (string {"suggestions"});
+				if (suggestions_value.is <picojson::object> ()) {
+					auto suggestions_object = suggestions_value.get <picojson::object> ();
+					if (suggestions_object.find (string {"enabled"}) != suggestions_object.end ()) {
+						auto enabled_value = suggestions_object.at (string {"enabled"});
+						if (enabled_value.is <bool> ()) {
+							bool enabled_bool = enabled_value.get <bool> ();
+							a_suggestions = enabled_bool;
+						}
+					}
+				}
+			}
 		}
 	}
 }
 
 
-static void get_host_statusnet_config (string host, unsigned int &a_text_limit, Http &http)
+static void get_host_statusnet_config (string host, bool &a_scope_options, unsigned int &a_text_limit, Http &http)
 {
 	string reply = http.perform (string {"https://"} + host + string {"/api/statusnet/config"});
 
@@ -197,6 +176,7 @@ static void get_host_statusnet_config (string host, unsigned int &a_text_limit, 
 		throw (HostException {__LINE__});
 	}
 	auto site_object = site_value.get <picojson::object> ();
+
 	if (site_object.find (string {"textlimit"}) != site_object.end ()) {
 		auto textlimit_value = site_object.at (string {"textlimit"});
 		if (textlimit_value.is <string> ()) {
@@ -205,6 +185,20 @@ static void get_host_statusnet_config (string host, unsigned int &a_text_limit, 
 			stringstream textlimit_stream {textlimit_string};
 			textlimit_stream >> textlimit_int;
 			a_text_limit = textlimit_int;
+		}
+	}
+
+	if (site_object.find (string {"pleromafe"}) != site_object.end ()) {
+		auto pleromafe_value = site_object.at (string {"pleromafe"});
+		if (pleromafe_value.is <picojson::object> ()) {
+			auto pleromafe_object = pleromafe_value.get <picojson::object> ();
+			if (pleromafe_object.find (string {"scopeOptionsEnabled"}) != pleromafe_object.end ()) {
+				auto scope_value = pleromafe_object.at (string {"scopeOptionsEnabled"});
+				if (scope_value.is <bool> ()) {
+					bool scope_bool = scope_value.get <bool> ();
+					a_scope_options = scope_bool;
+				}
+			}
 		}
 	}
 }
@@ -246,30 +240,22 @@ static Host for_host (string domain)
 	Host host {domain, title, thumbnail};
 	
 	try {
-		bool who_to_follow = false;
-		bool chat = false;
-		bool scope_options = false;
-		get_host_pleroma_config (domain, who_to_follow, chat, scope_options, http);
-		host.who_to_follow = who_to_follow;
-		host.chat = chat;
-		host.scope_options = scope_options;
-	} catch (ExceptionWithLineNumber e) {
-		cerr << e.line << endl;
-	}
-
-	try {
 		bool registration = false;
 		bool media_proxy = false;
-		get_host_nodeinfo (domain, registration, media_proxy, http);
+		bool suggestions = false;
+		get_host_nodeinfo (domain, registration, media_proxy, suggestions, http);
 		host.registration = registration;
 		host.media_proxy = media_proxy;
+		host.who_to_follow = suggestions;
 	} catch (ExceptionWithLineNumber e) {
 		cerr << e.line << endl;
 	}
 
 	try {
+		bool scope_options = false;
 		unsigned int text_limit = 0;
-		get_host_statusnet_config (domain, text_limit, http);
+		get_host_statusnet_config (domain, scope_options, text_limit, http);
+		host.scope_options = scope_options;
 		host.text_limit = text_limit;
 	} catch (ExceptionWithLineNumber e) {
 		cerr << e.line << endl;
