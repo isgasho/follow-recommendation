@@ -54,20 +54,20 @@ a.fake-button {
 
 
 a:link.fake-button {
-	color: white;
-	background-color: #2b90d9;
+	color: #304055;
+	background-color: #dbe0e8;
 }
 
 
 a:visited.fake-button {
-	color: white;
-	background-color: #2b90d9;
+	color: #304055;
+	background-color: #dbe0e8;
 }
 
 
 input[type=button] {
-	color: white;
-	background-color: #2b90d9;
+	color: #304055;
+	background-color: #dbe0e8;
 	border-style: none;
 	border-radius: 8px;
 }

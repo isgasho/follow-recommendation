@@ -27,7 +27,8 @@ www_files = \
 	missing.png \
 	user-speed-raw.html \
 	pleroma-instances.html \
-	pleroma-instances.js
+	pleroma-instances.js \
+	fake-pleroma-light.css
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)
