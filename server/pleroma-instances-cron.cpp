@@ -18,10 +18,11 @@ public:
 	string domain;
 	string title;
 	string thumbnail;
-	bool media_proxy;
-	bool who_to_follow;
-	bool chat;
 	bool registration;
+	bool chat;
+	bool gopher;
+	bool who_to_follow;
+	bool media_proxy;
 	bool scope_options;
 	unsigned int text_limit;
 public:
@@ -29,18 +30,20 @@ public:
 		domain (a_domain),
 		title (a_title),
 		thumbnail (a_thumbnail),
-		media_proxy (false),
-		who_to_follow (false),
-		chat (false),
 		registration (false),
+		chat (false),
+		gopher (false),
+		who_to_follow (false),
+		media_proxy (false),
 		scope_options (false),
 		text_limit (0)
 	{ };
 	Host ():
-		media_proxy (false),
-		who_to_follow (false),
-		chat (false),
 		registration (false),
+		chat (false),
+		gopher (false),
+		who_to_follow (false),
+		media_proxy (false),
 		scope_options (false),
 		text_limit (0)
 	{ };
@@ -74,10 +77,11 @@ string Host::format () const
 	out += "\"domain\":\"" + escape_json (domain) + "\",";
 	out += "\"title\":\"" + escape_json (title) + "\",";
 	out += "\"thumbnail\":\"" + escape_json (thumbnail) + "\",";
-	out += "\"media_proxy\":" + (media_proxy? string {"true"}: string {"false"}) + ",";
-	out += "\"who_to_follow\":" + (who_to_follow? string {"true"}: string {"false"}) + ",";
-	out += "\"chat\":" + (chat? string {"true"}: string {"false"}) + ",";
 	out += "\"registration\":" + (registration? string {"true"}: string {"false"}) + ",";
+	out += "\"chat\":" + (chat? string {"true"}: string {"false"}) + ",";
+	out += "\"gopher\":" + (gopher? string {"true"}: string {"false"}) + ",";
+	out += "\"who_to_follow\":" + (who_to_follow? string {"true"}: string {"false"}) + ",";
+	out += "\"media_proxy\":" + (media_proxy? string {"true"}: string {"false"}) + ",";
 	out += "\"scope_options\":" + (scope_options? string {"true"}: string {"false"}) + ",";
 	stringstream text_limit_stream;
 	text_limit_stream << text_limit;
@@ -107,8 +111,15 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
-static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_proxy, bool &a_suggestions, Http &http)
-{
+static void get_host_nodeinfo (
+	string host,
+	bool &a_registration,
+	bool a_chat,
+	bool a_gopher,
+	bool &a_suggestions,
+	bool &a_media_proxy,
+	Http &http
+) {
 	string reply = http.perform (string {"https://"} + host + string {"/nodeinfo/2.0.json"});
 
 	picojson::value json_value;
@@ -130,6 +141,20 @@ static void get_host_nodeinfo (string host, bool &a_registration, bool &a_media_
 		auto metadata_value = json_object.at (string {"metadata"});
 		if (metadata_value.is <picojson::object> ()) {
 			auto metadata_object = metadata_value.get <picojson::object> ();
+			if (metadata_object.find (string {"chat"}) != metadata_object.end ()) {
+				auto chat_value = metadata_object.at (string {"chat"});
+				if (chat_value.is <bool> ()) {
+					bool chat_bool = chat_value.get <bool> ();
+					a_chat = chat_bool;
+				}
+			}
+			if (metadata_object.find (string {"gopher"}) != metadata_object.end ()) {
+				auto gopher_value = metadata_object.at (string {"gopher"});
+				if (gopher_value.is <bool> ()) {
+					bool gopher_bool = gopher_value.get <bool> ();
+					a_gopher = gopher_bool;
+				}
+			}
 			if (metadata_object.find (string {"mediaProxy"}) != metadata_object.end ()) {
 				auto media_proxy_value = metadata_object.at (string {"mediaProxy"});
 				if (media_proxy_value.is <bool> ()) {
@@ -241,12 +266,16 @@ static Host for_host (string domain)
 	
 	try {
 		bool registration = false;
-		bool media_proxy = false;
+		bool chat = false;
+		bool gopher = false;
 		bool suggestions = false;
-		get_host_nodeinfo (domain, registration, media_proxy, suggestions, http);
+		bool media_proxy = false;
+		get_host_nodeinfo (domain, registration, chat, gopher, suggestions, media_proxy, http);
 		host.registration = registration;
-		host.media_proxy = media_proxy;
+		host.chat = chat;
+		host.gopher = gopher;
 		host.who_to_follow = suggestions;
+		host.media_proxy = media_proxy;
 	} catch (ExceptionWithLineNumber e) {
 		cerr << e.line << endl;
 	}
