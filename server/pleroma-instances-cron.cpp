@@ -114,8 +114,8 @@ static void write_storage (FILE *out, vector <Host> hosts)
 static void get_host_nodeinfo (
 	string host,
 	bool &a_registration,
-	bool a_chat,
-	bool a_gopher,
+	bool &a_chat,
+	bool &a_gopher,
 	bool &a_suggestions,
 	bool &a_media_proxy,
 	Http &http
