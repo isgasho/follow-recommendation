@@ -1,8 +1,8 @@
 /* Follow recommendation */
 
 
-function mediaProxy (in) {
-	return 'https://images.weserv.nl/?url=' + encodeURIComponent (in.replace (/^http(s)?\:\/\//, ''))
+function mediaProxy (image) {
+	return 'https://images.weserv.nl/?url=' + encodeURIComponent (image.replace (/^http(s)?\:\/\//, ''))
 }
 
 
