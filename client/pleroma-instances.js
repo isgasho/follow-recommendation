@@ -1,5 +1,3 @@
-/* Follow recommendation */
-
 
 function mediaProxy (image) {
 	return 'https://images.weserv.nl/?url=' + encodeURIComponent (image.replace (/^http(s)?\:\/\//, ''))
@@ -40,7 +38,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 	if (instance.registration) {
 		var thumbnail;
 		if (instance.thumbnail && 0 < instance.thumbnail.length) {
-			thumbnail = mediaProxy (instance.thumbnail);
+			thumbnail = mediaProxy (instance.thumbnail)
 		} else {
 			thumbnail = 'missing.png';
 		}

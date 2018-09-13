@@ -1,4 +1,7 @@
-/* Follow recommendation */
+
+function mediaProxy (image) {
+	return 'https://images.weserv.nl/?url=' + encodeURIComponent (image.replace (/^http(s)?\:\/\//, ''))
+}
 
 
 window.addEventListener ('load', function () {
@@ -34,7 +37,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 	instance = instances [cn];
 	var thumbnail;
 	if (instance.thumbnail && 0 < instance.thumbnail.length) {
-		thumbnail = instance.thumbnail;
+		thumbnail = mediaProxy (instance.thumbnail)
 	} else {
 		thumbnail = 'missing.svg';
 	}
@@ -42,7 +45,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'<p>' +
 		'<a href="' +
 		'instance-preview.html?' + encodeURIComponent (instance.domain) + '" target="distsn-instance-preview">' +
-		'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
+		'<img class="avatar" src="' + thumbnail + '">' +
 		'</a>' +
 		'<a href="' +
 		'instance-preview.html?' + encodeURIComponent (instance.domain) + '" target="distsn-instance-preview">' +
