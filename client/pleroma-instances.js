@@ -1,6 +1,11 @@
 /* Follow recommendation */
 
 
+function mediaProxy (in) {
+	return 'https://images.weserv.nl/?url=' + encodeURIComponent (in.replace (/^http(s)?\:\/\//, ''))
+}
+
+
 window.addEventListener ('load', function () {
 	var request = new XMLHttpRequest;
 	request.open ('GET', '/cgi-bin/distsn-pleroma-instances-api.cgi');
@@ -35,7 +40,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 	if (instance.registration) {
 		var thumbnail;
 		if (instance.thumbnail && 0 < instance.thumbnail.length) {
-			thumbnail = instance.thumbnail;
+			thumbnail = mediaProxy (instance.thumbnail);
 		} else {
 			thumbnail = 'missing.png';
 		}
@@ -45,7 +50,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 			'<p>' +
 			'<a href="' +
 			'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
-			'<img class="avatar" src="' + encodeURI (thumbnail) + '">' +
+			'<img class="avatar" src="' + thumbnail + '">' +
 			'</a>' +
 			'<a href="' +
 			'https://' + encodeURIComponent (instance.domain) + '" target="_blank">' +
