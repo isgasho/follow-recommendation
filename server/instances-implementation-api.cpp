@@ -62,6 +62,9 @@ int main (int argc, char ** argv)
 	
 	sort (host_names.begin (), host_names.end ());
 	
+	cout << "Access-Control-Allow-Origin: *" << endl;
+	cout << "Content-type: application/json" << endl << endl;
+
 	cout << "[";
 	
 	for (unsigned int cn = 0; cn < host_names.size (); cn ++) {
