@@ -5,6 +5,9 @@
 #include <set>
 #include <vector>
 #include <string>
+
+#include <curl/curl.h>
+
 #include "picojson.h"
 
 

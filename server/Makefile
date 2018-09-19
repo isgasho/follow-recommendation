@@ -22,17 +22,25 @@ objects = \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
 	archaeology-instance-speed.o \
-	distsn.o
-cgi_binaries =
+	distsn.o \
+	instances-implementation-api.o
+
+cgi_binaries = \
+	distsn-instances-implementation-api.cgi
+
 cron_binaries = \
 	distsn-instance-speed-cron \
 	distsn-instance-first-toot-cron \
 	distsn-pleroma-instances-cron
+
 cron_scripts = \
 	distsn-https-renew-cron
+
 cli_binaries = \
 	distsn-archaeology-instance-speed
+
 binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
+
 cgi_scripts = \
 	distsn-instance-speed-api.cgi \
 	distsn-instance-first-toot-api.cgi \
@@ -40,6 +48,7 @@ cgi_scripts = \
 	distsn-pleroma-instances-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
+
 crons = $(cron_binaries) $(cron_scripts)
 
 .SUFFIXES: .cpp .o
@@ -60,6 +69,9 @@ distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
 
 distsn-pleroma-instances-cron: distsn.o pleroma-instances-cron.o
 	$(CXX) distsn.o pleroma-instances-cron.o -lcurl $(CFLAGS) -o $@
+
+distsn-instances-implementation-api.cgi: distsn.o instances-implementation-api.o
+	$(CXX) distsn.o instances-implementation-api.o -lcurl $(CFLAGS) -o $@
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
