@@ -46,11 +46,11 @@ for (cn = 0; cn < instances.length; cn ++) {
 	var instance_html =
 		'<p>' +
 		'<a href="' +
-		'instance-preview.html?' + encodeURIComponent (instance.domain) + '" target="distsn-instance-preview">' +
+		'https://mstpubapi.herokuapp.com/instance?host=' + encodeURIComponent (instance.domain) + '" target="_blank">' +
 		'<img class="avatar" src="' + thumbnail + '">' +
 		'</a>' +
 		'<a href="' +
-		'instance-preview.html?' + encodeURIComponent (instance.domain) + '" target="distsn-instance-preview">' +
+		'https://mstpubapi.herokuapp.com/instance?host=' + encodeURIComponent (instance.domain) + '" target="_blank">' +
 		escapeHtml (instance.title? instance.title: instance.domain) +
 		'</a>' +
 		'<br>' +
