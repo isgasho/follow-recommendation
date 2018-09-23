@@ -21,7 +21,6 @@ bindir = /usr/local/bin
 objects = \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
-	archaeology-instance-speed.o \
 	distsn.o \
 	instances-implementation-api.o
 
@@ -36,8 +35,7 @@ cron_binaries = \
 cron_scripts = \
 	distsn-https-renew-cron
 
-cli_binaries = \
-	distsn-archaeology-instance-speed
+cli_binaries =
 
 binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
 
@@ -63,9 +61,6 @@ distsn-instance-speed-cron: distsn.o instance-speed-cron.o
 
 distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
 	$(CXX) distsn.o instance-first-toot-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
-
-distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
-	$(CXX) distsn.o archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
 
 distsn-pleroma-instances-cron: distsn.o pleroma-instances-cron.o
 	$(CXX) distsn.o pleroma-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
