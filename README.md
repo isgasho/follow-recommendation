@@ -1,14 +1,16 @@
 # 分散SNSフォーラム
 
-http://distsn.org
+https://distsn.org
 
 ## 公開API
 
 以下のURLは公開APIです。引数なしのGETメソッドを送ってください。JSON形式で、文字コードはUTF-8です。日時はUnix紀元からの通算秒数です。
 
-* http://distsn.org/cgi-bin/distsn-instance-speed-api.cgi
-* http://distsn.org/cgi-bin/distsn-instance-first-toot-api.cgi
-* http://distsn.org/cgi-bin/distsn-pleroma-instances-api.cgi
+* https://distsn.org/cgi-bin/distsn-gnusocial-instances-api.cgi
+* https://distsn.org/cgi-bin/distsn-pleroma-instances-api.cgi
+* https://distsn.org/cgi-bin/distsn-misskey-instances-api.cgi
+* https://distsn.org/cgi-bin/distsn-instance-first-toot-api.cgi
+* https://distsn.org/cgi-bin/distsn-instance-speed-api.cgi
 
 ## Install
 
@@ -21,9 +23,13 @@ http://distsn.org
 
 Write following code in crontab:
 
-    10 */6  * * * /usr/local/bin/distsn-instance-speed-cron
-    20 4    * * * /usr/local/bin/distsn-instance-first-toot-cron
-    30 */3  * * * /usr/local/bin/distsn-pleroma-instances-cron
+```
+6  */4 * * * /usr/local/bin/distsn-gnusocial-instances-cron
+12 */4 * * * /usr/local/bin/distsn-pleroma-instances-cron
+18 */4 * * * /usr/local/bin/distsn-misskey-instances-cron
+24 4   * * * /usr/local/bin/distsn-instance-first-toot-cron
+30 */4 * * * /usr/local/bin/distsn-instance-speed-cron
+```
 
 Write following code in crontab for the root:
 
