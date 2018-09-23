@@ -73,7 +73,7 @@ distsn-instances-implementation-api.cgi: instances-implementation-api.o
 distsn-gnusocial-instances-cron: gnusocial-instances-cron.o
 	$(CXX) gnusocial-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
-install: $(cgis)
+install: $(cgis) $(crons)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
 	$(INSTALL_PROGRAM) $(crons) --target-directory=$(bindir)
 
