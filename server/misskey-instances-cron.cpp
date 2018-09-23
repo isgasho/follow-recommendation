@@ -113,8 +113,6 @@ int main (int argc, char **argv)
 			} catch (socialnet::HostException e) {
 				cerr << "socialnet::HostException " << e.line << endl;
 			}
-		} else {
-			cerr << socialnet_host->host_name << " is not GNU social." << endl;
 		}
 	}
 	
