@@ -6,6 +6,9 @@
 #include <vector>
 #include <sstream>
 #include <set>
+
+#include <socialnet-1.h>
+
 #include "picojson.h"
 #include "distsn.h"
 
@@ -77,32 +80,31 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
-static Host for_host (string domain)
+static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 {
-	Http http;
-
 	/* Get weekly number of toots. */
-	string reply_string = http.perform (string {"https://"} + domain + string {"/api/v1/instance/activity"});
+	string reply_string = socialnet_host->http->perform
+		(string {"https://"} + socialnet_host->host_name + string {"/api/v1/instance/activity"});
 
 	picojson::value reply_value;
 	string error = picojson::parse (reply_value, reply_string);
 	if (! error.empty ()) {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 	if (! reply_value.is <picojson::array> ()) {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 	auto reply_array = reply_value.get <picojson::array> ();
 	if (reply_array.size () < 2) {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 	auto last_week_value = reply_array.at (1);
 	if (! last_week_value.is <picojson::object> ()) {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 	auto last_week_object = last_week_value.get <picojson::object> ();
 	if (last_week_object.find (string {"statuses"}) == last_week_object.end ()) {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 	auto statuses_value = last_week_object.at (string {"statuses"});
 	unsigned int statuses_uint = 0;
@@ -113,46 +115,40 @@ static Host for_host (string domain)
 		double statuses_double = statuses_value.get <double> ();
 		statuses_uint = static_cast <unsigned int> (statuses_double);
 	} else {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 
 	string title;
-	try {
-		title = get_host_title (domain);
-	} catch (HostException e) {
-		/* Do nothing. */
-	}
-
+	string description;
 	string thumbnail;
+
 	try {
-		thumbnail = get_host_thumbnail (domain);
-	} catch (HostException e) {
+		socialnet_host->get_profile (title, description, thumbnail);
+	} catch (socialnet::HostException e) {
 		/* Do nothing. */
 	}
 
-	return Host {domain, statuses_uint, title, thumbnail};
+	return Host {socialnet_host->host_name, statuses_uint, title, thumbnail};
 }
 
 
 int main (int argc, char **argv)
 {
-	set <string> domains;
-	domains = get_international_hosts ();
-	domains.insert (string {"switter.at"});
+	auto socialnet_hosts = socialnet::get_hosts ();
 
 	vector <Host> hosts;
-	for (auto domain: domains) {
-		cerr << domain << endl;
+	for (auto socialnet_host: socialnet_hosts) {
+		cerr << socialnet_host->host_name << endl;
 		try {
-			Host host = for_host (string {domain});
+			Host host = for_host (socialnet_host);
 			hosts.push_back (host);
 			cerr << "TPW: " << host.toots_per_week << endl;
-		} catch (HttpException e) {
+		} catch (socialnet::HttpException e) {
 			/* Nothing. */
 			cerr << "HttpException " << e.line << endl;
-		} catch (HostException e) {
+		} catch (socialnet::HostException e) {
 			/* Nothing. */
-			cerr << "HostException " << e.line << endl;
+			cerr << "socialnet::HostException " << e.line << endl;
 		}
 	}
 

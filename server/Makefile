@@ -59,7 +59,7 @@ crons = $(cron_binaries) $(cron_scripts)
 all: $(binaries)
 
 distsn-instance-speed-cron: distsn.o instance-speed-cron.o
-	$(CXX) distsn.o instance-speed-cron.o -lcurl $(CFLAGS) -o $@
+	$(CXX) distsn.o instance-speed-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
 	$(CXX) distsn.o instance-first-toot-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
