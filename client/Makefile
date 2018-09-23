@@ -31,7 +31,8 @@ www_files = \
 	gnusocial-instances.html \
 	misskey-instances.html \
 	instances-implementation.js \
-	gnusocial-instances.js
+	gnusocial-instances.js \
+	misskey-instances.js
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)
