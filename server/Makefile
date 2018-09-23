@@ -68,7 +68,7 @@ distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
 	$(CXX) distsn.o archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
 
 distsn-pleroma-instances-cron: distsn.o pleroma-instances-cron.o
-	$(CXX) distsn.o pleroma-instances-cron.o -lcurl $(CFLAGS) -o $@
+	$(CXX) distsn.o pleroma-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 distsn-instances-implementation-api.cgi: distsn.o instances-implementation-api.o
 	$(CXX) distsn.o instances-implementation-api.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
