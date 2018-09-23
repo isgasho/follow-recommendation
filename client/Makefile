@@ -30,7 +30,8 @@ www_files = \
 	fake-pleroma-light.css \
 	gnusocial-instances.html \
 	misskey-instances.html \
-	instances-implementation.js
+	instances-implementation.js \
+	gnusocial-instances.js
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)
