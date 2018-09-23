@@ -8,6 +8,9 @@
 #include <set>
 #include <limits>
 #include <ctime>
+
+#include <socialnet-1.h>
+
 #include "picojson.h"
 #include "distsn.h"
 
@@ -18,15 +21,15 @@ using namespace std;
 static string get_url (const picojson::value &toot)
 {
 	if (! toot.is <picojson::object> ()) {
-		throw (TootException {__LINE__});
+		throw (socialnet::TootException {__LINE__});
 	}
 	auto properties = toot.get <picojson::object> ();
 	if (properties.find (string {"url"}) == properties.end ()) {
-		throw (TootException {__LINE__});
+		throw (socialnet::TootException {__LINE__});
 	}
 	auto url_object = properties.at (string {"url"});
 	if (! url_object.is <string> ()) {
-		throw (TootException {__LINE__});
+		throw (socialnet::TootException {__LINE__});
 	}
 	return url_object.get <string> ();
 }
@@ -99,14 +102,14 @@ static void write_storage (FILE *out, vector <Host> hosts)
 }
 
 
-class QueryException: public ExceptionWithLineNumber {
+class QueryException: public socialnet::ExceptionWithLineNumber {
 public:
 	QueryException () { };
-	QueryException (unsigned int a_line): ExceptionWithLineNumber (a_line) { };
+	QueryException (unsigned int a_line): socialnet::ExceptionWithLineNumber (a_line) { };
 };
 
 
-static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max_id, Http &http)
+static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max_id, socialnet::Http &http)
 {
 	stringstream max_id_s;
 	max_id_s << max_id;
@@ -131,7 +134,7 @@ static vector <picojson::value> get_toots_with_max_id (string host, uint64_t max
 }
 
 
-static vector <picojson::value> get_toots (string host, Http &http)
+static vector <picojson::value> get_toots (string host, socialnet::Http &http)
 {
 	string query
 		= string {"https://"}
@@ -153,13 +156,13 @@ static vector <picojson::value> get_toots (string host, Http &http)
 }
 
 
-static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bound, time_t &bottom_time, string &bottom_url, Http &http)
+static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bound, time_t &bottom_time, string &bottom_url, socialnet::Http &http)
 {
 	if (! (lower_bound < upper_bound)) {
-		throw HostException {__LINE__};
+		throw socialnet::HostException {__LINE__};
 	}
 	if (upper_bound - lower_bound < 2) {
-		throw HostException {__LINE__};
+		throw socialnet::HostException {__LINE__};
 	}
 	uint64_t middle = ((upper_bound - lower_bound) / 2) + lower_bound;
 	vector <picojson::value> toots;
@@ -174,8 +177,8 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 			try {
 				bottom_time = get_time (bottom_toot);
 				bottom_url = get_url (bottom_toot);
-			} catch (TootException e) {
-				throw (HostException {__LINE__});
+			} catch (socialnet::TootException e) {
+				throw (socialnet::HostException {__LINE__});
 			}
 		}
 	} catch (QueryException e) {
@@ -184,11 +187,11 @@ static void get_first_toot (string host, uint64_t lower_bound, uint64_t upper_bo
 }
 
 
-static void get_first_toot (string host, time_t &bottom_time, string &bottom_url, Http &http)
+static void get_first_toot (string host, time_t &bottom_time, string &bottom_url, socialnet::Http &http)
 {
 	auto toots = get_toots (host, http);
 	if (toots.size () < 1) {
-		throw (HostException {__LINE__});
+		throw (socialnet::HostException {__LINE__});
 	}
 	string id_string = get_id (toots.front ());
 	uint64_t id_uint;
@@ -197,75 +200,45 @@ static void get_first_toot (string host, time_t &bottom_time, string &bottom_url
 }
 
 
-static Host for_host (string domain)
+static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 {
-	Http http;
 	time_t bottom_time;
 	string bottom_url;
-	get_first_toot (domain, bottom_time, bottom_url, http);
+	get_first_toot (socialnet_host->host_name, bottom_time, bottom_url, * socialnet_host->http);
 
 	string title;
-	try {
-		title = get_host_title (domain, http);
-	} catch (ExceptionWithLineNumber e) {
-		cerr << "Error " << domain << " " << e.line << endl;
-	}
-
+	string description;
 	string thumbnail;
 	try {
-		thumbnail = get_host_thumbnail (domain, http);
-	} catch (ExceptionWithLineNumber e) {
-		cerr << "Error " << domain << " " << e.line << endl;
+		socialnet_host->get_profile (title, description, thumbnail);
+	} catch (socialnet::ExceptionWithLineNumber e) {
+		cerr << "Error " << socialnet_host->host_name << " " << e.line << endl;
 	}
 
-	return Host {domain, bottom_time, bottom_url, title, thumbnail};
-}
-
-
-static set <string> get_domains ()
-{
-	return get_international_hosts ();
-}
-
-
-static bool is_pleroma (string domain)
-{
-	Http http;
-	string reply_string;
-	try {
-		reply_string = http.perform (string {"https://"} + domain + string {"/api/pleroma/emoji"});
-	} catch (HttpException e) {
-		return false;
-	}
-	picojson::value reply_value;
-	string error = picojson::parse (reply_value, reply_string);
-	if (! error.empty ()) {
-		return false;
-	}
-	return true;
+	return Host {socialnet_host->host_name, bottom_time, bottom_url, title, thumbnail};
 }
 
 
 int main (int argc, char **argv)
 {
-	set <string> domains = get_domains ();
+	auto socialnet_hosts = socialnet::get_hosts ();
 
 	const string storage_filename = string {"/var/lib/distsn/instance-first-toot/instance-first-toot.json"};
 
 	vector <Host> hosts;
 
-	for (auto domain: domains) {
-		cerr << domain << endl;
+	for (auto socialnet_host: socialnet_hosts) {
+		cerr << socialnet_host->host_name << endl;
 		time_t begin_time = time (nullptr);
 		try {
-			if (is_pleroma (domain)) {
-				cerr << domain << " is Pleroma." << endl;
-			} else {
-				Host host = for_host (string {domain});
+			if (socialnet_host->implementation () == socialnet::eImplementation::MASTODON) {
+				Host host = for_host (socialnet_host);
 				hosts.push_back (host);
 				cerr << host.first_toot_url << endl;
+			} else {
+				cerr << socialnet_host->host_name << " is not Mastodon." << endl;
 			}
-		} catch (ExceptionWithLineNumber e) {
+		} catch (socialnet::ExceptionWithLineNumber e) {
 			cerr << e.line << endl;
 		}
 		time_t end_time = time (nullptr);

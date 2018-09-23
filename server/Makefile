@@ -62,7 +62,7 @@ distsn-instance-speed-cron: distsn.o instance-speed-cron.o
 	$(CXX) distsn.o instance-speed-cron.o -lcurl $(CFLAGS) -o $@
 
 distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
-	$(CXX) distsn.o instance-first-toot-cron.o -lcurl $(CFLAGS) -o $@
+	$(CXX) distsn.o instance-first-toot-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 distsn-archaeology-instance-speed: distsn.o archaeology-instance-speed.o
 	$(CXX) distsn.o archaeology-instance-speed.o -lcurl $(CFLAGS) -o $@
