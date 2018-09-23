@@ -53,7 +53,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' +
 		'<a href="' +
 		'https://' + encodeURIComponent (instance.hostName) + '" target="_blank">' +
-		escapeHtml (instance.domain) +
+		escapeHtml (instance.hostName) +
 		'</a>' + '<br>'
 	instance_html +=
 		escapeHtml (instance.title) +
