@@ -138,17 +138,21 @@ int main (int argc, char **argv)
 
 	vector <Host> hosts;
 	for (auto socialnet_host: socialnet_hosts) {
-		cerr << socialnet_host->host_name << endl;
-		try {
-			Host host = for_host (socialnet_host);
-			hosts.push_back (host);
-			cerr << "TPW: " << host.toots_per_week << endl;
-		} catch (socialnet::HttpException e) {
-			/* Nothing. */
-			cerr << "HttpException " << e.line << endl;
-		} catch (socialnet::HostException e) {
-			/* Nothing. */
-			cerr << "socialnet::HostException " << e.line << endl;
+		if (socialnet_host->implementation () == socialnet::eImplementation::MASTODON) {
+			cerr << socialnet_host->host_name << endl;
+			try {
+				Host host = for_host (socialnet_host);
+				hosts.push_back (host);
+				cerr << "TPW: " << host.toots_per_week << endl;
+			} catch (socialnet::HttpException e) {
+				/* Nothing. */
+				cerr << "HttpException " << e.line << endl;
+			} catch (socialnet::HostException e) {
+				/* Nothing. */
+				cerr << "socialnet::HostException " << e.line << endl;
+			}
+		} else {
+			cerr << socialnet_host->host_name << " is not Mastodon." << endl;
 		}
 	}
 

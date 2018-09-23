@@ -242,7 +242,7 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 	string thumbnail;
 	try {
 		socialnet_host->get_profile (title, description, thumbnail);
-	} catch (socialnet::HostException e) {
+	} catch (socialnet::ExceptionWithLineNumber e) {
 		/* Do nothing. */
 	}
 
@@ -284,13 +284,17 @@ int main (int argc, char **argv)
 
 	vector <Host> hosts;
 	for (auto socialnet_host: socialnet_hosts) {
-		cerr << socialnet_host->host_name << endl;
-		try {
-			Host host = for_host (socialnet_host);
-			hosts.push_back (host);
-		} catch (socialnet::HostException e) {
-			/* Nothing. */
-			cerr << "socialnet::HostException " << e.line << endl;
+		if (socialnet_host->implementation () == socialnet::eImplementation::PLEROMA) {
+			cerr << socialnet_host->host_name << endl;
+			try {
+				Host host = for_host (socialnet_host);
+				hosts.push_back (host);
+			} catch (socialnet::HostException e) {
+				/* Nothing. */
+				cerr << "socialnet::HostException " << e.line << endl;
+			}
+		} else {
+			cerr << socialnet_host->host_name << " is not Pleroma." << endl;
 		}
 	}
 	
