@@ -37,30 +37,28 @@ var cn;
 for (cn = 0; cn < instances.length; cn ++) {
 	var instance;
 	instance = instances [cn];
-	if (instance.registration) {
-		var thumbnail;
-		if (instance.thumbnail && 0 < instance.thumbnail.length) {
-			thumbnail = mediaProxy (instance.thumbnail)
-		} else {
-			thumbnail = 'missing.png';
-		}
-		var instance_html
-		instance_html = ''
-		instance_html +=
-			'<p>' +
-			'<a href="' +
-			'https://' + encodeURIComponent (instance.hostName) + '" target="_blank">' +
-			'<img class="avatar" src="' + thumbnail + '">' +
-			'</a>' +
-			'<a href="' +
-			'https://' + encodeURIComponent (instance.hostName) + '" target="_blank">' +
-			escapeHtml (instance.domain) +
-			'</a>' + '<br>'
-		instance_html +=
-			escapeHtml (instance.title) +
-			'</p>';
-		html += instance_html
+	var thumbnail;
+	if (instance.thumbnail && 0 < instance.thumbnail.length) {
+		thumbnail = mediaProxy (instance.thumbnail)
+	} else {
+		thumbnail = 'missing.png';
 	}
+	var instance_html
+	instance_html = ''
+	instance_html +=
+		'<p>' +
+		'<a href="' +
+		'https://' + encodeURIComponent (instance.hostName) + '" target="_blank">' +
+		'<img class="avatar" src="' + thumbnail + '">' +
+		'</a>' +
+		'<a href="' +
+		'https://' + encodeURIComponent (instance.hostName) + '" target="_blank">' +
+		escapeHtml (instance.domain) +
+		'</a>' + '<br>'
+	instance_html +=
+		escapeHtml (instance.title) +
+		'</p>';
+	html += instance_html
 }
 placeholder.innerHTML = html;
 } /* function show_users (users) { */
