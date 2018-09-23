@@ -12,10 +12,60 @@
 #include <socialnet-1.h>
 
 #include "picojson.h"
-#include "distsn.h"
 
 
 using namespace std;
+
+
+static string get_id (const picojson::value &toot)
+{
+	if (! toot.is <picojson::object> ()) {
+		throw (socialnet::TootException {});
+	}
+	auto properties = toot.get <picojson::object> ();
+	if (properties.find (string {"id"}) == properties.end ()) {
+		throw (socialnet::TootException {});
+	}
+	auto id_object = properties.at (string {"id"});
+	string id_string;
+	if (id_object.is <double> ()) {
+		double id_double = id_object.get <double> ();
+		stringstream s;
+		s << static_cast <unsigned int> (id_double);
+		id_string = s.str ();
+	} else if (id_object.is <string> ()) {
+		id_string = id_object.get <string> ();
+	} else {
+		throw (socialnet::TootException {});
+	}
+	return id_string;
+}
+
+
+static time_t str2time (string s)
+{
+	struct tm tm;
+	strptime (s.c_str (), "%Y-%m-%dT%H:%M:%S", & tm);
+	return timegm (& tm);
+}
+
+
+static time_t get_time (const picojson::value &toot)
+{
+	if (! toot.is <picojson::object> ()) {
+		throw (socialnet::TootException {});
+	}
+	auto properties = toot.get <picojson::object> ();
+	if (properties.find (string {"created_at"}) == properties.end ()) {
+		throw (socialnet::TootException {});
+	}
+	auto time_object = properties.at (string {"created_at"});
+	if (! time_object.is <string> ()) {
+		throw (socialnet::TootException {});
+	}
+	auto time_s = time_object.get <string> ();
+	return str2time (time_s);
+}
 
 
 static string get_url (const picojson::value &toot)

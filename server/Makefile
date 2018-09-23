@@ -21,7 +21,6 @@ bindir = /usr/local/bin
 objects = \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
-	distsn.o \
 	instances-implementation-api.o
 
 cgi_binaries = \
@@ -56,17 +55,17 @@ crons = $(cron_binaries) $(cron_scripts)
 
 all: $(binaries)
 
-distsn-instance-speed-cron: distsn.o instance-speed-cron.o
-	$(CXX) distsn.o instance-speed-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+distsn-instance-speed-cron: instance-speed-cron.o
+	$(CXX) instance-speed-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
-distsn-instance-first-toot-cron: distsn.o instance-first-toot-cron.o
-	$(CXX) distsn.o instance-first-toot-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+distsn-instance-first-toot-cron: instance-first-toot-cron.o
+	$(CXX) instance-first-toot-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
-distsn-pleroma-instances-cron: distsn.o pleroma-instances-cron.o
-	$(CXX) distsn.o pleroma-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+distsn-pleroma-instances-cron: pleroma-instances-cron.o
+	$(CXX) pleroma-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
-distsn-instances-implementation-api.cgi: distsn.o instances-implementation-api.o
-	$(CXX) distsn.o instances-implementation-api.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+distsn-instances-implementation-api.cgi: instances-implementation-api.o
+	$(CXX) instances-implementation-api.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
