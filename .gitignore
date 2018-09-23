@@ -43,6 +43,7 @@ distsn-instance-lists-api.cgi
 distsn-archaeology-instance-speed
 distsn-pleroma-instances-cron
 distsn-instances-implementation-api.cgi
+distsn-gnusocial-instances-cron
 
 # Misc
 core*

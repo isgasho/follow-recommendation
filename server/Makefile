@@ -21,7 +21,9 @@ bindir = /usr/local/bin
 objects = \
 	instance-speed-cron.o \
 	instance-first-toot-cron.o \
-	instances-implementation-api.o
+	instances-implementation-api.o \
+	pleroma-instances-cron.o \
+	gnusocial-instances-cron.o
 
 cgi_binaries = \
 	distsn-instances-implementation-api.cgi
@@ -42,7 +44,8 @@ cgi_scripts = \
 	distsn-instance-speed-api.cgi \
 	distsn-instance-first-toot-api.cgi \
 	distsn-top1000-html.cgi \
-	distsn-pleroma-instances-api.cgi
+	distsn-pleroma-instances-api.cgi \
+	distsn-gnusocial-instances-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
 
@@ -66,6 +69,9 @@ distsn-pleroma-instances-cron: pleroma-instances-cron.o
 
 distsn-instances-implementation-api.cgi: instances-implementation-api.o
 	$(CXX) instances-implementation-api.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+
+distsn-gnusocial-instances-cron: gnusocial-instances-cron.o
+	$(CXX) gnusocial-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 install: $(cgis)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
