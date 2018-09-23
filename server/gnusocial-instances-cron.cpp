@@ -22,7 +22,7 @@ public:
 	string description;
 	string thumbnail;
 public:
-	Host (string a_gost_name, string a_title, string a_description, string a_thumbnail):
+	Host (string a_host_name, string a_title, string a_description, string a_thumbnail):
 		host_name (a_host_name),
 		title (a_title),
 		description (a_description),
@@ -118,7 +118,7 @@ int main (int argc, char **argv)
 		}
 	}
 	
-	sort (hosts.begin (), hosts.end (), by_domain);
+	sort (hosts.begin (), hosts.end (), by_host_name);
 
 	const string storage_filename = string {"/var/lib/distsn/gnusocial-instances.json"};
 	FILE * storage_file_out = fopen (storage_filename.c_str (), "w");

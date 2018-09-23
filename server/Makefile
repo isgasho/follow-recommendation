@@ -31,7 +31,8 @@ cgi_binaries = \
 cron_binaries = \
 	distsn-instance-speed-cron \
 	distsn-instance-first-toot-cron \
-	distsn-pleroma-instances-cron
+	distsn-pleroma-instances-cron \
+	distsn-gnusocial-instances-cron
 
 cron_scripts = \
 	distsn-https-renew-cron
