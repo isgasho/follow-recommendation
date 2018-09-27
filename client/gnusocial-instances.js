@@ -38,11 +38,7 @@ for (cn = 0; cn < instances.length; cn ++) {
 	var instance;
 	instance = instances [cn];
 	var thumbnail;
-	if (instance.thumbnail && 0 < instance.thumbnail.length) {
-		thumbnail = mediaProxy (instance.thumbnail)
-	} else {
-		thumbnail = 'missing.png';
-	}
+	thumbnail = 'gnusocial.png'
 	var instance_html
 	instance_html = ''
 	instance_html +=
