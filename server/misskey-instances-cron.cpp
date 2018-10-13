@@ -88,7 +88,7 @@ string Host::format () const
 
 	out += "\"version\":\"" + escape_json (version) + "\",";
 	out += "\"registration\":" + string {registration? "true": "false"} + ",";
-	out += "\"localTimeline\":" + string {local_timeline? "true": "false"} + ",";
+	out += "\"localTimeLine\":" + string {local_timeline? "true": "false"} + ",";
 	out += "\"elasticsearch\":" + string {elasticsearch? "true": "false"} + ",";
 	out += "\"recaptcha\":" + string {recaptcha? "true": "false"} + ",";
 	out += "\"objectStorage\":" + string {object_storage? "true": "false"} + ",";
