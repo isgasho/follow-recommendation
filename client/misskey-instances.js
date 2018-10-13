@@ -57,14 +57,14 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' + '<br>'
 	instance_html +=
 		escapeHtml (instance.title) + '<br>'
-	instance_html += escapeHtml (instance.version) + ' '
-	instance_html += (instance.registration ? 'RG ': '')
-	instance_html += (instance.localTimeLine ? 'LT ': '')
-	instance_html += (instance.elasticsearch ? 'ES ': '') + ' '
-	instance_html += (instance.recaptcha ? 'RC ': '')
-	instance_html += (instance.objectStorage ? 'OS ': '')
-	instance_html += (instance.twitter ? 'TW ': '')
-	instance_html += (instance.serviceWorker ? 'SW ': '')
+	instance_html += escapeHtml (instance.version) + '<br>'
+	instance_html += (instance.registration ? 'RG': '✗') + ' '
+	instance_html += (instance.localTimeLine ? 'LT': '✗') + ' '
+	instance_html += (instance.elasticsearch ? 'ES': '✗') + ' '
+	instance_html += (instance.recaptcha ? 'RC': '✗') + ' '
+	instance_html += (instance.objectStorage ? 'OS': '✗') + ' '
+	instance_html += (instance.twitter ? 'TW': '✗') + ' '
+	instance_html += (instance.serviceWorker ? 'SW': '✗')
 	instance_html += '</p>'
 	html += instance_html
 }
