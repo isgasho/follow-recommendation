@@ -30,6 +30,8 @@ public:
 	bool object_storage;
 	bool twitter;
 	bool service_worker;
+	bool user_recommendation_external;
+	string user_recommendation_engine;
 public:
 	Host (string a_host_name, string a_title, string a_description, string a_thumbnail):
 		host_name (a_host_name),
@@ -42,7 +44,8 @@ public:
 		recaptcha (false),
 		object_storage (false),
 		twitter (false),
-		service_worker (false)
+		service_worker (false),
+		user_recommendation_external (false)
 	{ };
 	Host ():
 		registration (false),
@@ -51,7 +54,8 @@ public:
 		recaptcha (false),
 		object_storage (false),
 		twitter (false),
-		service_worker (false)
+		service_worker (false),
+		user_recommendation_external (false)
 	{ };
 public:
 	string format () const;
@@ -93,7 +97,9 @@ string Host::format () const
 	out += "\"recaptcha\":" + string {recaptcha? "true": "false"} + ",";
 	out += "\"objectStorage\":" + string {object_storage? "true": "false"} + ",";
 	out += "\"twitter\":" + string {twitter? "true": "false"} + ",";
-	out += "\"serviceWorker\":" + string {service_worker? "true": "false"};
+	out += "\"serviceWorker\":" + string {service_worker? "true": "false"} + ",";
+	out += "\"userRecommendationExternal\":" + string {user_recommendation_external? "true": "false"} + ",";
+	out += "\"userRecommendationEngine\":\"" + escape_json (user_recommendation_engine) + "\"";
 	
 	out += "}";
 	return out;
@@ -130,7 +136,9 @@ static void get_features (
 	bool & a_recaptcha,
 	bool &a_object_storage,
 	bool & a_twitter,
-	bool & a_service_worker)
+	bool & a_service_worker,
+	bool & a_user_recommendation_external,
+	string & a_user_recommendation_engine)
 {
 	string version;
 	bool registration = false;
@@ -140,6 +148,8 @@ static void get_features (
 	bool object_storage = false;
 	bool twitter = false;
 	bool service_worker = false;
+	bool user_recommendation_external = false;
+	string user_recommendation_engine;
 
 	string url = string {"https://"} + host_name + string {"/api/meta"};
 	
@@ -215,6 +225,29 @@ static void get_features (
 		) {
 			service_worker = features_object.at (string {"serviceWorker"}).get <bool> ();
 		}
+
+		if (features_object.find (string {"userRecommendation"}) != features_object.end ()) {
+			auto user_recommendation_value = features_object.at (string {"userRecommendation"});
+			if (user_recommendation_value.is <picojson::object> ()) {
+				auto user_recommendation_object = user_recommendation_value.get <picojson::object> ();
+
+				if (user_recommendation_object.find (string {"external"}) != user_recommendation_object.end ()) {
+					auto external_value = user_recommendation_object.at (string {"external"});
+					if (external_value.is <bool> ()) {
+						bool external_bool = external_value.get <bool> ();
+						user_recommendation_external = external_bool;
+					}
+				}
+
+				if (user_recommendation_object.find (string {"engine"}) != user_recommendation_object.end ()) {
+					auto engine_value = user_recommendation_object.at (string {"engine"});
+					if (engine_value.is <string> ()) {
+						string engine_string = engine_value.get <string> ();
+						user_recommendation_engine = engine_string;
+					}
+				}
+			}
+		}
 	}
 
 	a_version = version;
@@ -225,6 +258,8 @@ static void get_features (
 	a_object_storage = object_storage;
 	a_twitter = twitter;
 	a_service_worker = service_worker;
+	a_user_recommendation_external = user_recommendation_external;
+	a_user_recommendation_engine = user_recommendation_engine;
 }
 
 
@@ -249,6 +284,8 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 	bool object_storage = false;
 	bool twitter = false;
 	bool service_worker = false;
+	bool user_recommendation_external = false;
+	string user_recommendation_engine;
 	try {
 		get_features (
 			socialnet_host->http,
@@ -260,7 +297,9 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 			recaptcha,
 			object_storage,
 			twitter,
-			service_worker);
+			service_worker,
+			user_recommendation_external,
+			user_recommendation_engine);
 	} catch (socialnet::ExceptionWithLineNumber e) {
 		/* Do nothing. */
 	}
@@ -272,6 +311,8 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 	host.object_storage = object_storage;
 	host.twitter = twitter;
 	host.service_worker = service_worker;
+	host.user_recommendation_external = user_recommendation_external;
+	host.user_recommendation_engine = user_recommendation_engine;
 
 	return host;
 }
