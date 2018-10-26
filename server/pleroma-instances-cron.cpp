@@ -143,27 +143,37 @@ static void get_host_nodeinfo (
 		auto metadata_value = json_object.at (string {"metadata"});
 		if (metadata_value.is <picojson::object> ()) {
 			auto metadata_object = metadata_value.get <picojson::object> ();
-			if (metadata_object.find (string {"chat"}) != metadata_object.end ()) {
-				auto chat_value = metadata_object.at (string {"chat"});
-				if (chat_value.is <bool> ()) {
-					bool chat_bool = chat_value.get <bool> ();
-					a_chat = chat_bool;
+
+			bool chat = false;
+			bool gopher = false;
+			bool media_proxy = false;
+
+			if (metadata_object.find (string {"features"}) != metadata_object.end ()) {
+				auto features_value = metadata_object.at (string {"features"});
+				if (features_value.is <picojson::array> ()) {
+					auto features_array = features_value.get <picojson::array> ();
+					
+					for (auto feature_value: features_array) {
+						if (feature_value.is <string> ()) {
+							string feature_string = feature_value.get <string> ();
+							if (feature_string == string {"chat"}) {
+								chat = true;
+							}
+							if (feature_string == string {"gopher"}) {
+								gopher = true;
+							}
+							if (feature_string == string {"media_proxy"}) {
+								media_proxy = true;
+							}
+						}
+					}
 				}
 			}
-			if (metadata_object.find (string {"gopher"}) != metadata_object.end ()) {
-				auto gopher_value = metadata_object.at (string {"gopher"});
-				if (gopher_value.is <bool> ()) {
-					bool gopher_bool = gopher_value.get <bool> ();
-					a_gopher = gopher_bool;
-				}
-			}
-			if (metadata_object.find (string {"mediaProxy"}) != metadata_object.end ()) {
-				auto media_proxy_value = metadata_object.at (string {"mediaProxy"});
-				if (media_proxy_value.is <bool> ()) {
-					bool media_proxy_bool = media_proxy_value.get <bool> ();
-					a_media_proxy = media_proxy_bool;
-				}
-			}
+			
+			a_chat = chat;
+			a_gopher = gopher;
+			a_media_proxy = media_proxy;
+
 			if (metadata_object.find (string {"suggestions"}) != metadata_object.end ()) {
 				auto suggestions_value = metadata_object.at (string {"suggestions"});
 				if (suggestions_value.is <picojson::object> ()) {
