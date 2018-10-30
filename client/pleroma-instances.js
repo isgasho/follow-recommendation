@@ -1,8 +1,8 @@
 
 function mediaProxy (image) {
 	return 'https://images.weserv.nl/?url=' +
-		encodeURIComponent (image.replace (/^http(s)?\:\/\//, '')) +
-		'&errorredirect=' + encodeURIComponent ('distsn.org/missing.png')
+		'https://' + encodeURIComponent (image.replace (/^http(s)?\:\/\//, '')) +
+		'&errorredirect=' + 'https://' + encodeURIComponent ('distsn.org/missing.png')
 }
 
 
