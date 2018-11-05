@@ -32,6 +32,7 @@ public:
 	bool service_worker;
 	bool user_recommendation_external;
 	string user_recommendation_engine;
+	set <string> languages;
 public:
 	Host (string a_host_name, string a_title, string a_description, string a_thumbnail):
 		host_name (a_host_name),
@@ -99,7 +100,18 @@ string Host::format () const
 	out += "\"twitter\":" + string {twitter? "true": "false"} + ",";
 	out += "\"serviceWorker\":" + string {service_worker? "true": "false"} + ",";
 	out += "\"userRecommendationExternal\":" + string {user_recommendation_external? "true": "false"} + ",";
-	out += "\"userRecommendationEngine\":\"" + escape_json (user_recommendation_engine) + "\"";
+	out += "\"userRecommendationEngine\":\"" + escape_json (user_recommendation_engine) + "\",";
+
+	vector <string> languages_vector {languages.begin (), languages.end ()};
+
+	out += "\"languages\":[";
+	for (unsigned int cn = 0; cn < languages_vector.size (); cn ++) {
+		if (0 < cn) {
+			out += ",";
+		}
+		out += "\"" + escape_json (languages_vector.at (cn)) + "\"";
+	}
+	out += "]";
 	
 	out += "}";
 	return out;
@@ -138,7 +150,8 @@ static void get_features (
 	bool & a_twitter,
 	bool & a_service_worker,
 	bool & a_user_recommendation_external,
-	string & a_user_recommendation_engine)
+	string & a_user_recommendation_engine,
+	set <string> & a_languages)
 {
 	string version;
 	bool registration = false;
@@ -150,6 +163,7 @@ static void get_features (
 	bool service_worker = false;
 	bool user_recommendation_external = false;
 	string user_recommendation_engine;
+	set <string> languages;
 
 	string url = string {"https://"} + host_name + string {"/api/meta"};
 	
@@ -250,6 +264,40 @@ static void get_features (
 		}
 	}
 
+	try {
+		string url = string {"https://"} + host_name + string {"/api/v1/instance"};
+		string reply;
+		reply = http->perform (url);
+	
+		picojson::value reply_value;
+		string error = picojson::parse (reply_value, reply);
+		if (! error.empty ()) {
+			throw (socialnet::HostException {__LINE__});
+		}
+		if (! reply_value.is <picojson::object> ()) {
+			throw (socialnet::HostException {__LINE__});
+		}
+		auto reply_object = reply_value.get <picojson::object> ();
+		
+		if (reply_object.find (string {"languages"}) == reply_object.end ()) {
+			throw (socialnet::HostException {__LINE__});
+		}
+		auto languages_value = reply_object.at (string {"languages"});
+		if (! languages_value.is <picojson::array> ()) {
+			throw (socialnet::HostException {__LINE__});
+		}
+		auto languages_array = languages_value.get <picojson::array> ();
+		
+		for (auto language_value: languages_array) {
+			if (language_value.is <string> ()) {
+				string language_string = language_value.get <string> ();
+				languages.insert (language_string);
+			}
+		}
+	} catch (socialnet::ExceptionWithLineNumber e) {
+		cerr << "/api/v1/instance error " << e.line << endl;
+	}
+
 	a_version = version;
 	a_registration = registration;
 	a_local_timeline = local_timeline;
@@ -260,6 +308,7 @@ static void get_features (
 	a_service_worker = service_worker;
 	a_user_recommendation_external = user_recommendation_external;
 	a_user_recommendation_engine = user_recommendation_engine;
+	a_languages = languages;
 }
 
 
@@ -286,6 +335,7 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 	bool service_worker = false;
 	bool user_recommendation_external = false;
 	string user_recommendation_engine;
+	set <string> languages;
 	try {
 		get_features (
 			socialnet_host->http,
@@ -299,7 +349,8 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 			twitter,
 			service_worker,
 			user_recommendation_external,
-			user_recommendation_engine);
+			user_recommendation_engine,
+			languages);
 	} catch (socialnet::ExceptionWithLineNumber e) {
 		/* Do nothing. */
 	}
@@ -313,6 +364,7 @@ static Host for_host (shared_ptr <socialnet::Host> socialnet_host)
 	host.service_worker = service_worker;
 	host.user_recommendation_external = user_recommendation_external;
 	host.user_recommendation_engine = user_recommendation_engine;
+	host.languages = languages;
 
 	return host;
 }
