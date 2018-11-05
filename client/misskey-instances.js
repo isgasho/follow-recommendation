@@ -57,7 +57,14 @@ for (cn = 0; cn < instances.length; cn ++) {
 		'</a>' + '<br>'
 	instance_html +=
 		escapeHtml (instance.title) + '<br>'
-	instance_html += escapeHtml (instance.version) + '<br>'
+	instance_html += escapeHtml (instance.version)
+
+	var cn_languages
+	for (cn_languages = 0; cn_languages < instance.languages.length; cn_languages ++) {
+		instance_html += ' <i>' + escapeHtml (instance.languages[cn_languages]) + '</i>'
+	}
+	instance_html += '<br>'
+	
 	instance_html += (instance.registration? 'RG': '✗') + ' '
 	instance_html += (instance.localTimeLine? 'LT': '✗') + ' '
 	instance_html += (instance.elasticsearch? 'ES': '✗') + ' '
