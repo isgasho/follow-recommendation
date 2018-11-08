@@ -264,38 +264,17 @@ static void get_features (
 		}
 	}
 
-	try {
-		string url = string {"https://"} + host_name + string {"/api/v1/instance"};
-		string reply;
-		reply = http->perform (url);
-	
-		picojson::value reply_value;
-		string error = picojson::parse (reply_value, reply);
-		if (! error.empty ()) {
-			throw (socialnet::HostException {__LINE__});
-		}
-		if (! reply_value.is <picojson::object> ()) {
-			throw (socialnet::HostException {__LINE__});
-		}
-		auto reply_object = reply_value.get <picojson::object> ();
-		
-		if (reply_object.find (string {"languages"}) == reply_object.end ()) {
-			throw (socialnet::HostException {__LINE__});
-		}
-		auto languages_value = reply_object.at (string {"languages"});
-		if (! languages_value.is <picojson::array> ()) {
-			throw (socialnet::HostException {__LINE__});
-		}
-		auto languages_array = languages_value.get <picojson::array> ();
-		
-		for (auto language_value: languages_array) {
-			if (language_value.is <string> ()) {
-				string language_string = language_value.get <string> ();
-				languages.insert (language_string);
+	if (reply_object.find (string {"langs"}) != reply_object.end ()) {
+		auto langs_value = reply_object.at (string {"langs"});
+		if (langs_value.is <picojson::array> ()) {
+			auto langs_array = langs_value.get <picojson::array> ();
+			for (auto lang_value: langs_array) {
+				if (lang_value.is <string> ()) {
+					string lang_string = lang_value.get <string> ();
+					languages.insert (lang_string);
+				}
 			}
 		}
-	} catch (socialnet::ExceptionWithLineNumber e) {
-		cerr << "/api/v1/instance error " << e.line << endl;
 	}
 
 	a_version = version;
