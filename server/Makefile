@@ -24,7 +24,8 @@ objects = \
 	instances-implementation-api.o \
 	pleroma-instances-cron.o \
 	gnusocial-instances-cron.o \
-	misskey-instances-cron.o
+	misskey-instances-cron.o \
+	apps-cron.o
 
 cgi_binaries = \
 	distsn-instances-implementation-api.cgi
@@ -34,7 +35,8 @@ cron_binaries = \
 	distsn-instance-first-toot-cron \
 	distsn-pleroma-instances-cron \
 	distsn-gnusocial-instances-cron \
-	distsn-misskey-instances-cron
+	distsn-misskey-instances-cron \
+	distsn-apps-cron
 
 cron_scripts = \
 	distsn-https-renew-cron
@@ -79,6 +81,9 @@ distsn-gnusocial-instances-cron: gnusocial-instances-cron.o
 
 distsn-misskey-instances-cron: misskey-instances-cron.o
 	$(CXX) misskey-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+
+distsn-apps-cron: apps-cron.o
+	$(CXX) apps-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 install: $(cgis) $(crons)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
