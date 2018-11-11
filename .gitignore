@@ -45,6 +45,7 @@ distsn-pleroma-instances-cron
 distsn-instances-implementation-api.cgi
 distsn-gnusocial-instances-cron
 distsn-misskey-instances-cron
+distsn-apps-cron
 
 # Misc
 core*
