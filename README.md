@@ -32,6 +32,7 @@ Write following code in crontab:
 18 */4 * * * /usr/local/bin/distsn-misskey-instances-cron
 24 4   * * * /usr/local/bin/distsn-instance-first-toot-cron
 30 */4 * * * /usr/local/bin/distsn-instance-speed-cron
+36 16  * * * /usr/local/bin/distsn-apps-cron
 ```
 
 Write following code in crontab for the root:
