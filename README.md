@@ -11,8 +11,11 @@ https://distsn.org
 * https://distsn.org/cgi-bin/distsn-misskey-instances-api.cgi
 * https://distsn.org/cgi-bin/distsn-instance-first-toot-api.cgi
 * https://distsn.org/cgi-bin/distsn-instance-speed-api.cgi
+* https://distsn.org/cgi-bin/distsn-mastodon-apps-api.cgi
 
 ## Install
+
+Depends on: https://gitlab.com/distsn/libsocialnet
 
     sudo apt install build-essential libcurl4-openssl-dev apache2
     make clean
