@@ -63,8 +63,9 @@ static string escape_json (string in)
 }
 
 
-static void write_storage (vector <AppAndShare> apps_and_share, ofstream & out)
+static void write_storage (vector <AppAndShare> apps_and_share, string filename)
 {
+	ofstream out {filename};
 	out << "[";
 	for (unsigned int cn = 0; cn < apps_and_share.size (); cn ++) {
 		if (0 < cn) {
@@ -82,7 +83,7 @@ static void write_storage (vector <AppAndShare> apps_and_share, ofstream & out)
 }
 
 
-static void for_implementation (socialnet::eImplementation a_implementation, ofstream & a_out)
+static void for_implementation (socialnet::eImplementation a_implementation, string filename)
 {
 	auto socialnet_hosts = socialnet::get_hosts ();
 
@@ -128,14 +129,13 @@ static void for_implementation (socialnet::eImplementation a_implementation, ofs
 
 	sort (apps_and_share.begin (), apps_and_share.end (), by_share);
 
-	write_storage (apps_and_share, a_out);
+	write_storage (apps_and_share, filename);
 }
 
 
 int main (int argc, char **argv)
 {
-	const string storage_filename = string {"/var/lib/distsn/mastodon-apps.json"};
-	ofstream out {storage_filename};
-	for_implementation (socialnet::eImplementation::MASTODON, out);
+	const string filename = string {"/var/lib/distsn/mastodon-apps.json"};
+	for_implementation (socialnet::eImplementation::MASTODON, filename);
 }
 
