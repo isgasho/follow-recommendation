@@ -14,6 +14,8 @@ https://distsn.org
 
 ## Install
 
+Depends on: https://gitlab.com/distsn/libsocialnet
+
     sudo apt install build-essential libcurl4-openssl-dev apache2
     make clean
     make
