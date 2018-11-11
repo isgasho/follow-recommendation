@@ -51,7 +51,8 @@ cgi_scripts = \
 	distsn-top1000-html.cgi \
 	distsn-pleroma-instances-api.cgi \
 	distsn-gnusocial-instances-api.cgi \
-	distsn-misskey-instances-api.cgi
+	distsn-misskey-instances-api.cgi \
+	distsn-mastodon-apps-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
 
