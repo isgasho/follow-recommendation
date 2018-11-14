@@ -10,6 +10,11 @@ a:visited {color: #ffa500; }
 	font-size: 120%;
 }
 
+a.icon {
+	font-size: 100%;
+	text-decoration-line: none;
+}
+
 a.headline {
 	font-size: 120%;
 }
