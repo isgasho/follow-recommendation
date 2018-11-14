@@ -39,17 +39,20 @@ for (cn = 0; cn < apps.length && cn < 400; cn ++) {
 			encodeURI (app.web) + '" target="_blank">' +
 			escapeHtml (app.name) +
 			'</a>' + ' ' +
+			'<a class="icon" href="https://www.google.com/search?q=' +
+			encodeURIComponent (app.name) +
+			'" target="_blank">🔍</a>' + ' ' +
 			'(' + (app.share * 100).toFixed (3) + ' %)' +
 			'</p>'
 	} else {
 		app_html +=
 			'<p>' +
 			'<span class="headline">' +
-			escapeHtml (app.name) + ' ' +
-			'<a href="https://www.google.com/search?q=' +
-			encodeURIComponent (app.name) +
-			'" target="_blank">🔍</a>' +
+			escapeHtml (app.name) +
 			'</span>' + ' ' +
+			'<a class="icon" href="https://www.google.com/search?q=' +
+			encodeURIComponent (app.name) +
+			'" target="_blank">🔍</a>' + ' ' +
 			'(' + (app.share * 100).toFixed (3) + ' %)' +
 			'</p>'
 	}
