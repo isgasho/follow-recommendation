@@ -45,7 +45,10 @@ for (cn = 0; cn < apps.length && cn < 400; cn ++) {
 		app_html +=
 			'<p>' +
 			'<span class="headline">' +
-			escapeHtml (app.name) +
+			escapeHtml (app.name) + ' ' +
+			'<a href="https://www.google.com/search?q=' +
+			encodeURIComponent (app.name) +
+			'" target="_blank">🔍</a>' +
 			'</span>' + ' ' +
 			'(' + (app.share * 100).toFixed (3) + ' %)' +
 			'</p>'
