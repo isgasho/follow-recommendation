@@ -39,7 +39,7 @@ for (cn = 0; cn < apps.length && cn < 400; cn ++) {
 			encodeURI (app.web) + '" target="_blank">' +
 			escapeHtml (app.name) +
 			'</a>' + ' ' +
-			'<a class="icon" href="https://www.google.com/search?q=' +
+			'<a class="icon" href="https://duckduckgo.com/?q=' +
 			encodeURIComponent (app.name) +
 			'" target="_blank">🔍</a>' + ' ' +
 			'(' + (app.share * 100).toFixed (3) + ' %)' +
