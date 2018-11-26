@@ -40,7 +40,7 @@ for (cn = 0; cn < apps.length && cn < 400; cn ++) {
 			escapeHtml (app.name) +
 			'</a>' + ' ' +
 			'<a class="icon" href="https://duckduckgo.com/?q=' +
-			encodeURIComponent (app.name) +
+			encodeURIComponent (app.name + ' ' + 'Mastodon') +
 			'" target="_blank">🔍</a>' + ' ' +
 			'(' + (app.share * 100).toFixed (3) + ' %)' +
 			'</p>'
