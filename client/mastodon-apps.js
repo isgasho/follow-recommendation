@@ -50,8 +50,8 @@ for (cn = 0; cn < apps.length && cn < 400; cn ++) {
 			'<span class="headline">' +
 			escapeHtml (app.name) +
 			'</span>' + ' ' +
-			'<a class="icon" href="https://www.google.com/search?q=' +
-			encodeURIComponent (app.name) +
+			'<a class="icon" href="https://duckduckgo.com/?q=' +
+			encodeURIComponent (app.name + ' ' + 'Mastodon') +
 			'" target="_blank">🔍</a>' + ' ' +
 			'(' + (app.share * 100).toFixed (3) + ' %)' +
 			'</p>'
