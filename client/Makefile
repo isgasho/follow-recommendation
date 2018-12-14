@@ -30,7 +30,6 @@ www_files = \
 	fake-pleroma-light.css \
 	gnusocial-instances.html \
 	misskey-instances.html \
-	instances-implementation.js \
 	gnusocial-instances.js \
 	misskey-instances.js \
 	gnusocial.png \
