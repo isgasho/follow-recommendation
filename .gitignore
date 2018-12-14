@@ -46,6 +46,7 @@ distsn-instances-implementation-api.cgi
 distsn-gnusocial-instances-cron
 distsn-misskey-instances-cron
 distsn-apps-cron
+distsn-singleuser-instances-cron
 
 # Misc
 core*

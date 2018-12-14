@@ -25,7 +25,8 @@ objects = \
 	pleroma-instances-cron.o \
 	gnusocial-instances-cron.o \
 	misskey-instances-cron.o \
-	apps-cron.o
+	apps-cron.o \
+	singleuser-instances-cron.o
 
 cgi_binaries = \
 	distsn-instances-implementation-api.cgi
@@ -36,7 +37,8 @@ cron_binaries = \
 	distsn-pleroma-instances-cron \
 	distsn-gnusocial-instances-cron \
 	distsn-misskey-instances-cron \
-	distsn-apps-cron
+	distsn-apps-cron \
+	distsn-singleuser-instances-cron
 
 cron_scripts = \
 	distsn-https-renew-cron
@@ -52,7 +54,8 @@ cgi_scripts = \
 	distsn-pleroma-instances-api.cgi \
 	distsn-gnusocial-instances-api.cgi \
 	distsn-misskey-instances-api.cgi \
-	distsn-mastodon-apps-api.cgi
+	distsn-mastodon-apps-api.cgi \
+	distsn-singleuser-instances-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
 
@@ -82,6 +85,9 @@ distsn-gnusocial-instances-cron: gnusocial-instances-cron.o
 
 distsn-misskey-instances-cron: misskey-instances-cron.o
 	$(CXX) misskey-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+
+distsn-singleuser-instances-cron: singleuser-instances-cron.o
+	$(CXX) singleuser-instances-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
 distsn-apps-cron: apps-cron.o
 	$(CXX) apps-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
