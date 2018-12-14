@@ -34,7 +34,9 @@ www_files = \
 	misskey-instances.js \
 	gnusocial.png \
 	mastodon-apps.html \
-	mastodon-apps.js
+	mastodon-apps.js \
+	singleuser-instances.html \
+	singleuser-instances.js
 
 install: $(www_files)
 	$(INSTALL_DATA) $(www_files) --target-directory=$(htmldir)
