@@ -26,10 +26,18 @@ objects = \
 	gnusocial-instances-cron.o \
 	misskey-instances-cron.o \
 	apps-cron.o \
-	singleuser-instances-cron.o
+	singleuser-instances-cron.o \
+	gnusocial-instances-api.o \
+	pleroma-instances-api.o \
+	misskey-instances-api.o \
+	singleuser-instances-api.o
 
 cgi_binaries = \
-	distsn-instances-implementation-api.cgi
+	distsn-instances-implementation-api.cgi \
+	distsn-gnusocial-instances-api.cgi \
+	distsn-pleroma-instances-api.cgi \
+	distsn-misskey-instances-api.cgi \
+	distsn-singleuser-instances-api.cgi
 
 cron_binaries = \
 	distsn-instance-speed-cron \
@@ -87,6 +95,18 @@ distsn-singleuser-instances-cron: singleuser-instances-cron.o
 
 distsn-apps-cron: apps-cron.o
 	$(CXX) apps-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
+
+distsn-gnusocial-instances-api.cgi: gnusocial-instances-api.o
+	$(CXX) gnusocial-instances-api.o $(CFLAGS) -o $@
+
+distsn-pleroma-instances-api.cgi: pleroma-instances-api.o
+	$(CXX) pleroma-instances-api.o $(CFLAGS) -o $@
+
+distsn-misskey-instances-api.cgi: misskey-instances-api.o
+	$(CXX) misskey-instances-api.o $(CFLAGS) -o $@
+
+distsn-singleuser-instances-api.cgi: singleuser-instances-api.o
+	$(CXX) singleuser-instances-api.o $(CFLAGS) -o $@
 
 install: $(cgis) $(crons)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
