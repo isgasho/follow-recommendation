@@ -51,11 +51,7 @@ cgi_scripts = \
 	distsn-instance-speed-api.cgi \
 	distsn-instance-first-toot-api.cgi \
 	distsn-top1000-html.cgi \
-	distsn-pleroma-instances-api.cgi \
-	distsn-gnusocial-instances-api.cgi \
-	distsn-misskey-instances-api.cgi \
-	distsn-mastodon-apps-api.cgi \
-	distsn-singleuser-instances-api.cgi
+	distsn-mastodon-apps-api.cgi
 	
 cgis = $(cgi_binaries) $(cgi_scripts)
 
