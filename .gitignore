@@ -47,6 +47,7 @@ distsn-gnusocial-instances-cron
 distsn-misskey-instances-cron
 distsn-apps-cron
 distsn-singleuser-instances-cron
+distsn-instances-with-sort
 
 # Misc
 core*

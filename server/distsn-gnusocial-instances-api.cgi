@@ -1,12 +1,3 @@
 #!/bin/bash
-filename='/var/lib/distsn/gnusocial-instances.json'
-if [ -f $filename ]
-then
-	echo 'Access-Control-Allow-Origin: *'
-	echo 'Content-type: application/json'
-	echo ''
-	cat $filename
-else
-	echo 'Status: 404 Not found'
-fi
+/usr/local/bin/distsn-instances-with-sort gnusocial "$1"
 

@@ -26,7 +26,8 @@ objects = \
 	gnusocial-instances-cron.o \
 	misskey-instances-cron.o \
 	apps-cron.o \
-	singleuser-instances-cron.o
+	singleuser-instances-cron.o \
+	instances-with-sort.o
 
 cgi_binaries = \
 	distsn-instances-implementation-api.cgi
@@ -43,9 +44,10 @@ cron_binaries = \
 cron_scripts = \
 	distsn-https-renew-cron
 
-cli_binaries =
+impl_binaries = \
+	distsn-instances-with-sort
 
-binaries = $(cgi_binaries) $(cron_binaries) $(cli_binaries)
+binaries = $(cgi_binaries) $(cron_binaries) $(impl_binaries)
 
 cgi_scripts = \
 	distsn-instance-speed-api.cgi \
@@ -92,13 +94,18 @@ distsn-singleuser-instances-cron: singleuser-instances-cron.o
 distsn-apps-cron: apps-cron.o
 	$(CXX) apps-cron.o -lsocialnet-1 -ltinyxml2 -lcurl $(CFLAGS) -o $@
 
+distsn-instances-with-sort: instances-with-sort.o
+	$(CXX) instances-with-sort.o $(CFLAGS) -o $@
+
 install: $(cgis) $(crons)
 	$(INSTALL_PROGRAM) $(cgis) --target-directory=$(cgidir)
 	$(INSTALL_PROGRAM) $(crons) --target-directory=$(bindir)
+	$(INSTALL_PROGRAM) $(impl_binaries) --target-directory=$(bindir)
 
 uninstall:
 	-$(RM) $(addprefix $(cgidir)/,$(cgis))
 	-$(RM) $(addprefix $(bindir)/,$(crons))
+	-$(RM) $(addprefix $(bindir)/,$(impl_binaries))
 
 initialize:
 	$(MKDIR) -p /var/lib/distsn/instance-speed
