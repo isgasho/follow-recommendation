@@ -2,6 +2,8 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <algorithm>
+#include <random>
 
 #include "picojson.h"
 
@@ -54,13 +56,39 @@ int main (int argc, char ** argv)
 
 	cout << "Content-type: application/json" << endl << endl;
 
+	vector <picojson::value> array;
+	
+	for (auto item: json_value.get <picojson::array> ()) {
+		array.push_back (item);
+	}
+
 	if (2 < argc) {
 		if (string {argv [2]}.empty () || string {argv [2]} == string {"abc"}) {
 			cout << file_content;
 		} else if (string {argv [2]} == string {"zyx"}) {
-			
+			reverse (array.begin (), array.end ());
+
+			cout << "[";
+			for (unsigned int cn = 0; cn < array.size (); cn ++) {
+				if (0 < cn) {
+					cout << "," << endl;
+				}
+				cout << array.at (cn).serialize ();
+			}
+			cout << "]" << endl;
 		} else if (string {argv [2]} == string {"shuffle"}) {
-			
+			random_device seed;
+			default_random_engine engine {seed ()};
+			shuffle (array.begin (), array.end (), engine);
+
+			cout << "[";
+			for (unsigned int cn = 0; cn < array.size (); cn ++) {
+				if (0 < cn) {
+					cout << "," << endl;
+				}
+				cout << array.at (cn).serialize ();
+			}
+			cout << "]" << endl;
 		} else {
 			die (string {"Bad argument: "} + string {argv [2]});
 		}
