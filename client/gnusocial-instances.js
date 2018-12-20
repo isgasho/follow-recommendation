@@ -6,9 +6,10 @@ function mediaProxy (image) {
 }
 
 
-window.addEventListener ('load', function () {
+function get_instances (implementation, order) {
 	var request = new XMLHttpRequest;
-	request.open ('GET', '/cgi-bin/distsn-gnusocial-instances-api.cgi');
+	const query = '/cgi-bin/distsn-' + implementation + '-instances-api.cgi?' + order
+	request.open ('GET', query);
 	request.onload = function () {
 		if (request.readyState === request.DONE) {
 			if (request.status === 200) {
@@ -19,7 +20,18 @@ window.addEventListener ('load', function () {
 		}
 	}
 	request.send ();
+}
+
+
+window.order = function (order) {
+	get_instances ('gnusocial', order)
+}
+
+
+window.addEventListener ('load', function () {
+	get_instances ('gnusocial', 'abc')
 }, false); /* window.addEventListener ('load', function () { */
+
 
 
 function escapeHtml (text) {
